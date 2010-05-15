@@ -11,7 +11,6 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		9B62DA67119F5A2E0056F427 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA56119F5A2E0056F427 /* Activity.m */; };
 		9B62DA68119F5A2E0056F427 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA58119F5A2E0056F427 /* Issue.m */; };
 		9B62DA6A119F5A2E0056F427 /* News.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA5C119F5A2E0056F427 /* News.m */; };
 		9B62DA6B119F5A2E0056F427 /* NSArrayAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */; };
@@ -39,8 +38,6 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Redminer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Redminer-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Redminer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redminer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B62DA55119F5A2E0056F427 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
-		9B62DA56119F5A2E0056F427 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		9B62DA57119F5A2E0056F427 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
 		9B62DA58119F5A2E0056F427 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
 		9B62DA59119F5A2E0056F427 /* JSONFriendly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONFriendly.h; sourceTree = "<group>"; };
@@ -165,8 +162,6 @@
 			children = (
 				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
 				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
-				9B62DA55119F5A2E0056F427 /* Activity.h */,
-				9B62DA56119F5A2E0056F427 /* Activity.m */,
 				9B62DA57119F5A2E0056F427 /* Issue.h */,
 				9B62DA58119F5A2E0056F427 /* Issue.m */,
 				9B62DA5B119F5A2E0056F427 /* News.h */,
@@ -273,7 +268,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				9B62DA67119F5A2E0056F427 /* Activity.m in Sources */,
 				9B62DA68119F5A2E0056F427 /* Issue.m in Sources */,
 				9B62DA6A119F5A2E0056F427 /* News.m in Sources */,
 				9B62DA6B119F5A2E0056F427 /* NSArrayAdditions.m in Sources */,
