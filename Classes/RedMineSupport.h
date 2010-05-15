@@ -22,4 +22,5 @@
 - (NSArray*)news;
 - (NSArray*)activity;
 - (NSArray*)issuesInProject:(Project*)project;
+- (NSArray*)users;
 @end

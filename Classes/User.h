@@ -10,7 +10,9 @@
 #import "JSONFriendly.h"
 
 @interface User : NSObject <JSONFriendly>{
-
+	NSNumber *_id;
+	NSString *_name;
 }
-
+@property(nonatomic, retain) NSNumber *id;
+@property(nonatomic, retain) NSString *name;
 @end

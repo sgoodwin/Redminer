@@ -25,6 +25,7 @@
 		9B62DA89119F5A6D0056F427 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA81119F5A6D0056F427 /* SBJsonBase.m */; };
 		9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA83119F5A6D0056F427 /* SBJsonParser.m */; };
 		9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */; };
+		9B62DB56119F68AC0056F427 /* Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DB55119F68AC0056F427 /* Journal.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,8 @@
 		9B62DA83119F5A6D0056F427 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		9B62DA84119F5A6D0056F427 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		9B62DB54119F68AC0056F427 /* Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Journal.h; sourceTree = "<group>"; };
+		9B62DB55119F68AC0056F427 /* Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Journal.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,8 +156,6 @@
 			children = (
 				9B62DA70119F5A440056F427 /* API Support */,
 				9B62DA71119F5A4D0056F427 /* Accessory Classes */,
-				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
-				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -162,6 +163,8 @@
 		9B62DA70119F5A440056F427 /* API Support */ = {
 			isa = PBXGroup;
 			children = (
+				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
+				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
 				9B62DA55119F5A2E0056F427 /* Activity.h */,
 				9B62DA56119F5A2E0056F427 /* Activity.m */,
 				9B62DA57119F5A2E0056F427 /* Issue.h */,
@@ -174,6 +177,8 @@
 				9B62DA64119F5A2E0056F427 /* RedMineSupport.m */,
 				9B62DA65119F5A2E0056F427 /* User.h */,
 				9B62DA66119F5A2E0056F427 /* User.m */,
+				9B62DB54119F68AC0056F427 /* Journal.h */,
+				9B62DB55119F68AC0056F427 /* Journal.m */,
 			);
 			name = "API Support";
 			sourceTree = "<group>";
@@ -282,6 +287,7 @@
 				9B62DA89119F5A6D0056F427 /* SBJsonBase.m in Sources */,
 				9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */,
 				9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */,
+				9B62DB56119F68AC0056F427 /* Journal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

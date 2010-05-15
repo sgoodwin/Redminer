@@ -10,9 +10,17 @@
 
 
 @implementation User
+@synthesize id = _id;
+@synthesize name = _name;
+
 + (id)fromJSONDictionary:(NSDictionary *)jsonDict{
 	User *u = [[User alloc] init];
-	NSLog(@"User Dictionary: %@", jsonDict);
+	u.id = [jsonDict valueForKey:@"id"];
+	u.name = [jsonDict valueForKey:@"name"];
 	return u;
+}
+
+- (NSString*)description{
+	return [NSString stringWithFormat:@"<%@ id:%@ name:%@>", [self class],  _id, _name];
 }
 @end

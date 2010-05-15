@@ -8,6 +8,7 @@
 
 #import "RedMineSupport.h"
 #import "Project.h"
+#import "User.h"
 #import "JSON.h"
 #import "NSArrayAdditions.h"
 
@@ -115,7 +116,6 @@
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return nil;
 	}
-	
 	return [self arrayFromData:data];
 }
 
@@ -128,9 +128,13 @@
 	if(!!array && [array isKindOfClass:[NSArray class]]){
 		value = [(NSArray*)array collectWithBlock:^(NSDictionary *value){
 			for(NSString *aKey in [value allKeys]){
+				NSLog(@"Looking for class of key: %@", aKey);
 				Class aClass = NSClassFromString([aKey capitalizedString]);
 				if(!!aClass){
 					id object = [aClass fromJSONDictionary:[value valueForKey:aKey]];
+					return object;
+				}else{
+					User *object = [User fromJSONDictionary:value];
 					return object;
 				}
 			}
@@ -143,6 +147,8 @@
 				value = [NSArray arrayWithObject:[aClass fromJSONDictionary:[value valueForKey:aKey]]];
 			}
 		}
+	}else if(!array){
+		NSLog(@"No array from: %@", string);
 	}else{
 		NSLog(@"Don't know what to do with: %@", array);
 	}
