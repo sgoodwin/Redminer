@@ -10,4 +10,11 @@
 
 
 @implementation News
+
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
+	News *p = [[News alloc] init];
+	NSLog(@"News Dictionary: %@", jsonDict);
+	return p;
+}
+
 @end

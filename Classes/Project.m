@@ -20,4 +20,9 @@
 	NSLog(@"Project couldn't hold onto key: %@", _undefined_keys);
 }
 
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
+	Project *p = [[Project alloc] init];
+	NSLog(@"Project Dictionary: %@", jsonDict);
+	return p;
+}
 @end

@@ -1,5 +1,5 @@
 //
-//  News.h
+//  User.h
 //  Redminer
 //
 //  Created by Samuel Ryan Goodwin on 5/15/10.
@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "JSONFriendly.h"
 
-@interface News : NSObject{
+@interface User : NSObject <JSONFriendly>{
 
 }
 

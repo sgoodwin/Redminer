@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "JSONFriendly.h"
 
-@interface Project : NSObject{
+@interface Project : NSObject <JSONFriendly>{
 	NSNumber *id;
 	NSSet *_undefined_keys;
 }

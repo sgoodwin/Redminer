@@ -1,16 +1,13 @@
 //
-//  Activity.m
+//  JSONFriendly.h
 //  Redminer
 //
 //  Created by Samuel Ryan Goodwin on 5/15/10.
 //  Copyright 2010 Goodwinlabs. All rights reserved.
 //
 
-#import "Activity.h"
+#import <Cocoa/Cocoa.h>
 
-
-@implementation Activity
-+ (NSArray*)arrayFromXMLData:(NSData *)xmlData{
-	return nil;
-}
+@protocol JSONFriendly
++ (id)fromJSONDictionary:(NSDictionary*)jsonDict;
 @end

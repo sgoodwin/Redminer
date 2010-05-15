@@ -10,6 +10,12 @@
 
 
 @implementation Issue
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
+	Issue *i = [[Issue alloc] init];
+	NSLog(@"Issue Dictionary: %@", jsonDict);
+	return i;
+}
+
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key{
 	if(!_undefined_keys){
 		_undefined_keys = [[NSSet setWithObject:key] retain];
@@ -19,7 +25,7 @@
 	NSLog(@"Issue couldn't hold onto key: %@", _undefined_keys);
 }
 
-- (NSString*)description{
-	return [NSString stringWithFormat:@"Item {:subject =>%@, :assigned_to=>%@", subject, assigned_to];
-}
+//- (NSString*)description{
+//	return [NSString stringWithFormat:@"Item {:subject =>%@, :assigned_to=>%@", subject, assigned_to];
+//}
 @end

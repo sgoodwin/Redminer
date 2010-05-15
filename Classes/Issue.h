@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "JSONFriendly.h"
 
-@interface Issue : NSObject{
+@interface Issue : NSObject <JSONFriendly>{
 	NSSet *_undefined_keys;
 	
 	NSDate *due_date;

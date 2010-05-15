@@ -15,12 +15,10 @@
 @synthesize window;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application 
 	_miner = [[RedMineSupport alloc] init];
-	//_miner.key = @"41a6682c70a3af6e911c073996b9f528f7029d0e";
 	_miner.key = @"7ded331bf46dbd35a351dbd4b861cbca09aa7cb0";
-	//_miner.host = @"0.0.0.0:3000";
 	_miner.host = @"67.23.14.25/redmine";
+	
 	[_miner issues];
 	[_miner projects];
 	[_miner news];

@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "JSONFriendly.h"
 
-@interface Activity : NSObject{
+@interface Activity : NSObject <JSONFriendly>{
 
 }
 
