@@ -19,10 +19,10 @@
 	_miner.key = @"7ded331bf46dbd35a351dbd4b861cbca09aa7cb0";
 	_miner.host = @"67.23.14.25/redmine";
 	
-	//[_miner issues];
+	[_miner issues];
 	//[_miner projects];
 	//[_miner news];
-	[_miner activity];
+	//[_miner activity];
 	//Project *p = [[Project alloc] init];
 	//p.id = [NSNumber numberWithInt:1];
 	//[_miner issuesInProject:p];

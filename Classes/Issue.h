@@ -12,13 +12,13 @@
 @interface Issue : NSObject <JSONFriendly>{
 	NSSet *_undefined_keys;
 	
-	NSDate *due_date;
-	NSString *assigned_to;
-	NSString *subject;
-	NSString *status;
-	NSNumber *done_ratio;
-	NSString *category;
-	NSNumber *id;
+	NSNumber *_assigned_to_id;
+	NSString *_subject;
+	NSNumber *_done_ratio;
+	NSNumber *_id;
 }
-
+@property(nonatomic, retain) NSNumber *assigned_to_id;
+@property(nonatomic, retain) NSString *subject;
+@property(nonatomic, retain) NSNumber *done_ratio;
+@property(nonatomic, retain) NSNumber *id;
 @end
