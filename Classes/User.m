@@ -14,7 +14,7 @@
 @synthesize name = _name;
 
 + (id)fromJSONDictionary:(NSDictionary *)jsonDict{
-	User *u = [[User alloc] init];
+	User *u = [[[self class] alloc] init];
 	u.id = [jsonDict valueForKey:@"id"];
 	u.name = [jsonDict valueForKey:@"name"];
 	return u;

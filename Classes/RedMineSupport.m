@@ -128,7 +128,7 @@
 	if(!!array && [array isKindOfClass:[NSArray class]]){
 		value = [(NSArray*)array collectWithBlock:^(NSDictionary *value){
 			for(NSString *aKey in [value allKeys]){
-				NSLog(@"Looking for class of key: %@", aKey);
+				//NSLog(@"Looking for class of key: %@", aKey);
 				Class aClass = NSClassFromString([aKey capitalizedString]);
 				if(!!aClass){
 					id object = [aClass fromJSONDictionary:[value valueForKey:aKey]];
@@ -152,7 +152,6 @@
 	}else{
 		NSLog(@"Don't know what to do with: %@", array);
 	}
-	NSLog(@"Value: %@", value);
 	return value;
 }
 

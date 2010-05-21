@@ -25,6 +25,9 @@
 		9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA83119F5A6D0056F427 /* SBJsonParser.m */; };
 		9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */; };
 		9B62DB56119F68AC0056F427 /* Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DB55119F68AC0056F427 /* Journal.m */; };
+		9BBF538411A638140091E3CE /* ProjectDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF538311A638140091E3CE /* ProjectDataSource.m */; };
+		9BBF543411A647650091E3CE /* IssueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF543311A647650091E3CE /* IssueCell.m */; };
+		9BBF551911A65F900091E3CE /* ProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF551811A65F900091E3CE /* ProjectCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +71,12 @@
 		9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		9B62DB54119F68AC0056F427 /* Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Journal.h; sourceTree = "<group>"; };
 		9B62DB55119F68AC0056F427 /* Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Journal.m; sourceTree = "<group>"; };
+		9BBF538211A638140091E3CE /* ProjectDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectDataSource.h; sourceTree = "<group>"; };
+		9BBF538311A638140091E3CE /* ProjectDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectDataSource.m; sourceTree = "<group>"; };
+		9BBF543211A647650091E3CE /* IssueCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IssueCell.h; sourceTree = "<group>"; };
+		9BBF543311A647650091E3CE /* IssueCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IssueCell.m; sourceTree = "<group>"; };
+		9BBF551711A65F900091E3CE /* ProjectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectCell.h; sourceTree = "<group>"; };
+		9BBF551811A65F900091E3CE /* ProjectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,8 +160,13 @@
 		9B62DA54119F5A2E0056F427 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
+				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
 				9B62DA70119F5A440056F427 /* API Support */,
 				9B62DA71119F5A4D0056F427 /* Accessory Classes */,
+				9BBF538211A638140091E3CE /* ProjectDataSource.h */,
+				9BBF538311A638140091E3CE /* ProjectDataSource.m */,
+				9BBF551611A65F880091E3CE /* UI */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -160,8 +174,6 @@
 		9B62DA70119F5A440056F427 /* API Support */ = {
 			isa = PBXGroup;
 			children = (
-				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
-				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
 				9B62DA57119F5A2E0056F427 /* Issue.h */,
 				9B62DA58119F5A2E0056F427 /* Issue.m */,
 				9B62DA5B119F5A2E0056F427 /* News.h */,
@@ -208,6 +220,17 @@
 			);
 			path = JSON;
 			sourceTree = SOURCE_ROOT;
+		};
+		9BBF551611A65F880091E3CE /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				9BBF543211A647650091E3CE /* IssueCell.h */,
+				9BBF543311A647650091E3CE /* IssueCell.m */,
+				9BBF551711A65F900091E3CE /* ProjectCell.h */,
+				9BBF551811A65F900091E3CE /* ProjectCell.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -282,6 +305,9 @@
 				9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */,
 				9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */,
 				9B62DB56119F68AC0056F427 /* Journal.m in Sources */,
+				9BBF538411A638140091E3CE /* ProjectDataSource.m in Sources */,
+				9BBF543411A647650091E3CE /* IssueCell.m in Sources */,
+				9BBF551911A65F900091E3CE /* ProjectCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,9 +11,18 @@
 @class RedMineSupport;
 @interface RedminerAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-	RedMineSupport *_miner;
+	
+	NSSegmentedControl *_segmentControl;
+	NSTableView *_issueTable;
+	NSTableView *_projectTable;
+	NSTextField *_textField;
 }
 
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSSegmentedControl *segmentControl;
+@property (assign) IBOutlet NSTableView *issueTable;
+@property (assign) IBOutlet NSTableView *projectTable;
+@property (assign) IBOutlet NSTextField *textField;
 
+- (IBAction)segmentControlClicked:(id)sender;
 @end

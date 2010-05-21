@@ -17,8 +17,7 @@
 @synthesize user_id = _user_id;
 
 + (id)fromJSONDictionary:(NSDictionary *)jsonDict{
-	Journal *j = [[Journal alloc] init];
-	NSLog(@"Journal dict: %@", jsonDict);
+	Journal *j = [[[self class] alloc] init];
 	j.journalID = [jsonDict valueForKey:@"journalized_id"];
 	j.journalType = [jsonDict valueForKey:@"journalized_type"];
 	j.id = [jsonDict valueForKey:@"id"];

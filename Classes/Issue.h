@@ -16,9 +16,11 @@
 	NSString *_subject;
 	NSNumber *_done_ratio;
 	NSNumber *_id;
+	NSString *_desc;
 }
 @property(nonatomic, retain) NSNumber *assigned_to_id;
 @property(nonatomic, retain) NSString *subject;
 @property(nonatomic, retain) NSNumber *done_ratio;
 @property(nonatomic, retain) NSNumber *id;
+@property(nonatomic, retain) NSString *desc;
 @end

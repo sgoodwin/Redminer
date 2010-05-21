@@ -7,26 +7,39 @@
 //
 
 #import "RedminerAppDelegate.h"
-#import "RedMineSupport.h"
-#import "Project.h"
+#import "ProjectDataSource.h"
 
 @implementation RedminerAppDelegate
 
 @synthesize window;
+@synthesize segmentControl = _segmentControl;
+@synthesize projectTable = _projectTable;
+@synthesize issueTable = _issueTable;
+@synthesize textField = _textField;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	_miner = [[RedMineSupport alloc] init];
-	_miner.key = @"7ded331bf46dbd35a351dbd4b861cbca09aa7cb0";
-	_miner.host = @"67.23.14.25/redmine";
+	[[self.segmentControl cell] setTrackingMode:NSSegmentSwitchTrackingSelectOne];
+	[[self.segmentControl cell] setControlSize:NSRegularControlSize];
+	[self.segmentControl setTarget:self];
+    [self.segmentControl setAction:@selector(segmentControlClicked:)];
+	 
 	
-	[_miner issues];
-	//[_miner projects];
-	//[_miner news];
-	//[_miner activity];
-	//Project *p = [[Project alloc] init];
-	//p.id = [NSNumber numberWithInt:1];
-	//[_miner issuesInProject:p];
-	//[_miner users];
+	ProjectDataSource *source = [[ProjectDataSource alloc] init];
+	source.segments = [self segmentControl];
+	source.issueTable = [self issueTable];
+	source.projectTable = [self projectTable];
+	source.textField = [self textField];
+	
+	[[self projectTable] setDataSource:source];
+	[[self projectTable] setDelegate:source];
+	[[self projectTable] reloadData];
+	
+	[[self issueTable] setDataSource:source];
+	[[self issueTable] setDelegate:source];
+	[[self issueTable] reloadData];
 }
 
+- (IBAction)segmentControlClicked:(id)sender{
+	[[self issueTable] reloadData];
+}
 @end
