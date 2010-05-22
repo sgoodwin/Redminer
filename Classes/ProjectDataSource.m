@@ -8,90 +8,118 @@
 
 #import "ProjectDataSource.h"
 #import "Issue.h"
+#import "Project.h"
 #import "Journal.h"
 #import "RedMineSupport.h"
 #import "IssueCell.h"
 #import "ProjectCell.h"
+#import "CoreDataVendor.h"
+
+@interface ProjectDataSource(PrivateMethods)
+- (NSString *)errorMessage;
+@end
 
 @implementation ProjectDataSource
 @synthesize issues = _issues;
 @synthesize activity = _activty;
 @synthesize source = _source;
-@synthesize segments = _segments;
 @synthesize support = _support;
 @synthesize projects = _projects;
 @synthesize selectedProject = _selectedProject;
-@synthesize projectTable = _projectTable;
-@synthesize issueTable = _issueTable;
 @synthesize textField = _textField;
+@synthesize outlineView = _outlineView;
+@synthesize issueTable = _issueTable;
+@synthesize moc = _moc;
 
+- (IBAction)refresh:(id)sender{
+	[[self support] refresh];
+	NSLog(@"refreshed!");
+	[[self outlineView] reloadData];
+}
+
+- (NSString*)errorMessage{
+	return @"Polly should not be!";
+}
+
+#pragma mark -
+#pragma mark Table methods
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView{
-	if(aTableView == self.projectTable){
-		return [[self projects] count];
-	}
-	switch([[self segments] selectedSegment]){
-		case RedmineActivity:
-			NSLog(@"Showing Activities");
-			return [[self activity] count];
-			break;
-		case RedmineIssues:
-			NSLog(@"Showing Issues");
-			return [[self currentIssues] count];
-			break;
-		default:
-			NSLog(@"Polly should not be!");
-			return 0;
-			break;
-	}
+	return [[self currentIssues] count];
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
-	if(aTableView == self.projectTable){
-		return [[self projects] objectAtIndex:rowIndex];
-	}
-	switch ([[self segments] selectedSegment]){
-		case RedmineActivity:
-			return [[self activity] objectAtIndex:rowIndex];
-			break;
-		case RedmineIssues:
-			return [[self currentIssues] objectAtIndex:rowIndex];
-			break;
-		default:
-			NSLog(@"This should never happen!");
-			return nil;
-			break;
-	}
+	return [[[self currentIssues] objectAtIndex:rowIndex] subject];
 }
 
-- (NSCell *)tableView:(NSTableView *)tableView dataCellForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
-	if(tableView == self.projectTable){
-		return [[ProjectCell alloc] initTextCell:@"Change me"];
-	}
-	switch([[self segments] selectedSegment]){
-		case RedmineIssues:
-			return [[IssueCell alloc] initTextCell:@"change me"];
-			break;
-		case RedmineActivity:
-			return [[NSCell alloc] initTextCell:@"Change me"];
-			break;
-		default:
-			return [[NSCell alloc] initTextCell:@"Polly should not be!"];
-			break;
-	}
+- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row{
+	Issue *i = [[self currentIssues] objectAtIndex:row];
+	[[self textField] setStringValue:[i desc]];
+	return YES;
 }
 
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex{
-	if(aTableView == [self issueTable]){
-		[self.textField setStringValue:[[[self currentIssues] objectAtIndex:rowIndex] desc]];
-		return YES;
+#pragma mark -
+#pragma mark Outline methods
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{
+	id parent = [outlineView parentForItem:item];
+	if(!!parent){
+		Project *p = [Project projectWithName:parent inManagedObjectContext:[self moc]];
+		[self setSelectedProject:p];
+		[[self issueTable] reloadData];
+	}
+	return YES;
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item{
+	if(!item){
+		return [[[self projects] objectAtIndex:index] name];
 	}
 	
-	Project *p = [[self projects] objectAtIndex:rowIndex];
-	self.selectedProject = p;
-	[[self issues] setValue:[[self support] issuesInProject:p] forKey:[p name]];
-	[[self issueTable] reloadData];
+	switch(index){
+		case RedmineActivity:
+			return @"Activity";
+			break;
+		case RedmineIssues:
+			return @"Issues";
+			break;
+		default:
+			return [self errorMessage];
+			break;
+	}
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item{
+	if([(NSString*) item isEqualToString:@"Activity"] || [(NSString*) item isEqualToString:@"Issues"])
+	   return NO;
 	return YES;
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item{
+	if(!!item) return 2;
+	
+	return [[self projects] count];
+}
+
+- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item{
+	if([item isKindOfClass:[NSString class]])
+		return 20.0f;
+	return 20.0f;
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
+	[[self projects] count];
+	return item;
+}
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
+}
+
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item{
+	if([item isKindOfClass:[Project class]]){
+		return [[ProjectCell alloc] initTextCell:@"Change Me"];
+	}
+	return [[NSCell alloc] initTextCell:@"Change Me"];
 }
 
 #pragma mark -
@@ -105,33 +133,28 @@
 	return _support;
 }
 
-- (NSMutableDictionary*)issues{
-	if(!_issues){
-		self.issues = [[NSMutableDictionary dictionaryWithCapacity:1] retain];
-	}
-	return _issues;
-}
-
 - (NSArray *)currentIssues{
-	NSArray *array = [[self issues] valueForKey:[[self selectedProject] name]];
-	if(!array){
-		return [NSArray array];
-	}
-	return array;
+	return [[[self selectedProject] issues] allObjects];
 }
 
 - (NSArray*)projects{
-	if(!_projects){
-		self.projects = [[self support] projects];
-	}
-	return _projects;
+	return [[self support] projects];
 }
 
 
 - (NSArray*)activity{
-	if(!_activity){
-		self.activity = [[self support] activity];
-	}
-	return _activity;
+	return [[self support] activity];
+}
+
+- (NSManagedObjectContext*)moc{
+	if(!_moc)
+		[self setMoc:[CoreDataVendor newManagedObjectContext]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeMoc:) name:NSManagedObjectContextDidSaveNotification object:[[self support] moc]];
+	return _moc;
+}
+
+- (void)mergeMoc:(NSNotification*)notification{
+	NSLog(@"merging!");
+	[[self moc] mergeChangesFromContextDidSaveNotification:notification];
 }
 @end

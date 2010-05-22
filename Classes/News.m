@@ -11,8 +11,8 @@
 
 @implementation News
 
-+ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
-	News *p = [[[self class] alloc] init];
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_ fromSupport:(RedMineSupport*)support{
+	News *p = [[self class] insertInManagedObjectContext:moc_];
 	NSLog(@"News Dictionary: %@", jsonDict);
 	return p;
 }

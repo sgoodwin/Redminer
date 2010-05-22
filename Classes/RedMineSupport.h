@@ -10,12 +10,15 @@
 
 @class Project;
 @interface RedMineSupport : NSObject{
-	NSString *key;
-	NSString *host;
+	NSString *_key;
+	NSString *_host;
 	NSMutableData *_data;
+	
+	NSManagedObjectContext *_moc;
 }
 @property(nonatomic, retain) NSString *key;
 @property(nonatomic, retain) NSString *host;
+@property(nonatomic, retain) NSManagedObjectContext *moc;
 
 - (NSArray*)issues;
 - (NSArray*)projects;
@@ -23,4 +26,8 @@
 - (NSArray*)activity;
 - (NSArray*)issuesInProject:(Project*)project;
 - (NSArray*)users;
+
+- (void)getIssuesInProject:(Project*)project;
+
+- (void)refresh;
 @end

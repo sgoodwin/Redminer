@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import "JSONFriendly.h"
+#import "_Journal.h"
 
-@interface Journal : NSObject<JSONFriendly> {
+@interface Journal : _Journal<JSONFriendly> {
 	NSString *_journalType;
 	NSNumber *_journalID;
 	NSNumber *_id;

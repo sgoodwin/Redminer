@@ -12,18 +12,18 @@
 @implementation ProjectCell
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView{
-	NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor grayColor] endingColor:[NSColor darkGrayColor]];
-	[gradient drawInRect:cellFrame angle:90.0f];
+	//NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor grayColor] endingColor:[NSColor darkGrayColor]];
+	//[gradient drawInRect:cellFrame angle:90.0f];
 	
-	[[NSColor whiteColor] set];
+	[[NSColor blackColor] set];
 	
 	Project *project = (Project*)[self objectValue];
 	
-	NSArray *objects = [NSArray arrayWithObjects:[NSFont fontWithName:@"Ohlfs" size:12], [NSColor whiteColor],nil];
+	NSArray *objects = [NSArray arrayWithObjects:[NSFont fontWithName:@"Ohlfs" size:10], [NSColor blackColor],nil];
 	NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
     NSDictionary * dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 	
-	NSRect subjectRect = NSInsetRect(cellFrame, 20.0f, 20.0f);
+	NSRect subjectRect = NSInsetRect(cellFrame, 5.0f, 5.0f);
 	[[project name] drawInRect:subjectRect withAttributes:dict];	
 	return;
 }

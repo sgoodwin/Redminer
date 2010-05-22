@@ -16,8 +16,8 @@
 @synthesize notes = _notes;
 @synthesize user_id = _user_id;
 
-+ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
-	Journal *j = [[[self class] alloc] init];
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_ fromSupport:(RedMineSupport*)support{
+	Journal *j = [[self class] insertInManagedObjectContext:moc_];
 	j.journalID = [jsonDict valueForKey:@"journalized_id"];
 	j.journalType = [jsonDict valueForKey:@"journalized_type"];
 	j.id = [jsonDict valueForKey:@"id"];

@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import "JSONFriendly.h"
+#import "_News.h"
 
-@interface News : NSObject<JSONFriendly>{
+@interface News : _News <JSONFriendly>{
 
 }
 

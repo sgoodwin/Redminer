@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class RedMineSupport;
 @protocol JSONFriendly
-+ (id)fromJSONDictionary:(NSDictionary*)jsonDict;
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_ fromSupport:(RedMineSupport*)support;
 @end

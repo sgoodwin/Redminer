@@ -28,7 +28,7 @@
 + (NSArray *)arrayThatCounts:(NSUInteger)count{
 	NSMutableArray *result = [NSMutableArray arrayWithCapacity:count];
 	for(NSUInteger i=1;i<=count;i++){
-		NSString *string = [[NSString alloc] initWithFormat:@"%d", i];
+		NSString *string = [[[NSString alloc] initWithFormat:@"%d", i] autorelease];
 		[result addObject:string];
 		//[string release];
 	}

@@ -8,19 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import "JSONFriendly.h"
+#import "_Issue.h"
 
-@interface Issue : NSObject <JSONFriendly>{
+@interface Issue : _Issue <JSONFriendly>{
 	NSSet *_undefined_keys;
-	
-	NSNumber *_assigned_to_id;
-	NSString *_subject;
-	NSNumber *_done_ratio;
-	NSNumber *_id;
-	NSString *_desc;
 }
-@property(nonatomic, retain) NSNumber *assigned_to_id;
-@property(nonatomic, retain) NSString *subject;
-@property(nonatomic, retain) NSNumber *done_ratio;
-@property(nonatomic, retain) NSNumber *id;
-@property(nonatomic, retain) NSString *desc;
 @end

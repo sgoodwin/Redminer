@@ -31,7 +31,7 @@
 	donePoint.y += cellFrame.size.height-20.0f;
 	NSString *doneString = [NSString stringWithFormat:@"%@/100", [issue done_ratio]];
 	[doneString drawAtPoint:donePoint withAttributes:dict];
-	
+	[gradient release];
 	return;
 }
 

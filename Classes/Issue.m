@@ -9,17 +9,12 @@
 #import "Issue.h"
 
 @implementation Issue
-@synthesize assigned_to_id = _assigned_to_id;
-@synthesize subject = _subject;
-@synthesize done_ratio = _done_ratio;
-@synthesize id = _id;
-@synthesize desc = _desc;
 
-
-+ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
-	Issue *i = [[[self class] alloc] init];
-	NSLog(@"Issue dict: %@", jsonDict);
-	i.assigned_to_id = [jsonDict valueForKey:@"assigned_to_id"];
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_ fromSupport:(RedMineSupport*)support{
+	Issue *i = [[self class] insertInManagedObjectContext:moc_];
+	//NSLog(@"Issue dict: %@", jsonDict);
+	if([jsonDict valueForKey:@"assigned_to_id"] != [NSNull null])
+		i.assigned_to_id = [jsonDict valueForKey:@"assigned_to_id"];
 	i.subject = [jsonDict valueForKey:@"subject"];
 	i.done_ratio = [NSNumber numberWithInt:[[jsonDict valueForKey:@"done_ratio"] intValue]];
 	i.id = [NSNumber numberWithInt:[[jsonDict valueForKey:@"id"] intValue]];

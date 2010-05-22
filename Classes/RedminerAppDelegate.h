@@ -8,21 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class RedMineSupport;
 @interface RedminerAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
+    NSWindow *_window;
 	
-	NSSegmentedControl *_segmentControl;
-	NSTableView *_issueTable;
-	NSTableView *_projectTable;
+	NSOutlineView *_outline;
 	NSTextField *_textField;
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSSegmentedControl *segmentControl;
-@property (assign) IBOutlet NSTableView *issueTable;
-@property (assign) IBOutlet NSTableView *projectTable;
+@property (assign) IBOutlet NSOutlineView *outline;
 @property (assign) IBOutlet NSTextField *textField;
 
-- (IBAction)segmentControlClicked:(id)sender;
 @end

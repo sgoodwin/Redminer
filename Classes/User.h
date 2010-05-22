@@ -8,11 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import "JSONFriendly.h"
+#import "_User.h"
 
-@interface User : NSObject <JSONFriendly>{
-	NSNumber *_id;
-	NSString *_name;
+@interface User : _User <JSONFriendly>{
 }
-@property(nonatomic, retain) NSNumber *id;
-@property(nonatomic, retain) NSString *name;
 @end

@@ -8,13 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import "JSONFriendly.h"
+#import "_Project.h"
 
-@interface Project : NSObject <JSONFriendly>{
-	NSNumber *_id;
+@interface Project : _Project <JSONFriendly>{
 	NSSet *_undefined_keys;
-	NSString *_name, *_desc;
 }
-@property(nonatomic, retain) NSNumber *id;
-@property(nonatomic, retain) NSString *name;
-@property(nonatomic, retain) NSString *desc;
++ (Project*)projectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext*)moc_;
 @end

@@ -7,20 +7,18 @@
 //
 
 #import "User.h"
-
+#import "RedMineSupport.h"
 
 @implementation User
-@synthesize id = _id;
-@synthesize name = _name;
 
-+ (id)fromJSONDictionary:(NSDictionary *)jsonDict{
-	User *u = [[[self class] alloc] init];
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_ fromSupport:(RedMineSupport*)support{
+	User *u = [[self class] insertInManagedObjectContext:moc_];
 	u.id = [jsonDict valueForKey:@"id"];
 	u.name = [jsonDict valueForKey:@"name"];
 	return u;
 }
 
 - (NSString*)description{
-	return [NSString stringWithFormat:@"<%@ id:%@ name:%@>", [self class],  _id, _name];
+	return [NSString stringWithFormat:@"<%@ id:%@ name:%@>", [self class],  [self id], [self name]];
 }
 @end

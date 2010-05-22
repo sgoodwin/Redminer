@@ -25,6 +25,14 @@
 		9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA83119F5A6D0056F427 /* SBJsonParser.m */; };
 		9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */; };
 		9B62DB56119F68AC0056F427 /* Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DB55119F68AC0056F427 /* Journal.m */; };
+		9BA93BAE11A7A34F00C7B761 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA93BAD11A7A34F00C7B761 /* CoreData.framework */; };
+		9BA93BB011A7A37B00C7B761 /* Redminer.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */; };
+		9BA93BC611A7A57A00C7B761 /* _Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BBD11A7A57A00C7B761 /* _Issue.m */; };
+		9BA93BC711A7A57A00C7B761 /* _Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BBF11A7A57A00C7B761 /* _Journal.m */; };
+		9BA93BC811A7A57A00C7B761 /* _News.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BC111A7A57A00C7B761 /* _News.m */; };
+		9BA93BC911A7A57A00C7B761 /* _Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BC311A7A57A00C7B761 /* _Project.m */; };
+		9BA93BCA11A7A57A00C7B761 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BC511A7A57A00C7B761 /* _User.m */; };
+		9BA93C0D11A7A64F00C7B761 /* CoreDataVendor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93C0C11A7A64F00C7B761 /* CoreDataVendor.m */; };
 		9BBF538411A638140091E3CE /* ProjectDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF538311A638140091E3CE /* ProjectDataSource.m */; };
 		9BBF543411A647650091E3CE /* IssueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF543311A647650091E3CE /* IssueCell.m */; };
 		9BBF551911A65F900091E3CE /* ProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF551811A65F900091E3CE /* ProjectCell.m */; };
@@ -71,6 +79,20 @@
 		9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		9B62DB54119F68AC0056F427 /* Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Journal.h; sourceTree = "<group>"; };
 		9B62DB55119F68AC0056F427 /* Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Journal.m; sourceTree = "<group>"; };
+		9BA93BAD11A7A34F00C7B761 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Redminer.xcdatamodel; sourceTree = "<group>"; };
+		9BA93BBC11A7A57A00C7B761 /* _Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Issue.h; sourceTree = "<group>"; };
+		9BA93BBD11A7A57A00C7B761 /* _Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Issue.m; sourceTree = "<group>"; };
+		9BA93BBE11A7A57A00C7B761 /* _Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Journal.h; sourceTree = "<group>"; };
+		9BA93BBF11A7A57A00C7B761 /* _Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Journal.m; sourceTree = "<group>"; };
+		9BA93BC011A7A57A00C7B761 /* _News.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _News.h; sourceTree = "<group>"; };
+		9BA93BC111A7A57A00C7B761 /* _News.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _News.m; sourceTree = "<group>"; };
+		9BA93BC211A7A57A00C7B761 /* _Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Project.h; sourceTree = "<group>"; };
+		9BA93BC311A7A57A00C7B761 /* _Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Project.m; sourceTree = "<group>"; };
+		9BA93BC411A7A57A00C7B761 /* _User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _User.h; sourceTree = "<group>"; };
+		9BA93BC511A7A57A00C7B761 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
+		9BA93C0B11A7A64F00C7B761 /* CoreDataVendor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataVendor.h; sourceTree = "<group>"; };
+		9BA93C0C11A7A64F00C7B761 /* CoreDataVendor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataVendor.m; sourceTree = "<group>"; };
 		9BBF538211A638140091E3CE /* ProjectDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectDataSource.h; sourceTree = "<group>"; };
 		9BBF538311A638140091E3CE /* ProjectDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectDataSource.m; sourceTree = "<group>"; };
 		9BBF543211A647650091E3CE /* IssueCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IssueCell.h; sourceTree = "<group>"; };
@@ -85,6 +107,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				9BA93BAE11A7A34F00C7B761 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				9BA93BAD11A7A34F00C7B761 /* CoreData.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -144,6 +168,7 @@
 				8D1107310486CEB800E47090 /* Redminer-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -174,6 +199,7 @@
 		9B62DA70119F5A440056F427 /* API Support */ = {
 			isa = PBXGroup;
 			children = (
+				9BA93BCB11A7A58100C7B761 /* Machines */,
 				9B62DA57119F5A2E0056F427 /* Issue.h */,
 				9B62DA58119F5A2E0056F427 /* Issue.m */,
 				9B62DA5B119F5A2E0056F427 /* News.h */,
@@ -193,6 +219,8 @@
 		9B62DA71119F5A4D0056F427 /* Accessory Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9BA93C0B11A7A64F00C7B761 /* CoreDataVendor.h */,
+				9BA93C0C11A7A64F00C7B761 /* CoreDataVendor.m */,
 				9B62DA78119F5A6D0056F427 /* JSON */,
 				9B62DA59119F5A2E0056F427 /* JSONFriendly.h */,
 				9B62DA5D119F5A2E0056F427 /* NSArrayAdditions.h */,
@@ -220,6 +248,23 @@
 			);
 			path = JSON;
 			sourceTree = SOURCE_ROOT;
+		};
+		9BA93BCB11A7A58100C7B761 /* Machines */ = {
+			isa = PBXGroup;
+			children = (
+				9BA93BBC11A7A57A00C7B761 /* _Issue.h */,
+				9BA93BBD11A7A57A00C7B761 /* _Issue.m */,
+				9BA93BBE11A7A57A00C7B761 /* _Journal.h */,
+				9BA93BBF11A7A57A00C7B761 /* _Journal.m */,
+				9BA93BC011A7A57A00C7B761 /* _News.h */,
+				9BA93BC111A7A57A00C7B761 /* _News.m */,
+				9BA93BC211A7A57A00C7B761 /* _Project.h */,
+				9BA93BC311A7A57A00C7B761 /* _Project.m */,
+				9BA93BC411A7A57A00C7B761 /* _User.h */,
+				9BA93BC511A7A57A00C7B761 /* _User.m */,
+			);
+			name = Machines;
+			sourceTree = "<group>";
 		};
 		9BBF551611A65F880091E3CE /* UI */ = {
 			isa = PBXGroup;
@@ -308,6 +353,13 @@
 				9BBF538411A638140091E3CE /* ProjectDataSource.m in Sources */,
 				9BBF543411A647650091E3CE /* IssueCell.m in Sources */,
 				9BBF551911A65F900091E3CE /* ProjectCell.m in Sources */,
+				9BA93BB011A7A37B00C7B761 /* Redminer.xcdatamodel in Sources */,
+				9BA93BC611A7A57A00C7B761 /* _Issue.m in Sources */,
+				9BA93BC711A7A57A00C7B761 /* _Journal.m in Sources */,
+				9BA93BC811A7A57A00C7B761 /* _News.m in Sources */,
+				9BA93BC911A7A57A00C7B761 /* _Project.m in Sources */,
+				9BA93BCA11A7A57A00C7B761 /* _User.m in Sources */,
+				9BA93C0D11A7A64F00C7B761 /* CoreDataVendor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

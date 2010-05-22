@@ -10,17 +10,56 @@
 #import "Project.h"
 #import "User.h"
 #import "JSON.h"
+#import "News.h"
+#import "Journal.h"
+#import "Issue.h"
 #import "NSArrayAdditions.h"
+#import "CoreDataVendor.h"
 
 @interface RedMineSupport(PrivateMethods)
+- (void)getIssues;
+- (void)getProjects;
+- (void)getNews;
+- (void)getActivity;
+- (void)getUsers;
+
 - (NSArray*)arrayFromData:(NSData*)data;
 @end
 
 @implementation RedMineSupport
-@synthesize key, host;
+@synthesize key = _key;
+@synthesize host = _host;
+@synthesize moc = _moc;
+
+- (void)refresh{
+	[self getProjects];
+}
 
 - (NSArray*)issues{
-	// http://67.23.14.25/redmine/issues.json?key=7ded331bf46dbd35a351dbd4b861cbca09aa7cb0
+	return [Issue fetchAllIssues:[self moc]];
+}
+
+- (NSArray*)projects{
+	return [Project fetchAllProjects:[self moc]];
+}
+
+- (NSArray*)news{
+	return [News fetchAllNews:[self moc]];
+}
+
+- (NSArray*)activity{
+	return [Journal fetchAllJournals:[self moc]];
+}
+
+- (NSArray*)issuesInProject:(Project*)project{
+	return [[project issues] allObjects];
+}
+
+- (NSArray*)users{
+	return [User fetchAllUsers:[self moc]];
+}
+
+- (void)getIssues{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.json?key=%@", self.host, self.key];
 	NSLog(@"Requesting issues");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
@@ -31,13 +70,13 @@
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
-		return nil;
+		return;
 	}
-	
-	return [self arrayFromData:data];
+	[self arrayFromData:data];
+	return;
 }
 
-- (NSArray*)news{
+- (void)getNews{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/news.json?key=%@", self.host, self.key];
 	NSLog(@"Requesting news");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
@@ -49,13 +88,13 @@
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
-		return nil;
+		return;
 	}
-	
-	return [self arrayFromData:data];
+	[self arrayFromData:data];
+	return;
 }
 
-- (NSArray*)activity{
+- (void)getActivity{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/activity.json?key=%@", self.host, self.key];
 	NSLog(@"Requesting Activity");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
@@ -66,13 +105,14 @@
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
-		return nil;
+		return;
 	}
-	return [self arrayFromData:data];
+	[self arrayFromData:data];
+	return;
 }
 
 
-- (NSArray*)projects{
+- (void)getProjects{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/projects.json?key=%@", self.host, self.key];
 	NSLog(@"Requesting projects");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
@@ -82,13 +122,19 @@
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
-		return nil;
+		return;
 	}
-	
-	return [self arrayFromData:data];
+	[self arrayFromData:data];
+	return;
 }
 
-- (NSArray*)issuesInProject:(Project*)project{
+- (NSManagedObjectContext*)moc{
+	if(!_moc)
+		_moc = [CoreDataVendor newManagedObjectContext];
+	return _moc;
+}
+
+- (void)getIssuesInProject:(Project*)project{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.json?key=%@&project_id=%@", self.host, self.key, project.id];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	NSLog(@"Requesting Issues in project %@", project);
@@ -98,13 +144,14 @@
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
-		return nil;
+		return;
 	}
-	
-	return [self arrayFromData:data];
+	NSArray *issues = [self arrayFromData:data];
+	[project setIssues:[NSSet setWithArray:issues]];
+	return;
 }
 
-- (NSArray*)users{
+- (void)getUsers{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/users.json?key=%@", self.host, self.key];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	NSLog(@"Requesting Users");
@@ -114,9 +161,10 @@
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
-		return nil;
+		return;
 	}
-	return [self arrayFromData:data];
+	[self arrayFromData:data];
+	return;
 }
 
 #pragma mark -
@@ -131,10 +179,10 @@
 				//NSLog(@"Looking for class of key: %@", aKey);
 				Class aClass = NSClassFromString([aKey capitalizedString]);
 				if(!!aClass){
-					id object = [aClass fromJSONDictionary:[value valueForKey:aKey]];
+					id object = [aClass fromJSONDictionary:[value valueForKey:aKey] toManagedObjectContext:[self moc] fromSupport:self];
 					return object;
 				}else{
-					User *object = [User fromJSONDictionary:value];
+					User *object = [User fromJSONDictionary:value toManagedObjectContext:[self moc] fromSupport:self];
 					return object;
 				}
 			}
@@ -144,7 +192,7 @@
 		for(NSString *aKey in [(NSDictionary*)array allKeys]){
 			Class aClass = NSClassFromString([aKey capitalizedString]);
 			if(!!aClass){
-				value = [NSArray arrayWithObject:[aClass fromJSONDictionary:[value valueForKey:aKey]]];
+				value = [NSArray arrayWithObject:[aClass fromJSONDictionary:[value valueForKey:aKey] toManagedObjectContext:[self moc] fromSupport:self]];
 			}
 		}
 	}else if(!array){
@@ -152,7 +200,12 @@
 	}else{
 		NSLog(@"Don't know what to do with: %@", array);
 	}
+	NSLog(@"Saving my changes");
+	NSError *err = nil;
+	[[self moc] save:&err];
+	if(!!err){
+		NSLog(@"Failed to save managed object context in redmine support: %@", [err localizedDescription]);
+	}
 	return value;
 }
-
 @end

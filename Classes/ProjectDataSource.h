@@ -16,7 +16,7 @@ typedef enum {
 
 @class RedMineSupport;
 @class Project;
-@interface ProjectDataSource : NSObject <NSTableViewDataSource, NSTableViewDelegate>{
+@interface ProjectDataSource : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDelegate, NSTableViewDataSource>{
 	NSMutableDictionary *_issues;
 	NSArray *_activity;
 	NSArray *_projects;
@@ -26,11 +26,11 @@ typedef enum {
 	RedmineDataSource _source;
 	RedMineSupport *_support;
 	
-	NSSegmentedControl *_segments;
-	
-	NSTableView *_projectTable;
+	NSOutlineView *_outlineView;
 	NSTableView *_issueTable;
 	NSTextField *_textField;
+	
+	NSManagedObjectContext *_moc;
 }
 @property(nonatomic, retain) NSMutableDictionary *issues;
 - (NSArray *)currentIssues;
@@ -42,8 +42,11 @@ typedef enum {
 @property(nonatomic, assign) RedmineDataSource source;
 @property(nonatomic, retain) RedMineSupport *support;
 
-@property(nonatomic, retain) NSSegmentedControl *segments;
-@property(nonatomic, retain) NSTableView *projectTable;
-@property(nonatomic, retain) NSTableView *issueTable;
+@property(nonatomic, retain) NSManagedObjectContext *moc;
+
 @property(nonatomic, retain) IBOutlet NSTextField *textField;
+@property(nonatomic, retain) IBOutlet NSOutlineView *outlineView;
+@property(nonatomic, retain) IBOutlet NSTableView *issueTable;
+
+- (IBAction)refresh:(id)sender;
 @end
