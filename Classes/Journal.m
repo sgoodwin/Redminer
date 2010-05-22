@@ -23,10 +23,16 @@
 	j.id = [jsonDict valueForKey:@"id"];
 	j.notes = [jsonDict valueForKey:@"notes"];
 	j.user_id = [jsonDict valueForKey:@"user_id"];
+	NSLog(@"Made journal: %@", j);
+	
+	NSError *err = nil;
+	if([moc_ save:&err]){
+		NSLog(@"saved!");
+	}
 	return j;
 }
 
 - (NSString*)description{
-	return [NSString stringWithFormat:@"<%@ id:%@ type:%@ notes:%@>", [self class],  _id, _journalType, _notes];
+	return [NSString stringWithFormat:@"<%@ id:%@ type:%@ notes:%@>", [self class],  [self id], [self journalType], [self notes]];
 }
 @end

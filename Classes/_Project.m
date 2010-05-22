@@ -72,6 +72,17 @@
 }
 	
 
+@dynamic activity;
+
+	
+- (NSMutableSet*)activitySet {
+	[self willAccessValueForKey:@"activity"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"activity"];
+	[self didAccessValueForKey:@"activity"];
+	return result;
+}
+	
+
 
 
 

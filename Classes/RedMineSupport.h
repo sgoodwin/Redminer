@@ -28,6 +28,7 @@
 - (NSArray*)users;
 
 - (void)getIssuesInProject:(Project*)project;
+- (void)getActivityForProject:(Project*)project;
 
 - (void)refresh;
 @end

@@ -33,6 +33,12 @@
 
 - (void)refresh{
 	[self getProjects];
+	
+	NSError *err = nil;
+	[[self moc] save:&err];
+	if(!!err){
+		NSLog(@"Failed to save managed object context in redmine support: %@, %@, %@", [err localizedDescription], [err localizedRecoveryOptions], [err localizedFailureReason]);
+	}
 }
 
 - (NSArray*)issues{
@@ -61,7 +67,7 @@
 
 - (void)getIssues{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.json?key=%@", self.host, self.key];
-	NSLog(@"Requesting issues");
+	//NSLog(@"Requesting issues");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 	[request setHTTPShouldHandleCookies:YES];
@@ -78,7 +84,7 @@
 
 - (void)getNews{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/news.json?key=%@", self.host, self.key];
-	NSLog(@"Requesting news");
+	//NSLog(@"Requesting news");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 	[request setHTTPShouldHandleCookies:YES];
@@ -94,9 +100,9 @@
 	return;
 }
 
-- (void)getActivity{
-	NSString *requestString = [NSString stringWithFormat:@"http://%@/activity.json?key=%@", self.host, self.key];
-	NSLog(@"Requesting Activity");
+- (void)getActivityForProject:(Project*)project{
+	NSString *requestString = [NSString stringWithFormat:@"http://%@/projects/%@/activity.json?key=%@", self.host, project.id, self.key];
+	//NSLog(@"Requesting Activity %@", requestString);
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	//[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 	[request setHTTPShouldHandleCookies:YES];
@@ -107,14 +113,24 @@
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
-	[self arrayFromData:data];
+	NSArray *results = [self arrayFromData:data];
+	for(id object in results){
+		if([object isKindOfClass:[Issue class]]){
+			[project addIssuesObject:object];
+			NSLog(@"added issue");
+		}
+		if([object isKindOfClass:[Journal class]]){
+			[project addActivityObject:object];
+			NSLog(@"added activity");
+		}
+	}
 	return;
 }
 
 
 - (void)getProjects{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/projects.json?key=%@", self.host, self.key];
-	NSLog(@"Requesting projects");
+	//NSLog(@"Requesting projects");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 	NSError *err = nil;
@@ -137,7 +153,7 @@
 - (void)getIssuesInProject:(Project*)project{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.json?key=%@&project_id=%@", self.host, self.key, project.id];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-	NSLog(@"Requesting Issues in project %@", project);
+	//NSLog(@"Requesting Issues in project %@", project);
 	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 	NSError *err = nil;
 	NSURLResponse *response = nil;	
@@ -154,7 +170,7 @@
 - (void)getUsers{
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/users.json?key=%@", self.host, self.key];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-	NSLog(@"Requesting Users");
+	//NSLog(@"Requesting Users");
 	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 	NSError *err = nil;
 	NSURLResponse *response = nil;	
@@ -200,12 +216,8 @@
 	}else{
 		NSLog(@"Don't know what to do with: %@", array);
 	}
-	NSLog(@"Saving my changes");
-	NSError *err = nil;
-	[[self moc] save:&err];
-	if(!!err){
-		NSLog(@"Failed to save managed object context in redmine support: %@", [err localizedDescription]);
-	}
+	
+	//NSLog(@"Saving my changes %@", [[self moc] insertedObjects])
 	return value;
 }
 @end

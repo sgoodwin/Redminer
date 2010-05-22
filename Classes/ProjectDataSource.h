@@ -11,7 +11,7 @@
 typedef enum {
 	RedmineActivity=0,
 	RedmineIssues,
-	RedmineProjects,
+	RedmineNewest,
 } RedmineDataSource;
 
 @class RedMineSupport;
@@ -23,7 +23,7 @@ typedef enum {
 	
 	Project *_selectedProject;
 	
-	RedmineDataSource _source;
+	RedmineDataSource _type;
 	RedMineSupport *_support;
 	
 	NSOutlineView *_outlineView;
@@ -34,12 +34,14 @@ typedef enum {
 }
 @property(nonatomic, retain) NSMutableDictionary *issues;
 - (NSArray *)currentIssues;
+- (NSArray *)currentActivity;
+- (NSArray *)currentNewest;
 @property(nonatomic, retain) NSArray *activity;
 @property(nonatomic, retain) NSArray *projects;
 
 @property(nonatomic, retain) Project *selectedProject;
 
-@property(nonatomic, assign) RedmineDataSource source;
+@property(nonatomic, assign) RedmineDataSource type;
 @property(nonatomic, retain) RedMineSupport *support;
 
 @property(nonatomic, retain) NSManagedObjectContext *moc;

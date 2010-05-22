@@ -4,6 +4,7 @@
 #import <CoreData/CoreData.h>
 
 
+@class Project;
 
 @interface JournalID : NSManagedObjectID {}
 @end
@@ -56,6 +57,11 @@
 
 //- (BOOL)validateNotes:(id*)value_ error:(NSError**)error_;
 
+
+
+
+@property (nonatomic, retain) Project* project;
+//- (BOOL)validateProject:(id*)value_ error:(NSError**)error_;
 
 
 

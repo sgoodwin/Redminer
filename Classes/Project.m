@@ -29,6 +29,7 @@
 	NSError *err = nil;
 	if([p validateForInsert:&err]){
 		[support getIssuesInProject:p];
+		[support getActivityForProject:p];
 	}
 	return p;
 }

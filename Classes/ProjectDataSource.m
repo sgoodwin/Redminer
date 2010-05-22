@@ -17,12 +17,13 @@
 
 @interface ProjectDataSource(PrivateMethods)
 - (NSString *)errorMessage;
+- (NSString *)labelForSource:(RedmineDataSource)source;
 @end
 
 @implementation ProjectDataSource
 @synthesize issues = _issues;
 @synthesize activity = _activty;
-@synthesize source = _source;
+@synthesize type = _type;
 @synthesize support = _support;
 @synthesize projects = _projects;
 @synthesize selectedProject = _selectedProject;
@@ -33,28 +34,89 @@
 
 - (IBAction)refresh:(id)sender{
 	[[self support] refresh];
-	NSLog(@"refreshed!");
-	[[self outlineView] reloadData];
+	[self.issueTable reloadData];
+	[self.outlineView reloadData];
+	NSLog(@"journals: %@", [Journal fetchAllJournals:[self moc]]);
 }
 
 - (NSString*)errorMessage{
 	return @"Polly should not be!";
 }
 
+- (NSString *)labelForSource:(RedmineDataSource)source{
+	switch(source){
+		case RedmineActivity:
+			return @"Activity";
+			break;
+		case RedmineIssues:
+			return @"Issues";
+			break;
+		case RedmineNewest:
+			return @"Newest";
+			break;
+		default:
+			return [self errorMessage];
+			break;
+	}
+}
+
 #pragma mark -
 #pragma mark Table methods
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView{
-	return [[self currentIssues] count];
+	switch([self type]){
+		case RedmineIssues:
+			return [[self currentIssues] count];
+			break;
+		case RedmineActivity:
+			return [[self currentActivity] count];
+			break;
+		case RedmineNewest:
+			return [[self currentNewest] count];
+			break;
+		default:
+			return 0;
+			break;
+	}
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
-	return [[[self currentIssues] objectAtIndex:rowIndex] subject];
+	switch([self type]){
+		case RedmineIssues:
+			NSLog(@"currentIssues: %@", [self currentIssues]);
+			return [[[self currentIssues] objectAtIndex:rowIndex] subject];
+			break;
+		case RedmineActivity:
+			NSLog(@"currentActivity: %@", [self currentActivity]);
+			return [[[self currentActivity] objectAtIndex:rowIndex] journalType];
+			break;
+		case RedmineNewest:
+			return [[self currentNewest] objectAtIndex:rowIndex];
+			break;
+		default:
+			return nil;
+			break;
+	}
 }
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row{
-	Issue *i = [[self currentIssues] objectAtIndex:row];
-	[[self textField] setStringValue:[i desc]];
+	Issue *i;
+	Journal *j;
+	switch([self type]){
+		case RedmineIssues:
+			i = [[self currentIssues] objectAtIndex:row];
+			[[self textField] setStringValue:[i desc]];
+			break;
+		case RedmineActivity:
+			j = [[self currentActivity] objectAtIndex:row];
+			[[self textField] setStringValue:[j notes]];
+			break;
+		case RedmineNewest:
+			[[self textField] setStringValue:@"newest"];
+			break;
+		default:
+			break;
+	}
 	return YES;
 }
 
@@ -62,31 +124,38 @@
 #pragma mark Outline methods
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{
+	if([[self labelForSource:RedmineIssues] isEqualToString:item]){
+		self.type = RedmineIssues;
+	}else if([[self labelForSource:RedmineActivity] isEqualToString:item]){
+		self.type = RedmineActivity;
+	}else{
+		self.type = RedmineNewest;
+	}
+	
 	id parent = [outlineView parentForItem:item];
 	if(!!parent){
 		Project *p = [Project projectWithName:parent inManagedObjectContext:[self moc]];
 		[self setSelectedProject:p];
-		[[self issueTable] reloadData];
+		NSLog(@"Selected project: %@", p);
+	}else{
+		NSLog(@"item :%@", item);
+		Project *p = [Project projectWithName:item inManagedObjectContext:[self moc]];
+		[self setSelectedProject:p];
+		NSLog(@"Selected project: %@", p);
 	}
+	
+	[[self issueTable] reloadData];
 	return YES;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item{
 	if(!item){
-		return [[[self projects] objectAtIndex:index] name];
+		Project *p = [[self projects] objectAtIndex:index];
+		NSString *name = [p name];
+		return name;
 	}
 	
-	switch(index){
-		case RedmineActivity:
-			return @"Activity";
-			break;
-		case RedmineIssues:
-			return @"Issues";
-			break;
-		default:
-			return [self errorMessage];
-			break;
-	}
+	return [self labelForSource:index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item{
@@ -134,7 +203,35 @@
 }
 
 - (NSArray *)currentIssues{
-	return [[[self selectedProject] issues] allObjects];
+	if(![self selectedProject]){
+		NSLog(@"No project yet");
+		return [NSArray array];
+	}
+	[[self moc] refreshObject:[self selectedProject] mergeChanges:YES];
+	
+	NSArray *array = [[[self selectedProject] issues] allObjects];
+	if(!array){
+		return [NSArray array];
+	}
+	return array;
+}
+
+- (NSArray *)currentNewest{
+	return [NSArray arrayWithObjects:@"Latest", @"And", @"Greatest", nil];
+}
+
+- (NSArray *)currentActivity{
+	if(![self selectedProject]){
+		NSLog(@"No project yet");
+		return [NSArray array];
+	}
+	[[self moc] refreshObject:[self selectedProject] mergeChanges:YES];
+	
+	NSArray *array = [[[self selectedProject] activity] allObjects];
+	if(!array){
+		return [NSArray array];
+	}
+	return array;
 }
 
 - (NSArray*)projects{
@@ -156,5 +253,7 @@
 - (void)mergeMoc:(NSNotification*)notification{
 	NSLog(@"merging!");
 	[[self moc] mergeChangesFromContextDidSaveNotification:notification];
+	[[self outlineView] reloadData];
+	[[self issueTable] reloadData];
 }
 @end
