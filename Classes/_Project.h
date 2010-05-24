@@ -5,7 +5,6 @@
 
 
 @class Issue;
-@class Journal;
 
 @interface ProjectID : NSManagedObjectID {}
 @end
@@ -46,11 +45,6 @@
 
 
 
-@property (nonatomic, retain) NSSet* activity;
-- (NSMutableSet*)activitySet;
-
-
-
 
 + (NSArray*)fetchAllProjects:(NSManagedObjectContext*)moc_ ;
 + (NSArray*)fetchAllProjects:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
@@ -64,10 +58,5 @@
 - (void)removeIssues:(NSSet*)value_;
 - (void)addIssuesObject:(Issue*)value_;
 - (void)removeIssuesObject:(Issue*)value_;
-
-- (void)addActivity:(NSSet*)value_;
-- (void)removeActivity:(NSSet*)value_;
-- (void)addActivityObject:(Journal*)value_;
-- (void)removeActivityObject:(Journal*)value_;
 
 @end

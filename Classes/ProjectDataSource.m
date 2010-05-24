@@ -9,7 +9,6 @@
 #import "ProjectDataSource.h"
 #import "Issue.h"
 #import "Project.h"
-#import "Journal.h"
 #import "RedMineSupport.h"
 #import "IssueCell.h"
 #import "ProjectCell.h"
@@ -33,10 +32,20 @@
 @synthesize moc = _moc;
 
 - (IBAction)refresh:(id)sender{
-	[[self support] refresh];
-	[self.issueTable reloadData];
-	[self.outlineView reloadData];
-	NSLog(@"journals: %@", [Journal fetchAllJournals:[self moc]]);
+	[[self support] addObserver:self forKeyPath:@"issues" options:NSKeyValueObservingOptionNew context:nil];
+	[[self support] addObserver:self forKeyPath:@"projects" options:NSKeyValueObservingOptionNew context:nil];
+	
+	dispatch_queue_t a_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);;
+	dispatch_async(a_queue, ^{
+		[[self support] refresh];
+	});
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+	if([keyPath isEqualToString:@"issues"])
+		[[self issueTable] reloadData];
+	if([keyPath isEqualToString:@"projects"])
+		[[self outlineView] reloadData];
 }
 
 - (NSString*)errorMessage{
@@ -45,9 +54,6 @@
 
 - (NSString *)labelForSource:(RedmineDataSource)source{
 	switch(source){
-		case RedmineActivity:
-			return @"Activity";
-			break;
 		case RedmineIssues:
 			return @"Issues";
 			break;
@@ -68,9 +74,6 @@
 		case RedmineIssues:
 			return [[self currentIssues] count];
 			break;
-		case RedmineActivity:
-			return [[self currentActivity] count];
-			break;
 		case RedmineNewest:
 			return [[self currentNewest] count];
 			break;
@@ -83,15 +86,10 @@
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
 	switch([self type]){
 		case RedmineIssues:
-			NSLog(@"currentIssues: %@", [self currentIssues]);
 			return [[[self currentIssues] objectAtIndex:rowIndex] subject];
 			break;
-		case RedmineActivity:
-			NSLog(@"currentActivity: %@", [self currentActivity]);
-			return [[[self currentActivity] objectAtIndex:rowIndex] journalType];
-			break;
 		case RedmineNewest:
-			return [[self currentNewest] objectAtIndex:rowIndex];
+			return [[[self currentNewest] objectAtIndex:rowIndex] subject];
 			break;
 		default:
 			return nil;
@@ -101,21 +99,28 @@
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row{
 	Issue *i;
-	Journal *j;
 	switch([self type]){
 		case RedmineIssues:
 			i = [[self currentIssues] objectAtIndex:row];
+			NSLog(@"selected issue: %@", i);
+			[i setUpdatedValue:NO];
 			[[self textField] setStringValue:[i desc]];
-			break;
-		case RedmineActivity:
-			j = [[self currentActivity] objectAtIndex:row];
-			[[self textField] setStringValue:[j notes]];
+			[[self support] getInfoForIssue:i];
 			break;
 		case RedmineNewest:
-			[[self textField] setStringValue:@"newest"];
+			i = [[self currentNewest] objectAtIndex:row];
+			NSLog(@"selected issue: %@", i);
+			[i setUpdatedValue:NO];
+			[[self textField] setStringValue:[i desc]];
+			[[self support] getInfoForIssue:i];
 			break;
 		default:
 			break;
+	}
+	NSError* err= nil;
+	[[self moc] save:&err];
+	if(!!err){
+		NSLog(@"error saving updatedValue:%@", [err localizedDescription]);
 	}
 	return YES;
 }
@@ -126,8 +131,6 @@
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{
 	if([[self labelForSource:RedmineIssues] isEqualToString:item]){
 		self.type = RedmineIssues;
-	}else if([[self labelForSource:RedmineActivity] isEqualToString:item]){
-		self.type = RedmineActivity;
 	}else{
 		self.type = RedmineNewest;
 	}
@@ -165,7 +168,7 @@
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item{
-	if(!!item) return 2;
+	if(!!item) return 1;
 	
 	return [[self projects] count];
 }
@@ -185,7 +188,7 @@
 }
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item{
-	if([item isKindOfClass:[Project class]]){
+	if(!!item && [item isKindOfClass:[Project class]]){
 		return [[ProjectCell alloc] initTextCell:@"Change Me"];
 	}
 	return [[NSCell alloc] initTextCell:@"Change Me"];
@@ -217,30 +220,13 @@
 }
 
 - (NSArray *)currentNewest{
-	return [NSArray arrayWithObjects:@"Latest", @"And", @"Greatest", nil];
-}
-
-- (NSArray *)currentActivity{
-	if(![self selectedProject]){
-		NSLog(@"No project yet");
-		return [NSArray array];
-	}
-	[[self moc] refreshObject:[self selectedProject] mergeChanges:YES];
-	
-	NSArray *array = [[[self selectedProject] activity] allObjects];
-	if(!array){
-		return [NSArray array];
-	}
-	return array;
+	NSArray *newest = [[self support] updatedIssuesInProject:[self selectedProject]];
+	NSLog(@"Updated items: %d", (int)[newest count]);
+	return newest;
 }
 
 - (NSArray*)projects{
 	return [[self support] projects];
-}
-
-
-- (NSArray*)activity{
-	return [[self support] activity];
 }
 
 - (NSManagedObjectContext*)moc{
@@ -251,7 +237,6 @@
 }
 
 - (void)mergeMoc:(NSNotification*)notification{
-	NSLog(@"merging!");
 	[[self moc] mergeChangesFromContextDidSaveNotification:notification];
 	[[self outlineView] reloadData];
 	[[self issueTable] reloadData];

@@ -12,26 +12,18 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		9B62DA68119F5A2E0056F427 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA58119F5A2E0056F427 /* Issue.m */; };
-		9B62DA6A119F5A2E0056F427 /* News.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA5C119F5A2E0056F427 /* News.m */; };
 		9B62DA6B119F5A2E0056F427 /* NSArrayAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */; };
 		9B62DA6C119F5A2E0056F427 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA60119F5A2E0056F427 /* Project.m */; };
 		9B62DA6D119F5A2E0056F427 /* RedminerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */; };
 		9B62DA6E119F5A2E0056F427 /* RedMineSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA64119F5A2E0056F427 /* RedMineSupport.m */; };
-		9B62DA6F119F5A2E0056F427 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA66119F5A2E0056F427 /* User.m */; };
-		9B62DA86119F5A6D0056F427 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA7B119F5A6D0056F427 /* NSObject+SBJSON.m */; };
-		9B62DA87119F5A6D0056F427 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA7D119F5A6D0056F427 /* NSString+SBJSON.m */; };
-		9B62DA88119F5A6D0056F427 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA7F119F5A6D0056F427 /* SBJSON.m */; };
-		9B62DA89119F5A6D0056F427 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA81119F5A6D0056F427 /* SBJsonBase.m */; };
-		9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA83119F5A6D0056F427 /* SBJsonParser.m */; };
-		9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */; };
-		9B62DB56119F68AC0056F427 /* Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DB55119F68AC0056F427 /* Journal.m */; };
+		9B674FC411A9D39F00C9BAAD /* _Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B674FC111A9D39F00C9BAAD /* _Note.m */; };
+		9B674FC511A9D39F00C9BAAD /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B674FC311A9D39F00C9BAAD /* Note.m */; };
+		9B6751CE11A9E8E100C9BAAD /* StatusLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */; };
+		9B6751EF11A9EAE600C9BAAD /* GOLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6751EE11A9EAE600C9BAAD /* GOLogger.m */; };
 		9BA93BAE11A7A34F00C7B761 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA93BAD11A7A34F00C7B761 /* CoreData.framework */; };
 		9BA93BB011A7A37B00C7B761 /* Redminer.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */; };
 		9BA93BC611A7A57A00C7B761 /* _Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BBD11A7A57A00C7B761 /* _Issue.m */; };
-		9BA93BC711A7A57A00C7B761 /* _Journal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BBF11A7A57A00C7B761 /* _Journal.m */; };
-		9BA93BC811A7A57A00C7B761 /* _News.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BC111A7A57A00C7B761 /* _News.m */; };
 		9BA93BC911A7A57A00C7B761 /* _Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BC311A7A57A00C7B761 /* _Project.m */; };
-		9BA93BCA11A7A57A00C7B761 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BC511A7A57A00C7B761 /* _User.m */; };
 		9BA93C0D11A7A64F00C7B761 /* CoreDataVendor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93C0C11A7A64F00C7B761 /* CoreDataVendor.m */; };
 		9BBF538411A638140091E3CE /* ProjectDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF538311A638140091E3CE /* ProjectDataSource.m */; };
 		9BBF543411A647650091E3CE /* IssueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF543311A647650091E3CE /* IssueCell.m */; };
@@ -51,9 +43,6 @@
 		8D1107320486CEB800E47090 /* Redminer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redminer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B62DA57119F5A2E0056F427 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
 		9B62DA58119F5A2E0056F427 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
-		9B62DA59119F5A2E0056F427 /* JSONFriendly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONFriendly.h; sourceTree = "<group>"; };
-		9B62DA5B119F5A2E0056F427 /* News.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = News.h; sourceTree = "<group>"; };
-		9B62DA5C119F5A2E0056F427 /* News.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = News.m; sourceTree = "<group>"; };
 		9B62DA5D119F5A2E0056F427 /* NSArrayAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayAdditions.h; sourceTree = "<group>"; };
 		9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayAdditions.m; sourceTree = "<group>"; };
 		9B62DA5F119F5A2E0056F427 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
@@ -62,35 +51,20 @@
 		9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedminerAppDelegate.m; sourceTree = "<group>"; };
 		9B62DA63119F5A2E0056F427 /* RedMineSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedMineSupport.h; sourceTree = "<group>"; };
 		9B62DA64119F5A2E0056F427 /* RedMineSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedMineSupport.m; sourceTree = "<group>"; };
-		9B62DA65119F5A2E0056F427 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		9B62DA66119F5A2E0056F427 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		9B62DA79119F5A6D0056F427 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		9B62DA7A119F5A6D0056F427 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		9B62DA7B119F5A6D0056F427 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
-		9B62DA7C119F5A6D0056F427 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		9B62DA7D119F5A6D0056F427 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
-		9B62DA7E119F5A6D0056F427 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		9B62DA7F119F5A6D0056F427 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
-		9B62DA80119F5A6D0056F427 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		9B62DA81119F5A6D0056F427 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
-		9B62DA82119F5A6D0056F427 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		9B62DA83119F5A6D0056F427 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
-		9B62DA84119F5A6D0056F427 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
-		9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		9B62DB54119F68AC0056F427 /* Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Journal.h; sourceTree = "<group>"; };
-		9B62DB55119F68AC0056F427 /* Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Journal.m; sourceTree = "<group>"; };
+		9B674FC011A9D39F00C9BAAD /* _Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Note.h; sourceTree = "<group>"; };
+		9B674FC111A9D39F00C9BAAD /* _Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Note.m; sourceTree = "<group>"; };
+		9B674FC211A9D39F00C9BAAD /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
+		9B674FC311A9D39F00C9BAAD /* Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note.m; sourceTree = "<group>"; };
+		9B6751CC11A9E8E100C9BAAD /* StatusLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusLabel.h; sourceTree = "<group>"; };
+		9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusLabel.m; sourceTree = "<group>"; };
+		9B6751ED11A9EAE600C9BAAD /* GOLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOLogger.h; sourceTree = "<group>"; };
+		9B6751EE11A9EAE600C9BAAD /* GOLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOLogger.m; sourceTree = "<group>"; };
 		9BA93BAD11A7A34F00C7B761 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Redminer.xcdatamodel; sourceTree = "<group>"; };
 		9BA93BBC11A7A57A00C7B761 /* _Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Issue.h; sourceTree = "<group>"; };
 		9BA93BBD11A7A57A00C7B761 /* _Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Issue.m; sourceTree = "<group>"; };
-		9BA93BBE11A7A57A00C7B761 /* _Journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Journal.h; sourceTree = "<group>"; };
-		9BA93BBF11A7A57A00C7B761 /* _Journal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Journal.m; sourceTree = "<group>"; };
-		9BA93BC011A7A57A00C7B761 /* _News.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _News.h; sourceTree = "<group>"; };
-		9BA93BC111A7A57A00C7B761 /* _News.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _News.m; sourceTree = "<group>"; };
 		9BA93BC211A7A57A00C7B761 /* _Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Project.h; sourceTree = "<group>"; };
 		9BA93BC311A7A57A00C7B761 /* _Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Project.m; sourceTree = "<group>"; };
-		9BA93BC411A7A57A00C7B761 /* _User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _User.h; sourceTree = "<group>"; };
-		9BA93BC511A7A57A00C7B761 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
 		9BA93C0B11A7A64F00C7B761 /* CoreDataVendor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataVendor.h; sourceTree = "<group>"; };
 		9BA93C0C11A7A64F00C7B761 /* CoreDataVendor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataVendor.m; sourceTree = "<group>"; };
 		9BBF538211A638140091E3CE /* ProjectDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectDataSource.h; sourceTree = "<group>"; };
@@ -185,13 +159,13 @@
 		9B62DA54119F5A2E0056F427 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
-				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
 				9B62DA70119F5A440056F427 /* API Support */,
 				9B62DA71119F5A4D0056F427 /* Accessory Classes */,
+				9BBF551611A65F880091E3CE /* UI */,
+				9B62DA61119F5A2E0056F427 /* RedminerAppDelegate.h */,
+				9B62DA62119F5A2E0056F427 /* RedminerAppDelegate.m */,
 				9BBF538211A638140091E3CE /* ProjectDataSource.h */,
 				9BBF538311A638140091E3CE /* ProjectDataSource.m */,
-				9BBF551611A65F880091E3CE /* UI */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -200,18 +174,14 @@
 			isa = PBXGroup;
 			children = (
 				9BA93BCB11A7A58100C7B761 /* Machines */,
+				9B674FC211A9D39F00C9BAAD /* Note.h */,
+				9B674FC311A9D39F00C9BAAD /* Note.m */,
 				9B62DA57119F5A2E0056F427 /* Issue.h */,
 				9B62DA58119F5A2E0056F427 /* Issue.m */,
-				9B62DA5B119F5A2E0056F427 /* News.h */,
-				9B62DA5C119F5A2E0056F427 /* News.m */,
 				9B62DA5F119F5A2E0056F427 /* Project.h */,
 				9B62DA60119F5A2E0056F427 /* Project.m */,
 				9B62DA63119F5A2E0056F427 /* RedMineSupport.h */,
 				9B62DA64119F5A2E0056F427 /* RedMineSupport.m */,
-				9B62DA65119F5A2E0056F427 /* User.h */,
-				9B62DA66119F5A2E0056F427 /* User.m */,
-				9B62DB54119F68AC0056F427 /* Journal.h */,
-				9B62DB55119F68AC0056F427 /* Journal.m */,
 			);
 			name = "API Support";
 			sourceTree = "<group>";
@@ -221,47 +191,23 @@
 			children = (
 				9BA93C0B11A7A64F00C7B761 /* CoreDataVendor.h */,
 				9BA93C0C11A7A64F00C7B761 /* CoreDataVendor.m */,
-				9B62DA78119F5A6D0056F427 /* JSON */,
-				9B62DA59119F5A2E0056F427 /* JSONFriendly.h */,
 				9B62DA5D119F5A2E0056F427 /* NSArrayAdditions.h */,
 				9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */,
+				9B6751ED11A9EAE600C9BAAD /* GOLogger.h */,
+				9B6751EE11A9EAE600C9BAAD /* GOLogger.m */,
 			);
 			name = "Accessory Classes";
 			sourceTree = "<group>";
 		};
-		9B62DA78119F5A6D0056F427 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				9B62DA79119F5A6D0056F427 /* JSON.h */,
-				9B62DA7A119F5A6D0056F427 /* NSObject+SBJSON.h */,
-				9B62DA7B119F5A6D0056F427 /* NSObject+SBJSON.m */,
-				9B62DA7C119F5A6D0056F427 /* NSString+SBJSON.h */,
-				9B62DA7D119F5A6D0056F427 /* NSString+SBJSON.m */,
-				9B62DA7E119F5A6D0056F427 /* SBJSON.h */,
-				9B62DA7F119F5A6D0056F427 /* SBJSON.m */,
-				9B62DA80119F5A6D0056F427 /* SBJsonBase.h */,
-				9B62DA81119F5A6D0056F427 /* SBJsonBase.m */,
-				9B62DA82119F5A6D0056F427 /* SBJsonParser.h */,
-				9B62DA83119F5A6D0056F427 /* SBJsonParser.m */,
-				9B62DA84119F5A6D0056F427 /* SBJsonWriter.h */,
-				9B62DA85119F5A6D0056F427 /* SBJsonWriter.m */,
-			);
-			path = JSON;
-			sourceTree = SOURCE_ROOT;
-		};
 		9BA93BCB11A7A58100C7B761 /* Machines */ = {
 			isa = PBXGroup;
 			children = (
+				9B674FC011A9D39F00C9BAAD /* _Note.h */,
+				9B674FC111A9D39F00C9BAAD /* _Note.m */,
 				9BA93BBC11A7A57A00C7B761 /* _Issue.h */,
 				9BA93BBD11A7A57A00C7B761 /* _Issue.m */,
-				9BA93BBE11A7A57A00C7B761 /* _Journal.h */,
-				9BA93BBF11A7A57A00C7B761 /* _Journal.m */,
-				9BA93BC011A7A57A00C7B761 /* _News.h */,
-				9BA93BC111A7A57A00C7B761 /* _News.m */,
 				9BA93BC211A7A57A00C7B761 /* _Project.h */,
 				9BA93BC311A7A57A00C7B761 /* _Project.m */,
-				9BA93BC411A7A57A00C7B761 /* _User.h */,
-				9BA93BC511A7A57A00C7B761 /* _User.m */,
 			);
 			name = Machines;
 			sourceTree = "<group>";
@@ -273,6 +219,8 @@
 				9BBF543311A647650091E3CE /* IssueCell.m */,
 				9BBF551711A65F900091E3CE /* ProjectCell.h */,
 				9BBF551811A65F900091E3CE /* ProjectCell.m */,
+				9B6751CC11A9E8E100C9BAAD /* StatusLabel.h */,
+				9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -337,29 +285,21 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				9B62DA68119F5A2E0056F427 /* Issue.m in Sources */,
-				9B62DA6A119F5A2E0056F427 /* News.m in Sources */,
 				9B62DA6B119F5A2E0056F427 /* NSArrayAdditions.m in Sources */,
 				9B62DA6C119F5A2E0056F427 /* Project.m in Sources */,
 				9B62DA6D119F5A2E0056F427 /* RedminerAppDelegate.m in Sources */,
 				9B62DA6E119F5A2E0056F427 /* RedMineSupport.m in Sources */,
-				9B62DA6F119F5A2E0056F427 /* User.m in Sources */,
-				9B62DA86119F5A6D0056F427 /* NSObject+SBJSON.m in Sources */,
-				9B62DA87119F5A6D0056F427 /* NSString+SBJSON.m in Sources */,
-				9B62DA88119F5A6D0056F427 /* SBJSON.m in Sources */,
-				9B62DA89119F5A6D0056F427 /* SBJsonBase.m in Sources */,
-				9B62DA8A119F5A6D0056F427 /* SBJsonParser.m in Sources */,
-				9B62DA8B119F5A6D0056F427 /* SBJsonWriter.m in Sources */,
-				9B62DB56119F68AC0056F427 /* Journal.m in Sources */,
 				9BBF538411A638140091E3CE /* ProjectDataSource.m in Sources */,
 				9BBF543411A647650091E3CE /* IssueCell.m in Sources */,
 				9BBF551911A65F900091E3CE /* ProjectCell.m in Sources */,
 				9BA93BB011A7A37B00C7B761 /* Redminer.xcdatamodel in Sources */,
 				9BA93BC611A7A57A00C7B761 /* _Issue.m in Sources */,
-				9BA93BC711A7A57A00C7B761 /* _Journal.m in Sources */,
-				9BA93BC811A7A57A00C7B761 /* _News.m in Sources */,
 				9BA93BC911A7A57A00C7B761 /* _Project.m in Sources */,
-				9BA93BCA11A7A57A00C7B761 /* _User.m in Sources */,
 				9BA93C0D11A7A64F00C7B761 /* CoreDataVendor.m in Sources */,
+				9B674FC411A9D39F00C9BAAD /* _Note.m in Sources */,
+				9B674FC511A9D39F00C9BAAD /* Note.m in Sources */,
+				9B6751CE11A9E8E100C9BAAD /* StatusLabel.m in Sources */,
+				9B6751EF11A9EAE600C9BAAD /* GOLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,7 +359,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;

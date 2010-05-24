@@ -9,8 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 typedef enum {
-	RedmineActivity=0,
-	RedmineIssues,
+	RedmineIssues=0,
 	RedmineNewest,
 } RedmineDataSource;
 
@@ -34,7 +33,6 @@ typedef enum {
 }
 @property(nonatomic, retain) NSMutableDictionary *issues;
 - (NSArray *)currentIssues;
-- (NSArray *)currentActivity;
 - (NSArray *)currentNewest;
 @property(nonatomic, retain) NSArray *activity;
 @property(nonatomic, retain) NSArray *projects;

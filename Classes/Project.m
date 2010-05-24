@@ -29,24 +29,13 @@
 	NSError *err = nil;
 	if([p validateForInsert:&err]){
 		[support getIssuesInProject:p];
-		[support getActivityForProject:p];
 	}
 	return p;
 }
 
 - (NSString*)description{
-	return [NSString stringWithFormat:@"<%@ id:%@ name:%@>", [self class],  [self id], [self name]];
+	return [NSString stringWithFormat:@"<%@ id:%@ name:%@ issues:%d>", [self class],  [self id], [self name], [[self issues] count]];
 }
-
-/*- (id)copyWithZone:(NSZone *)zone{
-    Project *copy = [[[self class] allocWithZone:zone] init];
-    [copy setId:[self id]];
-	[copy setName:[self name]];
-	[copy setDesc:[self desc]];
-	
-    return copy;
-}*/
-
 
 + (Project*)projectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext*)moc_{
 	NSFetchRequest *request = [[NSFetchRequest alloc]  init];
@@ -56,8 +45,48 @@
 	
 	NSError *err = nil;
 	NSArray *results = [moc_ executeFetchRequest:request error:&err];
-	if(!!results)
+	[request release];
+	if(!!results && [results count] > 0)
 		return [results objectAtIndex:0];
 	return nil;
+}
+
++ (void)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_{
+	NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
+	[fetch setEntity:[self entityInManagedObjectContext:moc_]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"id = %@", p.id];
+	[fetch setPredicate:predicate];
+	
+	NSError *err = nil;
+	NSArray *results = [moc_ executeFetchRequest:fetch error:&err];
+	[fetch release];
+	if([results count] > 1){
+		NSSet *issues = [p issues];
+		// This is a duplicate object and should be deleted. The original should be marked as new as well.
+		Project *old = nil;
+		for(Project *project in results){
+			if(![project isEqualTo:p]){
+				old = project;
+				[moc_ deleteObject:p];
+				[old addIssues:issues];
+			}
+		}
+	}
+}
+
+- (NSArray*)updatedIssues:(NSManagedObjectContext*)moc_{
+	NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
+	[fetch setEntity:[NSEntityDescription entityForName:@"Issue" inManagedObjectContext:moc_]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"updated == TRUE and project.id = %@", self.id];
+	[fetch setPredicate:predicate];
+	
+	NSError *err = nil;
+	NSArray *results = [moc_ executeFetchRequest:fetch error:&err];
+	[fetch release];
+	if(!results){
+		NSLog(@"Error fetching updated issues! %@", [err localizedDescription]);
+		return nil;
+	}
+	return results;
 }
 @end

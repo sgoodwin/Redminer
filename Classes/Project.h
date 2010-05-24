@@ -3,15 +3,16 @@
 //  Redminer
 //
 //  Created by Samuel Ryan Goodwin on 5/13/10.
-//  Copyright 2010 Goodwinlabs. All rights reserved.
+//  Copyright 2010 ;. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
-#import "JSONFriendly.h"
 #import "_Project.h"
 
-@interface Project : _Project <JSONFriendly>{
+@interface Project : _Project{
 	NSSet *_undefined_keys;
 }
 + (Project*)projectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext*)moc_;
++ (void)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_;
+- (NSArray*)updatedIssues:(NSManagedObjectContext*)moc_;
 @end

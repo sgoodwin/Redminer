@@ -4,6 +4,7 @@
 #import <CoreData/CoreData.h>
 
 
+@class Note;
 @class Project;
 
 @interface IssueID : NSManagedObjectID {}
@@ -17,9 +18,21 @@
 
 
 
-@property (nonatomic, retain) NSString *subject;
+@property (nonatomic, retain) NSString *tracker;
 
-//- (BOOL)validateSubject:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateTracker:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *priority;
+
+//- (BOOL)validatePriority:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *desc;
+
+//- (BOOL)validateDesc:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -33,19 +46,31 @@
 
 
 
-@property (nonatomic, retain) NSNumber *assigned_to_id;
+@property (nonatomic, retain) NSString *category;
 
-@property short assigned_to_idValue;
-- (short)assigned_to_idValue;
-- (void)setAssigned_to_idValue:(short)value_;
-
-//- (BOOL)validateAssigned_to_id:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateCategory:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, retain) NSString *desc;
+@property (nonatomic, retain) NSString *subject;
 
-//- (BOOL)validateDesc:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateSubject:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *assigned_to;
+
+//- (BOOL)validateAssigned_to:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSNumber *updated;
+
+@property BOOL updatedValue;
+- (BOOL)updatedValue;
+- (void)setUpdatedValue:(BOOL)value_;
+
+//- (BOOL)validateUpdated:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -59,10 +84,26 @@
 
 
 
+@property (nonatomic, retain) NSString *status;
+
+//- (BOOL)validateStatus:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSSet* notes;
+- (NSMutableSet*)notesSet;
+
+
 
 @property (nonatomic, retain) Project* project;
 //- (BOOL)validateProject:(id*)value_ error:(NSError**)error_;
 
+
+
+
++ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ ;
++ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
 
 
 
@@ -73,5 +114,10 @@
 @end
 
 @interface _Issue (CoreDataGeneratedAccessors)
+
+- (void)addNotes:(NSSet*)value_;
+- (void)removeNotes:(NSSet*)value_;
+- (void)addNotesObject:(Note*)value_;
+- (void)removeNotesObject:(Note*)value_;
 
 @end

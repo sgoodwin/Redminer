@@ -55,7 +55,7 @@ static NSManagedObjectModel *managedObjectModel = nil;
     if (managedObjectModel != nil) {
         return managedObjectModel;
     }
-    NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
+    NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     return managedObjectModel;
 }
 

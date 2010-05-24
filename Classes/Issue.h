@@ -7,10 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "JSONFriendly.h"
 #import "_Issue.h"
 
-@interface Issue : _Issue <JSONFriendly>{
+@class Project;
+@interface Issue : _Issue{
 	NSSet *_undefined_keys;
 }
+
++ (void)checkIssue:(Issue*)i ForDups:(NSManagedObjectContext*)moc_;
 @end

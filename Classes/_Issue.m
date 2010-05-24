@@ -29,7 +29,21 @@
 
 
 
-@dynamic subject;
+@dynamic tracker;
+
+
+
+
+
+
+@dynamic priority;
+
+
+
+
+
+
+@dynamic desc;
 
 
 
@@ -54,25 +68,39 @@
 
 
 
-@dynamic assigned_to_id;
+@dynamic category;
 
 
 
-- (short)assigned_to_idValue {
-	NSNumber *result = [self assigned_to_id];
-	return result ? [result shortValue] : 0;
+
+
+
+@dynamic subject;
+
+
+
+
+
+
+@dynamic assigned_to;
+
+
+
+
+
+
+@dynamic updated;
+
+
+
+- (BOOL)updatedValue {
+	NSNumber *result = [self updated];
+	return result ? [result boolValue] : 0;
 }
 
-- (void)setAssigned_to_idValue:(short)value_ {
-	[self setAssigned_to_id:[NSNumber numberWithShort:value_]];
+- (void)setUpdatedValue:(BOOL)value_ {
+	[self setUpdated:[NSNumber numberWithBool:value_]];
 }
-
-
-
-
-
-
-@dynamic desc;
 
 
 
@@ -97,10 +125,58 @@
 
 
 
+@dynamic status;
+
+
+
+
+
+
+@dynamic notes;
+
+	
+- (NSMutableSet*)notesSet {
+	[self willAccessValueForKey:@"notes"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"notes"];
+	[self didAccessValueForKey:@"notes"];
+	return result;
+}
+	
+
 @dynamic project;
 
 	
 
+
+
+
++ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ {
+	NSError *error = nil;
+	NSArray *result = [self fetchUpdatedIssues:moc_ error:&error];
+	if (error) {
+#if TARGET_OS_IPHONE
+		NSLog(@"error: %@", error);
+#else
+		[NSApp presentError:error];
+#endif
+	}
+	return result;
+}
++ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ error:(NSError**)error_ {
+	NSError *error = nil;
+	
+	NSManagedObjectModel *model = [[moc_ persistentStoreCoordinator] managedObjectModel];
+	NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName:@"updatedIssues"
+													 substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+														
+														nil]
+													 ];
+	NSAssert(fetchRequest, @"Can't find fetch request named \"updatedIssues\".");
+	
+	NSArray *result = [moc_ executeFetchRequest:fetchRequest error:&error];
+	if (error_) *error_ = error;
+	return result;
+}
 
 
 

@@ -9,26 +9,40 @@
 #import <Cocoa/Cocoa.h>
 
 @class Project;
-@interface RedMineSupport : NSObject{
+@class Issue;
+@class Note;
+@interface RedMineSupport : NSObject<NSXMLParserDelegate>{
 	NSString *_key;
 	NSString *_host;
 	NSMutableData *_data;
 	
 	NSManagedObjectContext *_moc;
+	
+	Issue *_currentIssue;
+	Project *_currentProject;
+	Note *_currentNote;
+	
+	NSString *_keyInProgress;
+	NSMutableString *_textInProgress;
 }
 @property(nonatomic, retain) NSString *key;
 @property(nonatomic, retain) NSString *host;
 @property(nonatomic, retain) NSManagedObjectContext *moc;
 
+@property(nonatomic, retain) Issue *currentIssue;
+@property(nonatomic, retain) Project *currentProject;
+@property(nonatomic, retain) Note *currentNote;
+
+@property(nonatomic, retain) NSString *keyInProgress;
+@property(nonatomic, retain) NSMutableString *textInProgress;
+
 - (NSArray*)issues;
 - (NSArray*)projects;
-- (NSArray*)news;
-- (NSArray*)activity;
 - (NSArray*)issuesInProject:(Project*)project;
-- (NSArray*)users;
+- (NSArray*)updatedIssuesInProject:(Project*)project;
 
 - (void)getIssuesInProject:(Project*)project;
-- (void)getActivityForProject:(Project*)project;
+- (void)getInfoForIssue:(Issue*)i;
 
 - (void)refresh;
 @end

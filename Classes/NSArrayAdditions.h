@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class Contact;
-typedef id (^CollectBlock)(NSDictionary *value);
+typedef id (^CollectBlock)(id value);
 typedef id (^SelectBlock)(id value, id prev);
 
 @interface NSArray  (ID345Additions)
