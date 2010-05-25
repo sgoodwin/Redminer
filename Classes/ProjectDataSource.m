@@ -10,7 +10,6 @@
 #import "Issue.h"
 #import "Project.h"
 #import "DictionaryRepresentation.h"
-#import "RedMineSupport.h"
 #import "IssueCell.h"
 #import "IssueDisplay.h"
 #import "ProjectCell.h"
@@ -36,27 +35,14 @@
 @synthesize moc = _moc;
 
 - (IBAction)refresh:(id)sender{
-	[[self support] addObserver:self forKeyPath:@"issues" options:NSKeyValueObservingOptionNew context:nil];
-	[[self support] addObserver:self forKeyPath:@"projects" options:NSKeyValueObservingOptionNew context:nil];
-	
-	dispatch_queue_t a_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);;
-	dispatch_async(a_queue, ^{
-		[[self support] refresh];
-	});
+	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+		[[self support] performSelectorInBackground:@selector(refresh) withObject:nil];
+	}];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-	if(![NSThread isMainThread]){
-		[self performSelectorOnMainThread:@selector(newItems) withObject:keyPath waitUntilDone:NO];
-		return;
-	}
-}
-
-- (void)newItems:(NSString*)keyPath{
-	if([keyPath isEqualToString:@"issues"])
-		[[self issueTable] reloadData];
-	if([keyPath isEqualToString:@"projects"])
-		[[self outlineView] reloadData];
+- (void)supportDidFinishParsing:(RedMineSupport *)support{
+	[[self issueTable] reloadData];
+	[[self outlineView] reloadData];
 }
 
 - (NSString*)errorMessage{
@@ -189,15 +175,19 @@
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
 	//[[self projects] count];
-	return [item copy];
+	return item;
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
 }
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item{
-	if([[item valueForKey:kNameKey] isEqualToString:@"Activity"] || [[item valueForKey:kNameKey] isEqualToString:@"Issues"])
+	[item retain];
+	if([[item valueForKey:kNameKey] isEqualToString:@"Activity"] || [[item valueForKey:kNameKey] isEqualToString:@"Issues"]){
+		[item release];
 		return [[SubCell alloc] initTextCell:@"Change Me"];
+	}
+	[item release];
 	return [[ProjectCell alloc] initTextCell:@"Change Me"];
 }
 
@@ -206,13 +196,13 @@
 - (RedMineSupport*)support{
 	if(!_support){
 		_support = [[RedMineSupport alloc] init];
+		_support.delegate = self;
 	}
 	return _support;
 }
 
 - (NSArray *)currentIssues{
 	if(![self selectedProject]){
-		NSLog(@"No project yet");
 		return [NSArray array];
 	}
 	[[self moc] refreshObject:[self selectedProject] mergeChanges:YES];
@@ -226,7 +216,7 @@
 
 - (NSArray *)currentNewest{
 	NSArray *newest = [[self support] updatedIssuesInProject:[self selectedProject]];
-	NSLog(@"Updated items: %d", (int)[newest count]);
+	//NSLog(@"Updated items: %d", (int)[newest count]);
 	return newest;
 }
 
@@ -243,7 +233,6 @@
 
 - (void)mergeMoc:(NSNotification*)notification{
 	[[self moc] mergeChangesFromContextDidSaveNotification:notification];
-	[[self outlineView] reloadData];
-	[[self issueTable] reloadData];
+	[self performSelectorOnMainThread:@selector(supportDidFinishParsing:) withObject:nil waitUntilDone:NO];
 }
 @end

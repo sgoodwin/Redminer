@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "RedMineSupport.h"
 
 typedef enum {
 	RedmineIssues=0,
@@ -16,7 +17,7 @@ typedef enum {
 @class RedMineSupport;
 @class IssueDisplay;
 @class Project;
-@interface ProjectDataSource : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDelegate, NSTableViewDataSource>{
+@interface ProjectDataSource : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDelegate, NSTableViewDataSource, RedMineSupportDelegate>{
 	NSMutableDictionary *_issues;
 	NSArray *_activity;
 	NSArray *_projects;

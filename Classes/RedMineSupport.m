@@ -38,6 +38,8 @@
 @synthesize textInProgress = _textInProgress;
 @synthesize currentNote = _currentNote;
 
+@synthesize delegate = _delegate;
+
 - (BOOL)check{
 	return (!![self host] && !![self key] && [[self class] hostIsReachable]);
 }
@@ -51,6 +53,7 @@
 }
 
 - (void)refresh{
+	NSAutoreleasePool *p = [[NSAutoreleasePool alloc] init];
 	[self getProjects];
 	//[self getIssues];
 	
@@ -59,6 +62,7 @@
 	if(!!err){
 		NSLog(@"Failed to save managed object context in redmine support: %@, %@, %@", [err localizedDescription], [err localizedRecoveryOptions], [err localizedFailureReason]);
 	}
+	[p release];
 }
 
 - (NSArray*)issues{
@@ -101,8 +105,8 @@
 		return;
 	}
 	
+	NSLog(@"parsing data issues");
 	[self arrayFromData:data];
-	return;
 }
 
 - (void)getInfoForIssue:(Issue*)i{
@@ -127,15 +131,17 @@
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
+	NSLog(@"parsing data specific issue");
 	[self arrayFromData:data];
-	return;
 }
 
 - (void)getProjects{
 	if(![self check]){
+		NSLog(@"Bad host/key/internets");
 		return;
 	}
 	[GOLogger log:@"Refreshing projects"];
+	NSLog(@"Requesting projects");
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/projects.xml?key=%@", self.host, self.key];
 	//NSLog(@"Requesting projects");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
@@ -152,11 +158,11 @@
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
-	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	NSLog(@"datastring: %@", dataString);
 	
+	//NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	//NSLog(@"datastring: %@", dataString);
+	NSLog(@"parsing data projects");
 	[self arrayFromData:data];
-	return;
 }
 
 - (void)getIssuesInProject:(Project*)project{
@@ -180,16 +186,16 @@
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
-	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	NSLog(@"datastring: %@", dataString);
+	//NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	//NSLog(@"datastring: %@", dataString);
 	
+	NSLog(@"parsing data issues in project: %@", project);
 	[self arrayFromData:data];
-	return;
 }
 
 
 #pragma mark -
-#pragma mark Instance method creation;
+#pragma mark Instance method creation
 
 - (void)arrayFromData:(NSData *)data{
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
@@ -221,6 +227,10 @@
 #pragma mark -
 #pragma mark XML Delegate methods
 
+- (void)parserDidStartDocument:(NSXMLParser *)parser{
+	NSLog(@"Here we go!");
+}
+
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{	
 	// Special case for the project info found in an Issue xml request.
 	if([elementName isEqualToString:@"project"] && [attributeDict count] > 0 && self.currentIssue){
@@ -249,7 +259,7 @@
     // Is it the start of a new Issue?
     if ([elementName isEqual:@"issue"]) {
         self.currentIssue = [Issue insertInManagedObjectContext:[self moc]];
-		[self willChangeValueForKey:@"issues"];
+		//[self willChangeValueForKey:@"issues"];
 		//NSLog(@"Creating Issue!");
         return;
     }
@@ -257,7 +267,7 @@
 	// Is it the start of a new Project?
     if ([elementName isEqual:@"project"]) {
         self.currentProject = [Project insertInManagedObjectContext:[self moc]];
-		[self willChangeValueForKey:@"projects"];
+		//[self willChangeValueForKey:@"projects"];
         return;
     }
 	
@@ -299,7 +309,7 @@
         // Clear the current item
 		
 		[Issue checkIssue:[self currentIssue] ForDups:[self moc]];
-		[self didChangeValueForKey:@"issues"];
+		//[self didChangeValueForKey:@"issues"];
 		
         [_currentIssue release];
         self.currentIssue = nil;
@@ -312,7 +322,7 @@
 		//NSLog(@"finished Project: %@", [self currentProject]);
         // Clear the current item
 		[Project checkProject:[self currentProject] ForDups:[self moc]];
-		[self didChangeValueForKey:@"projects"];
+		//[self didChangeValueForKey:@"projects"];
 		
         [_currentProject release];
         self.currentProject = nil;
@@ -355,11 +365,13 @@
 }
 
 -(void)parserDidEndDocument:(NSXMLParser *)parser{
+	NSLog(@"Finished parsing");
 	[GOLogger log:@"Ready"];
 	NSError *err = nil;
 	if(![[self moc] save:&err]){
 		NSLog(@"Failed to save! %@",  [err localizedDescription]);
 	}
+	[[self delegate] performSelectorOnMainThread:@selector(supportDidFinishParsing:) withObject:self waitUntilDone:NO];
 }
 
 // This method can get called multiple times for the
