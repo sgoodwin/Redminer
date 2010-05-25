@@ -89,4 +89,10 @@
 	}
 	return results;
 }
+
+- (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_{
+	NSArray *values = [NSArray arrayWithObjects:self.name, [NSNumber numberWithUnsignedInteger:[self updatedIssues:moc_].count], nil];
+	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kUpdatedCountKey, nil];
+	return [NSDictionary dictionaryWithObjects:values forKeys:keys];
+}
 @end

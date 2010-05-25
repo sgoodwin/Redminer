@@ -8,10 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "_Project.h"
+#import "DictionaryRepresentation.h"
 
-@interface Project : _Project{
+@interface Project : _Project<DictionaryRepresentation>{
 	NSSet *_undefined_keys;
 }
+
 + (Project*)projectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (void)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_;
 - (NSArray*)updatedIssues:(NSManagedObjectContext*)moc_;

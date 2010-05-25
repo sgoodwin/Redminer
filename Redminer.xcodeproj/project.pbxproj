@@ -11,6 +11,12 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		9B0E0B9D11AB341D000432DC /* SubCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0E0B9C11AB341D000432DC /* SubCell.m */; };
+		9B0E0BD411AB35A9000432DC /* IssueDisplay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B0E0BD311AB35A9000432DC /* IssueDisplay.xib */; };
+		9B0E0BD811AB35C0000432DC /* IssueDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0E0BD711AB35C0000432DC /* IssueDisplay.m */; };
+		9B46DCD211ABA087009E522E /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B46DCD111ABA087009E522E /* PreferencesController.m */; };
+		9B46DCF811ABA2CD009E522E /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B46DCF711ABA2CD009E522E /* Preferences.xib */; };
+		9B46DD7B11ABA7F2009E522E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */; };
 		9B62DA68119F5A2E0056F427 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA58119F5A2E0056F427 /* Issue.m */; };
 		9B62DA6B119F5A2E0056F427 /* NSArrayAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */; };
 		9B62DA6C119F5A2E0056F427 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA60119F5A2E0056F427 /* Project.m */; };
@@ -41,6 +47,16 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Redminer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Redminer-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Redminer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redminer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B0E0B9B11AB341D000432DC /* SubCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubCell.h; sourceTree = "<group>"; };
+		9B0E0B9C11AB341D000432DC /* SubCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubCell.m; sourceTree = "<group>"; };
+		9B0E0BBB11AB34A5000432DC /* DictionaryRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryRepresentation.h; sourceTree = "<group>"; };
+		9B0E0BD311AB35A9000432DC /* IssueDisplay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IssueDisplay.xib; sourceTree = "<group>"; };
+		9B0E0BD611AB35C0000432DC /* IssueDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IssueDisplay.h; sourceTree = "<group>"; };
+		9B0E0BD711AB35C0000432DC /* IssueDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IssueDisplay.m; sourceTree = "<group>"; };
+		9B46DCD011ABA087009E522E /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		9B46DCD111ABA087009E522E /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		9B46DCF711ABA2CD009E522E /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9B62DA57119F5A2E0056F427 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
 		9B62DA58119F5A2E0056F427 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
 		9B62DA5D119F5A2E0056F427 /* NSArrayAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayAdditions.h; sourceTree = "<group>"; };
@@ -82,6 +98,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				9BA93BAE11A7A34F00C7B761 /* CoreData.framework in Frameworks */,
+				9B46DD7B11ABA7F2009E522E /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +110,7 @@
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				9BA93BAD11A7A34F00C7B761 /* CoreData.framework */,
+				9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -143,6 +161,8 @@
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */,
+				9B0E0BD311AB35A9000432DC /* IssueDisplay.xib */,
+				9B46DCF711ABA2CD009E522E /* Preferences.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -195,6 +215,7 @@
 				9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */,
 				9B6751ED11A9EAE600C9BAAD /* GOLogger.h */,
 				9B6751EE11A9EAE600C9BAAD /* GOLogger.m */,
+				9B0E0BBB11AB34A5000432DC /* DictionaryRepresentation.h */,
 			);
 			name = "Accessory Classes";
 			sourceTree = "<group>";
@@ -221,6 +242,12 @@
 				9BBF551811A65F900091E3CE /* ProjectCell.m */,
 				9B6751CC11A9E8E100C9BAAD /* StatusLabel.h */,
 				9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */,
+				9B0E0B9B11AB341D000432DC /* SubCell.h */,
+				9B0E0B9C11AB341D000432DC /* SubCell.m */,
+				9B0E0BD611AB35C0000432DC /* IssueDisplay.h */,
+				9B0E0BD711AB35C0000432DC /* IssueDisplay.m */,
+				9B46DCD011ABA087009E522E /* PreferencesController.h */,
+				9B46DCD111ABA087009E522E /* PreferencesController.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -273,6 +300,8 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				9B0E0BD411AB35A9000432DC /* IssueDisplay.xib in Resources */,
+				9B46DCF811ABA2CD009E522E /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +329,9 @@
 				9B674FC511A9D39F00C9BAAD /* Note.m in Sources */,
 				9B6751CE11A9E8E100C9BAAD /* StatusLabel.m in Sources */,
 				9B6751EF11A9EAE600C9BAAD /* GOLogger.m in Sources */,
+				9B0E0B9D11AB341D000432DC /* SubCell.m in Sources */,
+				9B0E0BD811AB35C0000432DC /* IssueDisplay.m in Sources */,
+				9B46DCD211ABA087009E522E /* PreferencesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,8 +12,6 @@
 @class Issue;
 @class Note;
 @interface RedMineSupport : NSObject<NSXMLParserDelegate>{
-	NSString *_key;
-	NSString *_host;
 	NSMutableData *_data;
 	
 	NSManagedObjectContext *_moc;
@@ -25,8 +23,6 @@
 	NSString *_keyInProgress;
 	NSMutableString *_textInProgress;
 }
-@property(nonatomic, retain) NSString *key;
-@property(nonatomic, retain) NSString *host;
 @property(nonatomic, retain) NSManagedObjectContext *moc;
 
 @property(nonatomic, retain) Issue *currentIssue;
@@ -45,4 +41,6 @@
 - (void)getInfoForIssue:(Issue*)i;
 
 - (void)refresh;
+
++ (BOOL)hostIsReachable;
 @end

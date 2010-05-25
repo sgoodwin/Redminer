@@ -14,6 +14,7 @@ typedef enum {
 } RedmineDataSource;
 
 @class RedMineSupport;
+@class IssueDisplay;
 @class Project;
 @interface ProjectDataSource : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDelegate, NSTableViewDataSource>{
 	NSMutableDictionary *_issues;
@@ -27,7 +28,7 @@ typedef enum {
 	
 	NSOutlineView *_outlineView;
 	NSTableView *_issueTable;
-	NSTextField *_textField;
+	IssueDisplay *_issueDisplay;
 	
 	NSManagedObjectContext *_moc;
 }
@@ -44,7 +45,7 @@ typedef enum {
 
 @property(nonatomic, retain) NSManagedObjectContext *moc;
 
-@property(nonatomic, retain) IBOutlet NSTextField *textField;
+@property(nonatomic, retain) IBOutlet IssueDisplay *issueDisplay;
 @property(nonatomic, retain) IBOutlet NSOutlineView *outlineView;
 @property(nonatomic, retain) IBOutlet NSTableView *issueTable;
 

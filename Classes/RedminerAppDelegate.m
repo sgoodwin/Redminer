@@ -8,6 +8,7 @@
 
 #import "RedminerAppDelegate.h"
 #import "CoreDataVendor.h"
+#import "PreferencesController.h"
 
 @implementation RedminerAppDelegate
 
@@ -18,4 +19,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 }
 
+- (IBAction)openPreferencesWindow:(id)sender {
+	[[PreferencesController sharedPrefsWindowController] showWindow:nil];
+}
 @end

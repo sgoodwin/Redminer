@@ -19,4 +19,5 @@
 @property (assign) IBOutlet NSOutlineView *outline;
 @property (assign) IBOutlet NSTextField *textField;
 
+- (IBAction)openPreferencesWindow:(id)sender;
 @end

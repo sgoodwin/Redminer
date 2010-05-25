@@ -11,10 +11,16 @@
 #import "Note.h"
 #import "Issue.h"
 #import "NSArrayAdditions.h"
+#import "PreferencesController.h"
 #import "CoreDataVendor.h"
 #import "GOLogger.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @interface RedMineSupport(PrivateMethods)
+- (NSString *)key;
+- (NSString *)host;
+- (BOOL)check;
+
 - (void)getIssues;
 - (void)getProjects;
 - (void)getActivity;
@@ -24,8 +30,6 @@
 @end
 
 @implementation RedMineSupport
-@synthesize key = _key;
-@synthesize host = _host;
 @synthesize moc = _moc;
 
 @synthesize currentIssue = _currentIssue;
@@ -34,9 +38,21 @@
 @synthesize textInProgress = _textInProgress;
 @synthesize currentNote = _currentNote;
 
+- (BOOL)check{
+	return (!![self host] && !![self key] && [[self class] hostIsReachable]);
+}
+
+- (NSString*)host{
+	return [[PreferencesController sharedPrefsWindowController] server_location];
+}
+
+- (NSString*)key{
+	return [[PreferencesController sharedPrefsWindowController] access_key];
+}
 
 - (void)refresh{
 	[self getProjects];
+	//[self getIssues];
 	
 	NSError *err = nil;
 	[[self moc] save:&err];
@@ -62,23 +78,37 @@
 }
 
 - (void)getIssues{
+	if(![self check]){
+		NSLog(@"Unreachable or bad key/host");
+		return;
+	}
+	NSLog(@"Requesting issues");
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.xml?key=%@", self.host, self.key];
 	//NSLog(@"Requesting issues");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
 	[request setHTTPShouldHandleCookies:YES];
 	NSError *err = nil;
-	NSURLResponse *response = nil;	
+	NSHTTPURLResponse *response = nil;	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+	if([response statusCode] != 200){
+		[GOLogger log:@"Failed to request issues."];
+		return;
+	}
+	
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
+	
 	[self arrayFromData:data];
 	return;
 }
 
 - (void)getInfoForIssue:(Issue*)i{
+	if(![self check]){
+		return;
+	}
 	[GOLogger log:[NSString stringWithFormat:@"Refreshing info for issue: %@", i]];
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues/%@.xml?key=%@", self.host, i.id, self.key];
 	//NSLog(@"Requesting issues");
@@ -86,8 +116,13 @@
 	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
 	[request setHTTPShouldHandleCookies:YES];
 	NSError *err = nil;
-	NSURLResponse *response = nil;	
+	NSHTTPURLResponse *response = nil;	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+	if([response statusCode] != 200){
+		[GOLogger log:@"Failed to request issue information."];
+		return;
+	}
+	
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
@@ -97,35 +132,57 @@
 }
 
 - (void)getProjects{
+	if(![self check]){
+		return;
+	}
 	[GOLogger log:@"Refreshing projects"];
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/projects.xml?key=%@", self.host, self.key];
 	//NSLog(@"Requesting projects");
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
 	NSError *err = nil;
-	NSURLResponse *response = nil;	
+	NSHTTPURLResponse *response = nil;	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+	if([response statusCode] != 200){
+		[GOLogger log:@"Failed to request projects."];
+		return;
+	}
+	
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
+	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSLog(@"datastring: %@", dataString);
+	
 	[self arrayFromData:data];
 	return;
 }
 
 - (void)getIssuesInProject:(Project*)project{
+	if(![self check]){
+		return;
+	}
 	[GOLogger log:[NSString stringWithFormat:@"Getting issues for project: %@", project]];
 	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.xml?key=%@&project_id=%@&status_id=*", self.host, self.key, project.id];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 	//NSLog(@"Requesting Issues in project %@", project);
 	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
 	NSError *err = nil;
-	NSURLResponse *response = nil;	
+	NSHTTPURLResponse *response = nil;	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+	if([response statusCode] != 200){
+		[GOLogger log:[NSString stringWithFormat:@"Failed to request issues in project %@.", project]];
+		return;
+	}
+	
 	if(!!err){
 		NSLog(@"Error: %@", [err localizedDescription]);
 		return;
 	}
+	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSLog(@"datastring: %@", dataString);
+	
 	[self arrayFromData:data];
 	return;
 }
@@ -163,10 +220,6 @@
 
 #pragma mark -
 #pragma mark XML Delegate methods
-- (void)parserDidStartDocument:(NSXMLParser *)parser{
-	[self willChangeValueForKey:@"issues"];
-	[self willChangeValueForKey:@"projects"];
-}
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{	
 	// Special case for the project info found in an Issue xml request.
@@ -196,6 +249,7 @@
     // Is it the start of a new Issue?
     if ([elementName isEqual:@"issue"]) {
         self.currentIssue = [Issue insertInManagedObjectContext:[self moc]];
+		[self willChangeValueForKey:@"issues"];
 		//NSLog(@"Creating Issue!");
         return;
     }
@@ -203,6 +257,7 @@
 	// Is it the start of a new Project?
     if ([elementName isEqual:@"project"]) {
         self.currentProject = [Project insertInManagedObjectContext:[self moc]];
+		[self willChangeValueForKey:@"projects"];
         return;
     }
 	
@@ -244,6 +299,7 @@
         // Clear the current item
 		
 		[Issue checkIssue:[self currentIssue] ForDups:[self moc]];
+		[self didChangeValueForKey:@"issues"];
 		
         [_currentIssue release];
         self.currentIssue = nil;
@@ -256,6 +312,7 @@
 		//NSLog(@"finished Project: %@", [self currentProject]);
         // Clear the current item
 		[Project checkProject:[self currentProject] ForDups:[self moc]];
+		[self didChangeValueForKey:@"projects"];
 		
         [_currentProject release];
         self.currentProject = nil;
@@ -303,8 +360,6 @@
 	if(![[self moc] save:&err]){
 		NSLog(@"Failed to save! %@",  [err localizedDescription]);
 	}
-	[self didChangeValueForKey:@"issues"];
-	[self didChangeValueForKey:@"projects"];
 }
 
 // This method can get called multiple times for the
@@ -312,4 +367,24 @@
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
     [self.textInProgress appendString:string];
 }
+
+#pragma mark -
+#pragma mark Reachability Testing
+
++ (BOOL)hostIsReachable{
+	static BOOL checkNetwork = YES;  
+ 	static BOOL _isDataSourceAvailable = NO;  
+    if (checkNetwork) { // Since checking the reachability of a host can be expensive, cache the result and perform the reachability check once.  
+        checkNetwork = NO;  
+        Boolean success;  
+        const char *host_name = "google.com"; //pretty reliable :)  
+        SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, host_name);  
+        SCNetworkReachabilityFlags flags;  
+        success = SCNetworkReachabilityGetFlags(reachability, &flags);  
+        _isDataSourceAvailable = success && (flags & kSCNetworkFlagsReachable) && !(flags & kSCNetworkFlagsConnectionRequired);  
+        CFRelease(reachability);  
+    }  
+    return _isDataSourceAvailable;
+}
+
 @end

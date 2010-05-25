@@ -9,14 +9,18 @@
 #import "ProjectDataSource.h"
 #import "Issue.h"
 #import "Project.h"
+#import "DictionaryRepresentation.h"
 #import "RedMineSupport.h"
 #import "IssueCell.h"
+#import "IssueDisplay.h"
 #import "ProjectCell.h"
+#import "SubCell.h"
 #import "CoreDataVendor.h"
 
 @interface ProjectDataSource(PrivateMethods)
 - (NSString *)errorMessage;
 - (NSString *)labelForSource:(RedmineDataSource)source;
+- (void)newItems:(NSString*)keyPath;
 @end
 
 @implementation ProjectDataSource
@@ -26,7 +30,7 @@
 @synthesize support = _support;
 @synthesize projects = _projects;
 @synthesize selectedProject = _selectedProject;
-@synthesize textField = _textField;
+@synthesize issueDisplay = _issueDisplay;
 @synthesize outlineView = _outlineView;
 @synthesize issueTable = _issueTable;
 @synthesize moc = _moc;
@@ -42,6 +46,13 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+	if(![NSThread isMainThread]){
+		[self performSelectorOnMainThread:@selector(newItems) withObject:keyPath waitUntilDone:NO];
+		return;
+	}
+}
+
+- (void)newItems:(NSString*)keyPath{
 	if([keyPath isEqualToString:@"issues"])
 		[[self issueTable] reloadData];
 	if([keyPath isEqualToString:@"projects"])
@@ -104,14 +115,14 @@
 			i = [[self currentIssues] objectAtIndex:row];
 			NSLog(@"selected issue: %@", i);
 			[i setUpdatedValue:NO];
-			[[self textField] setStringValue:[i desc]];
+			[[self issueDisplay] setCurrentIssue:i];
 			[[self support] getInfoForIssue:i];
 			break;
 		case RedmineNewest:
 			i = [[self currentNewest] objectAtIndex:row];
 			NSLog(@"selected issue: %@", i);
 			[i setUpdatedValue:NO];
-			[[self textField] setStringValue:[i desc]];
+			[[self issueDisplay] setCurrentIssue:i];
 			[[self support] getInfoForIssue:i];
 			break;
 		default:
@@ -129,7 +140,7 @@
 #pragma mark Outline methods
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{
-	if([[self labelForSource:RedmineIssues] isEqualToString:item]){
+	if([[self labelForSource:RedmineIssues] isEqualToString:[item valueForKey:kNameKey]]){
 		self.type = RedmineIssues;
 	}else{
 		self.type = RedmineNewest;
@@ -137,12 +148,12 @@
 	
 	id parent = [outlineView parentForItem:item];
 	if(!!parent){
-		Project *p = [Project projectWithName:parent inManagedObjectContext:[self moc]];
+		Project *p = [Project projectWithName:[parent valueForKey:kNameKey] inManagedObjectContext:[self moc]];
 		[self setSelectedProject:p];
 		NSLog(@"Selected project: %@", p);
 	}else{
 		NSLog(@"item :%@", item);
-		Project *p = [Project projectWithName:item inManagedObjectContext:[self moc]];
+		Project *p = [Project projectWithName:[item valueForKey:kNameKey] inManagedObjectContext:[self moc]];
 		[self setSelectedProject:p];
 		NSLog(@"Selected project: %@", p);
 	}
@@ -154,15 +165,14 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item{
 	if(!item){
 		Project *p = [[self projects] objectAtIndex:index];
-		NSString *name = [p name];
-		return name;
+		return [p dictVersion:[self moc]];
 	}
 	
-	return [self labelForSource:index];
+	return [[NSDictionary alloc] initWithObjectsAndKeys:[self labelForSource:index], kNameKey, nil];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item{
-	if([(NSString*) item isEqualToString:@"Activity"] || [(NSString*) item isEqualToString:@"Issues"])
+	if([[item valueForKey:kNameKey] isEqualToString:@"Activity"] || [[item valueForKey:kNameKey] isEqualToString:@"Issues"])
 	   return NO;
 	return YES;
 }
@@ -174,24 +184,21 @@
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item{
-	if([item isKindOfClass:[NSString class]])
-		return 20.0f;
 	return 20.0f;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
-	[[self projects] count];
-	return item;
+	//[[self projects] count];
+	return [item copy];
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
 }
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item{
-	if(!!item && [item isKindOfClass:[Project class]]){
-		return [[ProjectCell alloc] initTextCell:@"Change Me"];
-	}
-	return [[NSCell alloc] initTextCell:@"Change Me"];
+	if([[item valueForKey:kNameKey] isEqualToString:@"Activity"] || [[item valueForKey:kNameKey] isEqualToString:@"Issues"])
+		return [[SubCell alloc] initTextCell:@"Change Me"];
+	return [[ProjectCell alloc] initTextCell:@"Change Me"];
 }
 
 #pragma mark -
@@ -199,8 +206,6 @@
 - (RedMineSupport*)support{
 	if(!_support){
 		_support = [[RedMineSupport alloc] init];
-		_support.key = @"7ded331bf46dbd35a351dbd4b861cbca09aa7cb0";
-		_support.host = @"67.23.14.25/redmine";
 	}
 	return _support;
 }
