@@ -26,6 +26,8 @@
 		9B674FC511A9D39F00C9BAAD /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B674FC311A9D39F00C9BAAD /* Note.m */; };
 		9B6751CE11A9E8E100C9BAAD /* StatusLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */; };
 		9B6751EF11A9EAE600C9BAAD /* GOLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6751EE11A9EAE600C9BAAD /* GOLogger.m */; };
+		9B8AFB8411AD01FF00C750F1 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B8AFB8311AD01FF00C750F1 /* Sparkle.framework */; };
+		9B8AFBA611AD02EF00C750F1 /* Sparkle.framework in Sparkle */ = {isa = PBXBuildFile; fileRef = 9B8AFB8311AD01FF00C750F1 /* Sparkle.framework */; };
 		9BA93BAE11A7A34F00C7B761 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA93BAD11A7A34F00C7B761 /* CoreData.framework */; };
 		9BA93BB011A7A37B00C7B761 /* Redminer.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */; };
 		9BA93BC611A7A57A00C7B761 /* _Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA93BBD11A7A57A00C7B761 /* _Issue.m */; };
@@ -35,6 +37,20 @@
 		9BBF543411A647650091E3CE /* IssueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF543311A647650091E3CE /* IssueCell.m */; };
 		9BBF551911A65F900091E3CE /* ProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBF551811A65F900091E3CE /* ProjectCell.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9B8AFBA511AD02CC00C750F1 /* Sparkle */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9B8AFBA611AD02EF00C750F1 /* Sparkle.framework in Sparkle */,
+			);
+			name = Sparkle;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -75,6 +91,7 @@
 		9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusLabel.m; sourceTree = "<group>"; };
 		9B6751ED11A9EAE600C9BAAD /* GOLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GOLogger.h; sourceTree = "<group>"; };
 		9B6751EE11A9EAE600C9BAAD /* GOLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GOLogger.m; sourceTree = "<group>"; };
+		9B8AFB8311AD01FF00C750F1 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "../Sparkle 1/Sparkle.framework"; sourceTree = SOURCE_ROOT; };
 		9BA93BAD11A7A34F00C7B761 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Redminer.xcdatamodel; sourceTree = "<group>"; };
 		9BA93BBC11A7A57A00C7B761 /* _Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Issue.h; sourceTree = "<group>"; };
@@ -99,6 +116,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				9BA93BAE11A7A34F00C7B761 /* CoreData.framework in Frameworks */,
 				9B46DD7B11ABA7F2009E522E /* SystemConfiguration.framework in Frameworks */,
+				9B8AFB8411AD01FF00C750F1 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +126,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9B8AFB8311AD01FF00C750F1 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				9BA93BAD11A7A34F00C7B761 /* CoreData.framework */,
 				9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */,
@@ -259,6 +278,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Redminer" */;
 			buildPhases = (
+				9B8AFBA511AD02CC00C750F1 /* Sparkle */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
@@ -362,6 +382,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../Sparkle 1\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -379,6 +404,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../Sparkle 1\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Redminer_Prefix.pch;
