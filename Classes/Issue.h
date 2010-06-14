@@ -14,5 +14,8 @@
 	NSSet *_undefined_keys;
 }
 
-+ (void)checkIssue:(Issue*)i ForDups:(NSManagedObjectContext*)moc_;
++ (Issue*)checkIssue:(Issue*)i ForDups:(NSManagedObjectContext*)moc_;
+- (NSString*)htmlString;
+- (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_;
++ (Issue*)issueWithID:(NSNumber *)an_id inManagedObjectContext:(NSManagedObjectContext*)moc_;
 @end

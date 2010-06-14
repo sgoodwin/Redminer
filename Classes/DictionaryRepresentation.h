@@ -10,6 +10,10 @@
 
 #define kNameKey @"name"
 #define kUpdatedCountKey @"updatedCount"
+#define kDescKey @"desc"
+#define kIDKey @"id"
+#define kSubjectKey @"subject"
+#define kdDoneRatioKey @"done_ratio"
 
 @protocol DictionaryRepresentation
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_;

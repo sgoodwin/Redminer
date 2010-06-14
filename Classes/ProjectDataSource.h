@@ -7,48 +7,26 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "RedMineSupport.h"
 
-typedef enum {
-	RedmineIssues=0,
-	RedmineNewest,
-} RedmineDataSource;
-
-@class RedMineSupport;
-@class IssueDisplay;
+@class IssueDisplayView;
 @class Project;
-@interface ProjectDataSource : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDelegate, NSTableViewDataSource, RedMineSupportDelegate>{
+@interface ProjectDataSource : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource>{
 	NSMutableDictionary *_issues;
-	NSArray *_activity;
 	NSArray *_projects;
 	
-	Project *_selectedProject;
-	
-	RedmineDataSource _type;
-	RedMineSupport *_support;
-	
 	NSOutlineView *_outlineView;
-	NSTableView *_issueTable;
-	IssueDisplay *_issueDisplay;
+	IssueDisplayView *_issueDisplay;
 	
 	NSManagedObjectContext *_moc;
 }
 @property(nonatomic, retain) NSMutableDictionary *issues;
-- (NSArray *)currentIssues;
-- (NSArray *)currentNewest;
-@property(nonatomic, retain) NSArray *activity;
 @property(nonatomic, retain) NSArray *projects;
-
-@property(nonatomic, retain) Project *selectedProject;
-
-@property(nonatomic, assign) RedmineDataSource type;
-@property(nonatomic, retain) RedMineSupport *support;
 
 @property(nonatomic, retain) NSManagedObjectContext *moc;
 
-@property(nonatomic, retain) IBOutlet IssueDisplay *issueDisplay;
+@property(nonatomic, retain) IBOutlet IssueDisplayView *issueDisplay;
 @property(nonatomic, retain) IBOutlet NSOutlineView *outlineView;
-@property(nonatomic, retain) IBOutlet NSTableView *issueTable;
 
 - (IBAction)refresh:(id)sender;
+- (void)reload:(NSNotification*)sender;
 @end

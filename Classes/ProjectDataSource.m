@@ -11,170 +11,92 @@
 #import "Project.h"
 #import "DictionaryRepresentation.h"
 #import "IssueCell.h"
-#import "IssueDisplay.h"
+#import "IssueDisplayView.h"
 #import "ProjectCell.h"
-#import "SubCell.h"
+#import "IssueCell.h"
 #import "CoreDataVendor.h"
+#import "RedminerAppDelegate.h"
+#import "APIOperation.h"
 
 @interface ProjectDataSource(PrivateMethods)
 - (NSString *)errorMessage;
-- (NSString *)labelForSource:(RedmineDataSource)source;
-- (void)newItems:(NSString*)keyPath;
 @end
 
 @implementation ProjectDataSource
 @synthesize issues = _issues;
-@synthesize activity = _activty;
-@synthesize type = _type;
-@synthesize support = _support;
 @synthesize projects = _projects;
-@synthesize selectedProject = _selectedProject;
 @synthesize issueDisplay = _issueDisplay;
 @synthesize outlineView = _outlineView;
-@synthesize issueTable = _issueTable;
 @synthesize moc = _moc;
 
-- (IBAction)refresh:(id)sender{
-	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-		[[self support] performSelectorInBackground:@selector(refresh) withObject:nil];
-	}];
+- (id)init{
+	if((self = [super init])){
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload:) name:kAPIOperationProjects object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload:) name:kAPIOperationIssues object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload:) name:kAPIOperationIssue object:nil];
+	}
+	return self;
 }
 
-- (void)supportDidFinishParsing:(RedMineSupport *)support{
-	[[self issueTable] reloadData];
-	[[self outlineView] reloadData];
+- (IBAction)refresh:(id)sender{
+	APIOperation *op = [APIOperation operationWithType:APIOperationProjects andObjectID:nil];
+	[[NSOperationQueue mainQueue] addOperation:op];
 }
 
 - (NSString*)errorMessage{
 	return @"Polly should not be!";
 }
 
-- (NSString *)labelForSource:(RedmineDataSource)source{
-	switch(source){
-		case RedmineIssues:
-			return @"Issues";
-			break;
-		case RedmineNewest:
-			return @"Newest";
-			break;
-		default:
-			return [self errorMessage];
-			break;
-	}
-}
-
-#pragma mark -
-#pragma mark Table methods
-
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView{
-	switch([self type]){
-		case RedmineIssues:
-			return [[self currentIssues] count];
-			break;
-		case RedmineNewest:
-			return [[self currentNewest] count];
-			break;
-		default:
-			return 0;
-			break;
-	}
-}
-
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex{
-	switch([self type]){
-		case RedmineIssues:
-			return [[[self currentIssues] objectAtIndex:rowIndex] subject];
-			break;
-		case RedmineNewest:
-			return [[[self currentNewest] objectAtIndex:rowIndex] subject];
-			break;
-		default:
-			return nil;
-			break;
-	}
-}
-
-- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row{
-	Issue *i;
-	switch([self type]){
-		case RedmineIssues:
-			i = [[self currentIssues] objectAtIndex:row];
-			NSLog(@"selected issue: %@", i);
-			[i setUpdatedValue:NO];
-			[[self issueDisplay] setCurrentIssue:i];
-			[[self support] getInfoForIssue:i];
-			break;
-		case RedmineNewest:
-			i = [[self currentNewest] objectAtIndex:row];
-			NSLog(@"selected issue: %@", i);
-			[i setUpdatedValue:NO];
-			[[self issueDisplay] setCurrentIssue:i];
-			[[self support] getInfoForIssue:i];
-			break;
-		default:
-			break;
-	}
-	NSError* err= nil;
-	[[self moc] save:&err];
-	if(!!err){
-		NSLog(@"error saving updatedValue:%@", [err localizedDescription]);
-	}
-	return YES;
-}
-
 #pragma mark -
 #pragma mark Outline methods
 
-- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{
-	if([[self labelForSource:RedmineIssues] isEqualToString:[item valueForKey:kNameKey]]){
-		self.type = RedmineIssues;
-	}else{
-		self.type = RedmineNewest;
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{	
+	NSLog(@"Selected item: %@", item);
+	if([item valueForKey:kDescKey]){
+		Issue *i = [Issue issueWithID:[item valueForKey:kIDKey] inManagedObjectContext:[self moc]];
+		APIOperation *op = [APIOperation operationWithType:APIOperationIssueDetail andObjectID:i.objectID];
+		[[NSOperationQueue mainQueue] addOperation:op];
+		
+		[[self issueDisplay] setCurrentIssue:i];
+		RedminerAppDelegate *del = (RedminerAppDelegate*)[[NSApplication sharedApplication] delegate];
+		[del setTitle:[i subject]];
+		
+		return YES;
 	}
-	
-	id parent = [outlineView parentForItem:item];
-	if(!!parent){
-		Project *p = [Project projectWithName:[parent valueForKey:kNameKey] inManagedObjectContext:[self moc]];
-		[self setSelectedProject:p];
-		NSLog(@"Selected project: %@", p);
-	}else{
-		NSLog(@"item :%@", item);
-		Project *p = [Project projectWithName:[item valueForKey:kNameKey] inManagedObjectContext:[self moc]];
-		[self setSelectedProject:p];
-		NSLog(@"Selected project: %@", p);
-	}
-	
-	[[self issueTable] reloadData];
 	return YES;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item{
-	if(!item){
+	if(nil == item){
 		Project *p = [[self projects] objectAtIndex:index];
 		return [p dictVersion:[self moc]];
 	}
 	
-	return [[NSDictionary alloc] initWithObjectsAndKeys:[self labelForSource:index], kNameKey, nil];
+	Project *p = [Project projectWithName:[item valueForKey:kNameKey] inManagedObjectContext:[self moc]];
+	Issue *i = [[p sortedIssues] objectAtIndex:index];
+	return [i dictVersion:[self moc]];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item{
-	if([[item valueForKey:kNameKey] isEqualToString:@"Activity"] || [[item valueForKey:kNameKey] isEqualToString:@"Issues"])
-	   return NO;
+	if([item valueForKey:kDescKey]){
+		return NO;
+	}
 	return YES;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item{
-	if(!!item) return 1;
-	
+	if(item){
+		Project *p = [Project projectWithName:[item valueForKey:kNameKey] inManagedObjectContext:[self moc]];
+		return [[p issues] count];
+	}
 	return [[self projects] count];
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item{
-	return 20.0f;
+	return 60.0f;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
-	//[[self projects] count];
 	return item;
 }
 
@@ -182,57 +104,36 @@
 }
 
 - (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item{
-	[item retain];
-	if([[item valueForKey:kNameKey] isEqualToString:@"Activity"] || [[item valueForKey:kNameKey] isEqualToString:@"Issues"]){
-		[item release];
-		return [[SubCell alloc] initTextCell:@"Change Me"];
-	}
-	[item release];
-	return [[ProjectCell alloc] initTextCell:@"Change Me"];
+	if([item valueForKey:kDescKey])
+		return [[[IssueCell alloc] initTextCell:@"Change Me"] autorelease];
+	
+	return [[[ProjectCell alloc] initTextCell:@"Change Me"] autorelease];
 }
 
 #pragma mark -
 #pragma mark Actual Data:
-- (RedMineSupport*)support{
-	if(!_support){
-		_support = [[RedMineSupport alloc] init];
-		_support.delegate = self;
-	}
-	return _support;
-}
-
-- (NSArray *)currentIssues{
-	if(![self selectedProject]){
-		return [NSArray array];
-	}
-	[[self moc] refreshObject:[self selectedProject] mergeChanges:YES];
-	
-	NSArray *array = [[[self selectedProject] issues] allObjects];
-	if(!array){
-		return [NSArray array];
-	}
-	return array;
-}
-
-- (NSArray *)currentNewest{
-	NSArray *newest = [[self support] updatedIssuesInProject:[self selectedProject]];
-	//NSLog(@"Updated items: %d", (int)[newest count]);
-	return newest;
-}
 
 - (NSArray*)projects{
-	return [[self support] projects];
+	return [Project fetchAllProjects:[self moc]];
 }
 
 - (NSManagedObjectContext*)moc{
-	if(!_moc)
+	if(!_moc){
 		[self setMoc:[CoreDataVendor newManagedObjectContext]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeMoc:) name:NSManagedObjectContextDidSaveNotification object:[[self support] moc]];
+	}
 	return _moc;
 }
 
 - (void)mergeMoc:(NSNotification*)notification{
 	[[self moc] mergeChangesFromContextDidSaveNotification:notification];
-	[self performSelectorOnMainThread:@selector(supportDidFinishParsing:) withObject:nil waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(reload:) withObject:nil waitUntilDone:NO];
+}
+
+- (void)reload:(NSNotification*)sender{
+	NSLog(@"Refreshing! %@", sender);
+	if([[sender name] isEqualToString:kAPIOperationProjects] || [[sender name] isEqualToString:kAPIOperationIssues]){
+		[self.outlineView reloadData];
+	}
+	
 }
 @end

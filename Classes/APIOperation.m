@@ -1,25 +1,25 @@
 //
-//  RedMineSupport.m
+//  APIOperation.m
 //  Redminer
 //
-//  Created by Samuel Ryan Goodwin on 5/13/10.
+//  Created by Samuel Ryan Goodwin on 6/13/10.
 //  Copyright 2010 Goodwinlabs. All rights reserved.
 //
 
-#import "RedMineSupport.h"
+#import "APIOperation.h"
 #import "Project.h"
-#import "Note.h"
 #import "Issue.h"
-#import "NSArrayAdditions.h"
-#import "PreferencesController.h"
-#import "CoreDataVendor.h"
+#import "Note.h"
 #import "GOLogger.h"
 #import <SystemConfiguration/SystemConfiguration.h>
+#import "PreferencesController.h"
+#import "CoreDataVendor.h"
 
-@interface RedMineSupport(PrivateMethods)
+@interface APIOperation(PrivateMethods)
 - (NSString *)key;
 - (NSString *)host;
 - (BOOL)check;
+- (void)save;
 
 - (void)getIssues;
 - (void)getProjects;
@@ -27,158 +27,96 @@
 - (NSSet*)interestingKeys;
 - (void)arrayFromData:(NSData*)data;
 - (id)currentItem;
+
+- (void)setFinished:(BOOL)done;
+- (void)finish;
 @end
 
-@implementation RedMineSupport
-@synthesize moc = _moc;
 
+@implementation APIOperation
+@synthesize issueID = _issueID;
+@synthesize projectID = _projectID;
+@synthesize type;
+
+@synthesize moc = _moc;
 @synthesize currentIssue = _currentIssue;
 @synthesize currentProject = _currentProject;
 @synthesize keyInProgress = _keyInProgress;
 @synthesize textInProgress = _textInProgress;
 @synthesize currentNote = _currentNote;
 
-@synthesize delegate = _delegate;
-
-- (BOOL)check{
-	return (!![self host] && !![self key] && [[self class] hostIsReachable]);
++ (APIOperation *)operationWithType:(APIOperationType)type andObjectID:(NSManagedObjectID*)object_id{
+	APIOperation *op = [[self alloc] init];
+	op.type = type;
+	switch(type){
+		case APIOperationProjects:
+			break;
+		case APIOperationIssuesInProject:
+			op.projectID = (ProjectID*)object_id;
+			break;
+		case APIOperationIssueDetail:
+			op.issueID = (IssueID*)object_id;
+	}
+	return op;
 }
 
-- (NSString*)host{
-	return [[PreferencesController sharedPrefsWindowController] server_location];
++ (NSString*)nameForType:(APIOperationType)aType{
+	switch(aType){
+		case APIOperationProjects:
+			return @"Projects";
+			break;
+		case APIOperationIssuesInProject:
+			return @"Issues in Project";
+			break;
+		case APIOperationIssueDetail:
+			return @"Issue Detail";
+			break;
+		default:
+			return @"Polly should not be!";
+	}
 }
 
-- (NSString*)key{
-	return [[PreferencesController sharedPrefsWindowController] access_key];
-}
-
-- (void)refresh{
-	NSAutoreleasePool *p = [[NSAutoreleasePool alloc] init];
-	[self getProjects];
-	//[self getIssues];
-	
+- (void)save{
 	NSError *err = nil;
-	[[self moc] save:&err];
-	if(!!err){
-		NSLog(@"Failed to save managed object context in redmine support: %@, %@, %@", [err localizedDescription], [err localizedRecoveryOptions], [err localizedFailureReason]);
+	if(![[self moc] save:&err]){
+		NSLog(@"Failed to save! %@",  [err localizedDescription]);
+	}else{
+		NSLog(@"Saved!");
 	}
-	[p release];
 }
 
-- (NSArray*)issues{
-	return [Issue fetchAllIssues:[self moc]];
-}
-
-- (NSArray*)projects{
-	return [Project fetchAllProjects:[self moc]];
-}
-
-- (NSArray*)issuesInProject:(Project*)project{
-	return [[project issues] allObjects];
-}
-
-- (NSArray*)updatedIssuesInProject:(Project*)project{
-	return [project updatedIssues:[self moc]];
-}
-
-- (void)getIssues{
-	if(![self check]){
-		NSLog(@"Unreachable or bad key/host");
-		return;
-	}
-	NSLog(@"Requesting issues");
-	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.xml?key=%@", self.host, self.key];
-	//NSLog(@"Requesting issues");
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
-	[request setHTTPShouldHandleCookies:YES];
-	NSError *err = nil;
-	NSHTTPURLResponse *response = nil;	
-	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-	if([response statusCode] != 200){
-		[GOLogger log:@"Failed to request issues."];
-		return;
-	}
+- (void)start{
+	if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+        return;
+    }
 	
-	if(!!err){
-		NSLog(@"Error: %@", [err localizedDescription]);
-		return;
-	}
+	NSURL *targetURL = nil;
+	Project *project = nil;
+	Issue *i = nil;
 	
-	NSLog(@"parsing data issues");
-	[self arrayFromData:data];
-}
-
-- (void)getInfoForIssue:(Issue*)i{
-	if(![self check]){
-		return;
+	switch(self.type){
+		case APIOperationProjects:
+			[GOLogger log:@"Refreshing projects"];
+			targetURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/projects.xml?key=%@", self.host, self.key]];
+			break;
+		case APIOperationIssuesInProject:
+			project = (Project*)[[self moc] objectWithID:[self projectID]];
+			[GOLogger log:[NSString stringWithFormat:@"Getting issues for project: %@", project]];
+			targetURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/issues.xml?key=%@&project_id=%@&status_id=*", self.host, self.key, project.id]];
+			break;
+		case APIOperationIssueDetail:
+			i = (Issue*)[[self moc] objectWithID:[self issueID]];
+			[GOLogger log:[NSString stringWithFormat:@"Refreshing info for issue: %@", i]];
+			targetURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@/issues/%@.xml?key=%@", self.host, i.id, self.key]];
 	}
-	[GOLogger log:[NSString stringWithFormat:@"Refreshing info for issue: %@", i]];
-	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues/%@.xml?key=%@", self.host, i.id, self.key];
-	//NSLog(@"Requesting issues");
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestString]];// stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
-	[request setHTTPShouldHandleCookies:YES];
-	NSError *err = nil;
-	NSHTTPURLResponse *response = nil;	
-	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-	if([response statusCode] != 200){
-		[GOLogger log:@"Failed to request issue information."];
-		return;
-	}
-	
-	if(!!err){
-		NSLog(@"Error: %@", [err localizedDescription]);
-		return;
-	}
-	NSLog(@"parsing data specific issue");
-	[self arrayFromData:data];
-}
-
-- (void)getProjects{
-	if(![self check]){
-		NSLog(@"Bad host/key/internets");
-		return;
-	}
-	[GOLogger log:@"Refreshing projects"];
-	NSLog(@"Requesting projects");
-	NSString *requestString = [NSString stringWithFormat:@"http://%@/projects.xml?key=%@", self.host, self.key];
-	//NSLog(@"Requesting projects");
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:targetURL];
 	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
 	NSError *err = nil;
 	NSHTTPURLResponse *response = nil;	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
 	if([response statusCode] != 200){
-		[GOLogger log:@"Failed to request projects."];
-		return;
-	}
-	
-	if(!!err){
-		NSLog(@"Error: %@", [err localizedDescription]);
-		return;
-	}
-	
-	//NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	//NSLog(@"datastring: %@", dataString);
-	NSLog(@"parsing data projects");
-	[self arrayFromData:data];
-}
-
-- (void)getIssuesInProject:(Project*)project{
-	if(![self check]){
-		return;
-	}
-	[GOLogger log:[NSString stringWithFormat:@"Getting issues for project: %@", project]];
-	NSString *requestString = [NSString stringWithFormat:@"http://%@/issues.xml?key=%@&project_id=%@&status_id=*", self.host, self.key, project.id];
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[requestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-	//NSLog(@"Requesting Issues in project %@", project);
-	[request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
-	NSError *err = nil;
-	NSHTTPURLResponse *response = nil;	
-	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-	if([response statusCode] != 200){
-		[GOLogger log:[NSString stringWithFormat:@"Failed to request issues in project %@.", project]];
+		[GOLogger log:[NSString stringWithFormat:@"Failed request"]];
 		return;
 	}
 	
@@ -190,14 +128,60 @@
 	//NSLog(@"datastring: %@", dataString);
 	
 	NSLog(@"parsing data issues in project: %@", project);
-	[self arrayFromData:data];
+	[self arrayFromData:data];	
+}
+
+#pragma mark -
+#pragma mark Operation Stuff:
+
+- (NSString*)description{
+	return [NSString stringWithFormat:@"<APIOperation type:%@ issueID: %@ projectID: %@>", [[self class] nameForType:self.type], self.issueID, self.projectID];
+}
+
+- (BOOL)isConcurrent{
+	return YES;
+}
+
+- (BOOL)isExecuting{
+	return _executing;
+}
+
+- (BOOL)isFinished{
+	return _finished;
+}
+
+- (void)setFinished:(BOOL)done{
+	_finished = done;
+	_executing = NO;
+}
+
+- (void)finish{
+	NSLog(@"finishing up %@", self);
+	if(!!_data){
+		[_data release];
+		_data = nil;
+	}
+	[self willChangeValueForKey:@"isFinished"];
+	_finished = YES;
+	[self didChangeValueForKey:@"isFinished"];
 }
 
 
 #pragma mark -
 #pragma mark Instance method creation
 
+- (NSString*)host{
+	return [[PreferencesController sharedPrefsWindowController] server_location];
+}
+
+- (NSString*)key{
+	return [[PreferencesController sharedPrefsWindowController] access_key];
+}
+
 - (void)arrayFromData:(NSData *)data{
+	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSLog(@"DataString: %@", dataString);
+	
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
 	[parser setDelegate:self];
 	[parser parse];
@@ -224,6 +208,7 @@
 	return nil;
 }
 
+
 #pragma mark -
 #pragma mark XML Delegate methods
 
@@ -241,12 +226,21 @@
 		}
 		return;
 	}
-
-	// Special case for the journal info found in an Issue xml request.
-	if([elementName isEqualToString:@"user"] && [attributeDict count] > 0 && self.currentNote){
+	
+	// Special case for the project info found in an Issue xml request.
+	if([elementName isEqualToString:@"project"] && [attributeDict count] > 0 && self.currentIssue){
+		Project *p = [Project projectWithName:[attributeDict valueForKey:@"name"] inManagedObjectContext:[self moc]];
+		//NSLog(@"Special case issue<=>project association: %@", p);
+		if(!!p){
+			[self.currentIssue setProject:p];
+		}
+		return;
+	}
+	
+	// Special case for the assigned_to info found in an Issue xml request.
+	if([elementName isEqualToString:@"assigned_to"] && [attributeDict count] > 0 && self.currentIssue){
 		//NSLog(@"Special case note username: %@", attributeDict);
-		[self.currentNote setIssue:[self currentIssue]];
-		[self.currentNote setName:[attributeDict valueForKey:@"name"]];
+		[self.currentIssue setAssigned_to:[attributeDict valueForKey:@"name"]];
 		return;
 	}	
 	
@@ -278,6 +272,11 @@
         return;
     }
 	
+	// special case for the name field in Notes
+	if([elementName isEqualToString:@"user"] && self.currentNote){
+		self.currentNote.name = [attributeDict valueForKey:@"name"];
+	}
+	
     // Is it the title/url for the current item?
     if ([self.interestingKeys containsObject:elementName]) {
         self.keyInProgress = [elementName copy];
@@ -296,39 +295,40 @@
 		return;
 	}
 	
-	if ([elementName isEqualToString:@"projects"]){
-		[[Project fetchAllProjects:[self moc]] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL* stop){
-			[GOLogger log:[NSString stringWithFormat:@"Getting issues for project: %@", (Project*)obj]];
-			[self getIssuesInProject:(Project*)obj];
-			return;
-		}];
-	}
-	
     if ([elementName isEqualToString:@"issue"]) {
 		//NSLog(@"finished Issue: %@", [[self currentIssue] description]);
         // Clear the current item
 		
 		[Issue checkIssue:[self currentIssue] ForDups:[self moc]];
 		//[self didChangeValueForKey:@"issues"];
+		[self save];
+		APIOperation *op = [[self class] operationWithType:APIOperationIssueDetail andObjectID:[[self currentIssue] objectID]];
+		[[NSOperationQueue mainQueue] addOperation:op];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssue object:[self currentIssue]];
 		
         [_currentIssue release];
         self.currentIssue = nil;
         return;
     }
-
+	
 	
 	// Is the current project complete?
     if ([elementName isEqualToString:@"project"] && ![self currentIssue]) {		
 		//NSLog(@"finished Project: %@", [self currentProject]);
         // Clear the current item
-		[Project checkProject:[self currentProject] ForDups:[self moc]];
+		Project *p = [Project checkProject:[self currentProject] ForDups:[self moc]];
 		//[self didChangeValueForKey:@"projects"];
+		[self save];
+		
+		APIOperation *op = [[self class] operationWithType:APIOperationIssuesInProject andObjectID:[p objectID]];
+		[[NSOperationQueue mainQueue] addOperation:op];
 		
         [_currentProject release];
         self.currentProject = nil;
         return;
     }
-
+	
 	// Is the current journal complete?
     if ([elementName isEqualToString:@"journal"]) {
 		//NSLog(@"finished Journal: %@", [self currentNote]);
@@ -341,7 +341,13 @@
         self.currentNote = nil;
         return;
     }
-		
+	
+	if([elementName isEqualToString:@"projects"]){
+		[self save];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationProjects object:nil];
+		return;
+	}
+	
     // Is the current key complete?
     if ([elementName isEqualToString:self.keyInProgress]) {
 		NSNumber *number = [NSNumber numberWithInt:[self.textInProgress intValue]];
@@ -367,11 +373,7 @@
 -(void)parserDidEndDocument:(NSXMLParser *)parser{
 	NSLog(@"Finished parsing");
 	[GOLogger log:@"Ready"];
-	NSError *err = nil;
-	if(![[self moc] save:&err]){
-		NSLog(@"Failed to save! %@",  [err localizedDescription]);
-	}
-	[[self delegate] performSelectorOnMainThread:@selector(supportDidFinishParsing:) withObject:self waitUntilDone:NO];
+	[self finish];	
 }
 
 // This method can get called multiple times for the

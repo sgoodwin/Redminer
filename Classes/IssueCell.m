@@ -8,6 +8,7 @@
 
 #import "IssueCell.h"
 #import "Issue.h"
+#import "DictionaryRepresentation.h"
 
 @implementation IssueCell
 
@@ -17,19 +18,17 @@
 	
 	[[NSColor whiteColor] set];
 	
-	Issue *issue = (Issue*)[self objectValue];
-	
 	NSArray *objects = [NSArray arrayWithObjects:[NSFont fontWithName:@"Ohlfs" size:12], [NSColor whiteColor],nil];
 	NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
     NSDictionary * dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 	
 	NSRect subjectRect = NSInsetRect(cellFrame, 20.0f, 20.0f);
-	[[issue subject] drawInRect:subjectRect withAttributes:dict];
+	[[self.objectValue valueForKey:kSubjectKey] drawInRect:subjectRect withAttributes:dict];
 	
 	NSPoint donePoint = cellFrame.origin;
 	donePoint.x += 10.0f;
 	donePoint.y += cellFrame.size.height-20.0f;
-	NSString *doneString = [NSString stringWithFormat:@"%@/100", [issue done_ratio]];
+	NSString *doneString = [NSString stringWithFormat:@"%@/100", [self.objectValue valueForKey:kdDoneRatioKey]];
 	[doneString drawAtPoint:donePoint withAttributes:dict];
 	[gradient release];
 	return;

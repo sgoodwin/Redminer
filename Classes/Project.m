@@ -7,7 +7,6 @@
 //
 
 #import "Project.h"
-#import "RedMineSupport.h"
 
 @implementation Project
 
@@ -20,16 +19,11 @@
 	NSLog(@"Project couldn't hold onto key: %@", _undefined_keys);
 }
 
-+ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_ fromSupport:(RedMineSupport*)support{
++ (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_{
 	Project *p = [[self class] insertInManagedObjectContext:moc_];
 	[p setName:[jsonDict valueForKey:@"name"]];
 	[p setId:[jsonDict valueForKey:@"id"]];
 	[p setDesc:[jsonDict valueForKey:@"description"]];
-	
-	NSError *err = nil;
-	if([p validateForInsert:&err]){
-		[support getIssuesInProject:p];
-	}
 	return p;
 }
 
@@ -51,7 +45,7 @@
 	return nil;
 }
 
-+ (void)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_{
++ (Project *)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_{
 	NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
 	[fetch setEntity:[self entityInManagedObjectContext:moc_]];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"id = %@", p.id];
@@ -62,16 +56,28 @@
 	[fetch release];
 	if([results count] > 1){
 		NSSet *issues = [p issues];
-		// This is a duplicate object and should be deleted. The original should be marked as new as well.
-		Project *old = nil;
+		NSString *desc = [p desc];
+		NSNumber *an_id = [p id];
+		NSString *name = [p name];
+		
 		for(Project *project in results){
-			if(![project isEqualTo:p]){
-				old = [project retain];
-				[old addIssues:issues];
-				[moc_ deleteObject:p];
-			}
+			[moc_ deleteObject:project];
 		}
+		
+		Project *new = [[self class] insertInManagedObjectContext:moc_];
+		[new setIssues:issues];
+		[new setDesc:desc];
+		[new setName:name];
+		new.id = an_id;
+		
+		NSError *err = nil;
+		if(![moc_ save:&err]){
+			NSLog(@"Failed to save updated project!");
+		}
+		
+		return new;
 	}
+	return p;
 }
 
 - (NSArray*)updatedIssues:(NSManagedObjectContext*)moc_{
@@ -90,9 +96,24 @@
 	return results;
 }
 
+- (NSArray*)sortedIssues{
+	NSArray *array = [[self issues] allObjects];
+	return [array sortedArrayUsingComparator: ^(id obj1, id obj2) {
+		
+		if ([(Issue*)obj1 id] > [(Issue*)obj2 id]) {
+			return (NSComparisonResult)NSOrderedDescending;
+		}
+		
+		if ([(Issue*)obj1 id] < [(Issue*)obj2 id]) {
+			return (NSComparisonResult)NSOrderedAscending;
+		}
+		return (NSComparisonResult)NSOrderedSame;
+	}];
+}
+
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_{
-	NSArray *values = [NSArray arrayWithObjects:self.name, [NSNumber numberWithUnsignedInteger:[self updatedIssues:moc_].count], nil];
-	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kUpdatedCountKey, nil];
+	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self updatedIssues:moc_].count], nil];
+	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kUpdatedCountKey, nil];
 	return [[NSDictionary alloc] initWithObjects:values forKeys:keys];
 }
 @end

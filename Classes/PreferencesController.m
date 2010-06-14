@@ -23,7 +23,7 @@ static PreferencesController *sharedPrefs = nil;
 	NSString* key = [[NSUserDefaults standardUserDefaults] valueForKey:@"access_key"];
 	if(!key){
 		NSAlert *alert = [[NSAlert alloc] init];
-		[alert setMessageText:@"Missing your access key!"];
+		[alert setMessageText:@"Missing your Redmine access key!"];
 		[alert runModal];
 		[alert release];
 	}
@@ -34,7 +34,7 @@ static PreferencesController *sharedPrefs = nil;
 	NSString *loc = [[NSUserDefaults standardUserDefaults] valueForKey:@"server_location"];
 	if(!loc){
 		NSAlert *alert = [[NSAlert alloc] init];
-		[alert setMessageText:@"Missing your server location!"];
+		[alert setMessageText:@"Missing your Redmine server location!"];
 		[alert runModal];
 		[alert release];
 	}

@@ -1,18 +1,19 @@
 //
-//  IssueDisplay.h
+//  IssueDisplayView.h
 //  Redminer
 //
-//  Created by Samuel Ryan Goodwin on 5/24/10.
+//  Created by Samuel Ryan Goodwin on 6/13/10.
 //  Copyright 2010 Goodwinlabs. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
+#import <WebKit/WebKit.h>
 
 @class Issue;
-@interface IssueDisplay : NSView {
+@interface IssueDisplayView : WebView {
 	Issue *_currentIssue;
-	NSTextField *_textBox;
 }
 @property(nonatomic, retain) Issue *currentIssue;
-@property(nonatomic, retain) IBOutlet NSTextField *textBox;
+
+- (void)setCurrentIssue:(Issue*)i;
 @end

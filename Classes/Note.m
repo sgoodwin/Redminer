@@ -9,6 +9,10 @@
 	return [NSString stringWithFormat:@"<Note id:%@ name:%@ notes length:%d>", self.id, self.name, [self.notes length]];
 }
 
+- (NSString*)htmlString{
+	return [NSString stringWithFormat:@"id: %@ name:%@ note: %@", self.id, self.name, self.notes];
+}
+
 + (void)checkNote:(Note*)n ForDups:(NSManagedObjectContext*)moc_{
 	NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
 	[fetch setEntity:[self entityInManagedObjectContext:moc_]];
@@ -33,6 +37,8 @@
 - (NSSet*)interestingKeys{
 	return [NSSet setWithObjects:@"notes", nil];
 }
+
+
 
 - (BOOL)isEqualTo:(id)object{
 	BOOL yesNo = YES;

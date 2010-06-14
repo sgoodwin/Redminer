@@ -4,4 +4,5 @@
 // Custom logic goes here.
 
 + (void)checkNote:(Note*)n ForDups:(NSManagedObjectContext*)moc_;
+- (NSString*)htmlString;
 @end

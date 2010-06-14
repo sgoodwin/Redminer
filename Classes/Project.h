@@ -15,6 +15,7 @@
 }
 
 + (Project*)projectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext*)moc_;
-+ (void)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_;
++ (Project *)checkProject:(Project*)p ForDups:(NSManagedObjectContext*)moc_;
 - (NSArray*)updatedIssues:(NSManagedObjectContext*)moc_;
+- (NSArray*)sortedIssues;
 @end

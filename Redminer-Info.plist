@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SUEnableSystemProfiling</key>
+	<string>YES</string>
+	<key>SUFeedURL</key>
+	<string>http://0.0.0.0:9292/apps/1.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>id_dsa.pub</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>

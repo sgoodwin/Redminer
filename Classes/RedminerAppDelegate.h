@@ -20,4 +20,5 @@
 @property (assign) IBOutlet NSTextField *textField;
 
 - (IBAction)openPreferencesWindow:(id)sender;
+- (void)setTitle:(NSString*)title;
 @end
