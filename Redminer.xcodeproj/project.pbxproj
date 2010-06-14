@@ -11,7 +11,6 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		9B0E0B9D11AB341D000432DC /* SubCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0E0B9C11AB341D000432DC /* SubCell.m */; };
 		9B154EAE11C539F7009EA276 /* IssueDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B154EAD11C539F7009EA276 /* IssueDisplayView.m */; };
 		9B154EB211C53A40009EA276 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B154EB111C53A40009EA276 /* WebKit.framework */; };
 		9B33646111C5F4B800447412 /* APIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B33646011C5F4B800447412 /* APIOperation.m */; };
@@ -63,8 +62,6 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Redminer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Redminer-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Redminer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redminer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B0E0B9B11AB341D000432DC /* SubCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubCell.h; sourceTree = "<group>"; };
-		9B0E0B9C11AB341D000432DC /* SubCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubCell.m; sourceTree = "<group>"; };
 		9B0E0BBB11AB34A5000432DC /* DictionaryRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryRepresentation.h; sourceTree = "<group>"; };
 		9B154EAC11C539F7009EA276 /* IssueDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IssueDisplayView.h; sourceTree = "<group>"; };
 		9B154EAD11C539F7009EA276 /* IssueDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IssueDisplayView.m; sourceTree = "<group>"; };
@@ -262,8 +259,6 @@
 				9BBF551811A65F900091E3CE /* ProjectCell.m */,
 				9B6751CC11A9E8E100C9BAAD /* StatusLabel.h */,
 				9B6751CD11A9E8E100C9BAAD /* StatusLabel.m */,
-				9B0E0B9B11AB341D000432DC /* SubCell.h */,
-				9B0E0B9C11AB341D000432DC /* SubCell.m */,
 				9B46DCD011ABA087009E522E /* PreferencesController.h */,
 				9B46DCD111ABA087009E522E /* PreferencesController.m */,
 				9B154EAC11C539F7009EA276 /* IssueDisplayView.h */,
@@ -348,7 +343,6 @@
 				9B674FC511A9D39F00C9BAAD /* Note.m in Sources */,
 				9B6751CE11A9E8E100C9BAAD /* StatusLabel.m in Sources */,
 				9B6751EF11A9EAE600C9BAAD /* GOLogger.m in Sources */,
-				9B0E0B9D11AB341D000432DC /* SubCell.m in Sources */,
 				9B46DCD211ABA087009E522E /* PreferencesController.m in Sources */,
 				9B154EAE11C539F7009EA276 /* IssueDisplayView.m in Sources */,
 				9B33646111C5F4B800447412 /* APIOperation.m in Sources */,
