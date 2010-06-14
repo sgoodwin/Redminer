@@ -51,7 +51,9 @@
 		
 		[moc_ deleteObject:i];
 		for(Issue *issue in results){
-			[moc_ deleteObject:issue];
+			//if([[issue objectID] isEqual:[i objectID]]){
+				[moc_ deleteObject:issue];
+			//}
 		}
 		
 		Issue *new = [Issue insertInManagedObjectContext:moc_];

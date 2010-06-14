@@ -86,10 +86,10 @@
 }
 
 - (void)start{
-	if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
-        return;
-    }
+	//if (![NSThread isMainThread]) {
+//        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+//        return;
+//    }
 	
 	NSURL *targetURL = nil;
 	Project *project = nil;
@@ -127,7 +127,7 @@
 	//NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	//NSLog(@"datastring: %@", dataString);
 	
-	NSLog(@"parsing data issues in project: %@", project);
+	NSLog(@"parsing data: %@", project);
 	[self arrayFromData:data];	
 }
 
@@ -299,30 +299,29 @@
 		//NSLog(@"finished Issue: %@", [[self currentIssue] description]);
         // Clear the current item
 		
-		[Issue checkIssue:[self currentIssue] ForDups:[self moc]];
+		Issue *i = [Issue checkIssue:[self currentIssue] ForDups:[self moc]];
 		//[self didChangeValueForKey:@"issues"];
 		[self save];
-		APIOperation *op = [[self class] operationWithType:APIOperationIssueDetail andObjectID:[[self currentIssue] objectID]];
-		[[NSOperationQueue mainQueue] addOperation:op];
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssue object:[self currentIssue]];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssue object:i.objectID];
 		
         [_currentIssue release];
         self.currentIssue = nil;
         return;
     }
 	
+	if([elementName isEqualToString:@"issues"]){
+		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssues object:nil];
+		return;
+	}
 	
 	// Is the current project complete?
     if ([elementName isEqualToString:@"project"] && ![self currentIssue]) {		
 		//NSLog(@"finished Project: %@", [self currentProject]);
         // Clear the current item
-		Project *p = [Project checkProject:[self currentProject] ForDups:[self moc]];
+		[Project checkProject:[self currentProject] ForDups:[self moc]];
 		//[self didChangeValueForKey:@"projects"];
 		[self save];
-		
-		APIOperation *op = [[self class] operationWithType:APIOperationIssuesInProject andObjectID:[p objectID]];
-		[[NSOperationQueue mainQueue] addOperation:op];
 		
         [_currentProject release];
         self.currentProject = nil;

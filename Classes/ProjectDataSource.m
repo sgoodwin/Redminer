@@ -51,18 +51,21 @@
 #pragma mark Outline methods
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{	
-	NSLog(@"Selected item: %@", item);
 	if([item valueForKey:kDescKey]){
 		Issue *i = [Issue issueWithID:[item valueForKey:kIDKey] inManagedObjectContext:[self moc]];
 		APIOperation *op = [APIOperation operationWithType:APIOperationIssueDetail andObjectID:i.objectID];
 		[[NSOperationQueue mainQueue] addOperation:op];
 		
-		[[self issueDisplay] setCurrentIssue:i];
+		[[self issueDisplay] setCurrentIssueID:i.objectID];
 		RedminerAppDelegate *del = (RedminerAppDelegate*)[[NSApplication sharedApplication] delegate];
 		[del setTitle:[i subject]];
 		
 		return YES;
 	}
+	
+	Project *p = [Project projectWithName:[item valueForKey:kNameKey] inManagedObjectContext:[self moc]];
+	APIOperation *op = [APIOperation operationWithType:APIOperationIssuesInProject andObjectID:[p objectID]];
+	[[NSOperationQueue mainQueue] addOperation:op];
 	return YES;
 }
 
@@ -133,7 +136,11 @@
 	NSLog(@"Refreshing! %@", sender);
 	if([[sender name] isEqualToString:kAPIOperationProjects] || [[sender name] isEqualToString:kAPIOperationIssues]){
 		[self.outlineView reloadData];
+		return;
 	}
 	
+	if([[sender name] isEqualToString:kAPIOperationIssue]){
+		[[self issueDisplay] setCurrentIssueID:(IssueID*)[sender object]];
+	}
 }
 @end

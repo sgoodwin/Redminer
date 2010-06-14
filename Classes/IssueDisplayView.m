@@ -8,17 +8,33 @@
 
 #import "IssueDisplayView.h"
 #import "Issue.h"
+#import "CoreDataVendor.h"
 
 @implementation IssueDisplayView
-@synthesize currentIssue = _currentIssue;
+@synthesize currentIssueID = _currentIssueID;
+@synthesize moc = _moc;
 
-- (void)setCurrentIssue:(Issue*)i {
+- (NSManagedObjectContext*)moc{
+	if(!_moc){
+		[self setMoc:[CoreDataVendor newManagedObjectContext]];
+	}
+	return _moc;
+}
+
+- (void)reloadIssue{
+	Issue *i = (Issue*)[[self moc] objectWithID:[self currentIssueID]];
+	[[self mainFrame] loadHTMLString:[i htmlString] baseURL:nil];
+}
+
+- (void)setCurrentIssue:(IssueID*)i {
 	NSLog(@"New issue: %@", i);
 	
-	[_currentIssue release];
-	_currentIssue = nil;
-	_currentIssue = [i retain];
-	[[self mainFrame] loadHTMLString:[i htmlString] baseURL:nil];
+	[_currentIssueID release];
+	_currentIssueID = nil;
+	_currentIssueID = [i retain];
+	
+	Issue *issue = (Issue*)[[self moc] objectWithID:[self currentIssueID]];
+	[[self mainFrame] loadHTMLString:[issue htmlString] baseURL:nil];
 }
 
 @end

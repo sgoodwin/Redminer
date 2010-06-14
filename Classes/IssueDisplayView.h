@@ -9,11 +9,15 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-@class Issue;
+@class IssueID;
 @interface IssueDisplayView : WebView {
-	Issue *_currentIssue;
+	IssueID *_currentIssueID;
+	
+	NSManagedObjectContext *_moc;
 }
-@property(nonatomic, retain) Issue *currentIssue;
+@property(nonatomic, retain) IssueID *currentIssueID;
+@property(nonatomic, retain) NSManagedObjectContext *moc;
 
-- (void)setCurrentIssue:(Issue*)i;
+- (void)setCurrentIssueID:(IssueID*)i;
+- (void)reloadIssue;
 @end
