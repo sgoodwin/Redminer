@@ -22,18 +22,26 @@
 }
 
 - (void)reloadIssue{
-	Issue *i = (Issue*)[[self moc] objectWithID:[self currentIssueID]];
-	[[self mainFrame] loadHTMLString:[i htmlString] baseURL:nil];
+	if(![NSThread isMainThread]){
+		[self performSelectorOnMainThread:@selector(reloadIssue) withObject:nil waitUntilDone:NO];
+		return;
+	}
+	Issue *issue = [Issue issueWithID:[self currentIssueID] inManagedObjectContext:[self moc]];
+	[[self mainFrame] loadHTMLString:[issue htmlString] baseURL:nil];
 }
 
-- (void)setCurrentIssue:(IssueID*)i {
-	NSLog(@"New issue: %@", i);
+- (void)setCurrentIssueID:(NSNumber*)idnumber{	
+	if(![NSThread isMainThread]){
+		[self performSelectorOnMainThread:@selector(setCurrentIssueID:) withObject:idnumber waitUntilDone:NO];
+		return;
+	}
+
 	
 	[_currentIssueID release];
 	_currentIssueID = nil;
-	_currentIssueID = [i retain];
+	_currentIssueID = [idnumber retain];
 	
-	Issue *issue = (Issue*)[[self moc] objectWithID:[self currentIssueID]];
+	Issue *issue = [Issue issueWithID:idnumber inManagedObjectContext:[self moc]];
 	[[self mainFrame] loadHTMLString:[issue htmlString] baseURL:nil];
 }
 

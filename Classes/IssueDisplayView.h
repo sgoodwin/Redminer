@@ -11,13 +11,13 @@
 
 @class IssueID;
 @interface IssueDisplayView : WebView {
-	IssueID *_currentIssueID;
+	NSNumber *_currentIssueID;
 	
 	NSManagedObjectContext *_moc;
 }
-@property(nonatomic, retain) IssueID *currentIssueID;
+@property(nonatomic, retain) NSNumber *currentIssueID;
 @property(nonatomic, retain) NSManagedObjectContext *moc;
 
-- (void)setCurrentIssueID:(IssueID*)i;
+- (void)setCurrentIssueID:(NSNumber*)idnumber;
 - (void)reloadIssue;
 @end

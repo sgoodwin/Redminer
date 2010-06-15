@@ -17,6 +17,32 @@
 
 @implementation Issue
 
++ (void)deleteIssuesWithRedmineID:(NSNumber*)anId inManagedObjectContext:(NSManagedObjectContext*)moc_ butNotIssueID:(NSManagedObjectID*)issueID{
+	NSFetchRequest *request = [[NSFetchRequest alloc]  init];
+	[request setEntity:[NSEntityDescription entityForName:NSStringFromClass(self) inManagedObjectContext:moc_]];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"id == %@", anId];
+	[request setPredicate:predicate];
+	
+	NSError *err = nil;
+	NSArray *results = [moc_ executeFetchRequest:request error:&err];
+	[request release];
+	if(results && [results count] > 1){
+		Issue *i = (Issue*)[moc_ objectWithID:issueID];
+		[i setUpdatedValue:YES];
+		for(Issue *issue in results){
+			if([[issue objectID] isNotEqualTo:issueID]){
+				[moc_ deleteObject:issue];
+			}
+		}
+		
+		NSError *err = nil;
+		if(![moc_ save:&err]){
+			NSLog(@"Failed to save issue dups: %@", [err localizedDescription]);
+		}
+	}
+	
+}
+
 + (id)fromJSONDictionary:(NSDictionary *)jsonDict toManagedObjectContext:(NSManagedObjectContext*)moc_{
 	Issue *i = [[self class] insertInManagedObjectContext:moc_];
 	i.subject = [jsonDict valueForKey:@"subject"];
@@ -133,17 +159,6 @@
 	return html;
 }
 
-/*- (id)copyWithZone:(NSZone *)zone{
-    Issue *copy = [[[self class] allocWithZone:zone] init];
-    [copy setAssigned_to_id:[self assigned_to_id]];
-	[copy setSubject:[self subject]];
-	[copy setDone_ratio:[self done_ratio]];
-	[copy setId:[self id]];
-	[copy setDesc:[self desc]];
-	
-    return copy;
-}*/
-
 - (NSSet*)interestingKeys{
 	return [NSSet setWithObjects:@"assigned_to", @"category", @"done_ratio", @"priority", @"status", @"tracker", @"id", nil];
 }
@@ -167,8 +182,9 @@
 	NSError *err = nil;
 	NSArray *results = [moc_ executeFetchRequest:request error:&err];
 	[request release];
-	if(!!results && [results count] > 0)
+	if(!!results && [results count] > 0){
 		return [results objectAtIndex:0];
+	}
 	return nil;
 }
 

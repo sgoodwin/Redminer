@@ -15,6 +15,7 @@
 }
 
 + (Issue*)checkIssue:(Issue*)i ForDups:(NSManagedObjectContext*)moc_;
++ (void)deleteIssuesWithRedmineID:(NSNumber*)anId inManagedObjectContext:(NSManagedObjectContext*)moc_ butNotIssueID:(NSManagedObjectID*)issueID;
 - (NSString*)htmlString;
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_;
 + (Issue*)issueWithID:(NSNumber *)an_id inManagedObjectContext:(NSManagedObjectContext*)moc_;

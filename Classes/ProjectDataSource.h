@@ -18,6 +18,8 @@
 	IssueDisplayView *_issueDisplay;
 	
 	NSManagedObjectContext *_moc;
+	
+	NSOperationQueue *_internetQueue;
 }
 @property(nonatomic, retain) NSMutableDictionary *issues;
 @property(nonatomic, retain) NSArray *projects;
@@ -26,6 +28,8 @@
 
 @property(nonatomic, retain) IBOutlet IssueDisplayView *issueDisplay;
 @property(nonatomic, retain) IBOutlet NSOutlineView *outlineView;
+
+@property(nonatomic, retain) NSOperationQueue *internetQueue;
 
 - (IBAction)refresh:(id)sender;
 - (void)reload:(NSNotification*)sender;

@@ -20,6 +20,7 @@
 
 @interface ProjectDataSource(PrivateMethods)
 - (NSString *)errorMessage;
+- (BOOL (^)(id obj, NSUInteger idx, BOOL *stop))projectTestingForName:(NSString*)name;
 @end
 
 @implementation ProjectDataSource
@@ -28,6 +29,7 @@
 @synthesize issueDisplay = _issueDisplay;
 @synthesize outlineView = _outlineView;
 @synthesize moc = _moc;
+@synthesize internetQueue = _internetQueue;
 
 - (id)init{
 	if((self = [super init])){
@@ -40,7 +42,7 @@
 
 - (IBAction)refresh:(id)sender{
 	APIOperation *op = [APIOperation operationWithType:APIOperationProjects andObjectID:nil];
-	[[NSOperationQueue mainQueue] addOperation:op];
+	[[self internetQueue] addOperation:op];
 }
 
 - (NSString*)errorMessage{
@@ -56,7 +58,7 @@
 		APIOperation *op = [APIOperation operationWithType:APIOperationIssueDetail andObjectID:i.objectID];
 		[[NSOperationQueue mainQueue] addOperation:op];
 		
-		[[self issueDisplay] setCurrentIssueID:i.objectID];
+		[[self issueDisplay] setCurrentIssueID:i.id];
 		RedminerAppDelegate *del = (RedminerAppDelegate*)[[NSApplication sharedApplication] delegate];
 		[del setTitle:[i subject]];
 		
@@ -90,13 +92,15 @@
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item{
 	if(item){
 		Project *p = [Project projectWithName:[item valueForKey:kNameKey] inManagedObjectContext:[self moc]];
-		return [[p issues] count];
+		return [[p sortedIssues] count];
 	}
 	return [[self projects] count];
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item{
-	return 60.0f;
+	//if(item && [item valueForKey:kNameKey])
+		return 30.0f;
+	//return 60.0f;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{
@@ -116,6 +120,16 @@
 #pragma mark -
 #pragma mark Actual Data:
 
+- (NSOperationQueue*)internetQueue{
+	if(_internetQueue)
+		return _internetQueue;
+	
+	_internetQueue = [[NSOperationQueue alloc] init];
+	[_internetQueue setName:@"internets"];
+	[_internetQueue setMaxConcurrentOperationCount:1];
+	return _internetQueue;
+}
+
 - (NSArray*)projects{
 	return [Project fetchAllProjects:[self moc]];
 }
@@ -132,15 +146,35 @@
 	[self performSelectorOnMainThread:@selector(reload:) withObject:nil waitUntilDone:NO];
 }
 
+- (BOOL (^)(id obj, NSUInteger idx, BOOL *stop))projectTestingForName:(NSString*)name {
+    return [[^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([[obj objectForKey:kNameKey] isEqualToString:name]) {
+			*stop = YES;
+			return YES;
+        }
+        return NO;
+    } copy] autorelease];
+}
+
 - (void)reload:(NSNotification*)sender{
-	NSLog(@"Refreshing! %@", sender);
-	if([[sender name] isEqualToString:kAPIOperationProjects] || [[sender name] isEqualToString:kAPIOperationIssues]){
+	if([[sender name] isEqualToString:kAPIOperationProjects]){
 		[self.outlineView reloadData];
 		return;
 	}
 	
+	if([[sender name] isEqualToString:kAPIOperationIssues]){
+		// Reload only the index with the project we got new data for.
+		NSLog(@"Sender object: %@", [sender object]);
+		if([sender object]){
+			NSInteger index = [[self projects] indexOfObjectPassingTest:[self projectTestingForName:[sender object]]];
+			[self.outlineView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:index] columnIndexes:[NSIndexSet indexSetWithIndex:0]];
+		}else{
+			[self.outlineView reloadData];
+		}
+	}
+	
 	if([[sender name] isEqualToString:kAPIOperationIssue]){
-		[[self issueDisplay] setCurrentIssueID:(IssueID*)[sender object]];
+		[[self issueDisplay] reloadIssue];
 	}
 }
 @end

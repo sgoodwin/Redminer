@@ -7,6 +7,7 @@
 //
 
 #import "Project.h"
+#import "Issue.h"
 
 @implementation Project
 
@@ -100,11 +101,11 @@
 	NSArray *array = [[self issues] allObjects];
 	return [array sortedArrayUsingComparator: ^(id obj1, id obj2) {
 		
-		if ([(Issue*)obj1 id] > [(Issue*)obj2 id]) {
+		if ([(Issue*)obj1 done_ratioValue] > [(Issue*)obj2 done_ratioValue]) {
 			return (NSComparisonResult)NSOrderedDescending;
 		}
 		
-		if ([(Issue*)obj1 id] < [(Issue*)obj2 id]) {
+		if ([(Issue*)obj1 done_ratioValue] < [(Issue*)obj2 done_ratioValue]) {
 			return (NSComparisonResult)NSOrderedAscending;
 		}
 		return (NSComparisonResult)NSOrderedSame;

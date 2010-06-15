@@ -80,8 +80,6 @@
 	NSError *err = nil;
 	if(![[self moc] save:&err]){
 		NSLog(@"Failed to save! %@",  [err localizedDescription]);
-	}else{
-		NSLog(@"Saved!");
 	}
 }
 
@@ -296,14 +294,11 @@
 	}
 	
     if ([elementName isEqualToString:@"issue"]) {
-		//NSLog(@"finished Issue: %@", [[self currentIssue] description]);
-        // Clear the current item
-		
-		Issue *i = [Issue checkIssue:[self currentIssue] ForDups:[self moc]];
-		//[self didChangeValueForKey:@"issues"];
+		[[self currentProject] addIssuesObject:[self currentIssue]];
 		[self save];
+		[Issue deleteIssuesWithRedmineID:[[self currentIssue] id] inManagedObjectContext:[self moc] butNotIssueID:[[self currentIssue] objectID]];
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssue object:i.objectID];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssue object:[[self currentIssue] id]];
 		
         [_currentIssue release];
         self.currentIssue = nil;
@@ -311,7 +306,11 @@
     }
 	
 	if([elementName isEqualToString:@"issues"]){
-		[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssues object:nil];
+		if([self currentProject]){
+			[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssues object:[[self currentProject] name]];
+		}else{
+			[[NSNotificationCenter defaultCenter] postNotificationName:kAPIOperationIssues object:nil];
+		}
 		return;
 	}
 	
@@ -319,9 +318,12 @@
     if ([elementName isEqualToString:@"project"] && ![self currentIssue]) {		
 		//NSLog(@"finished Project: %@", [self currentProject]);
         // Clear the current item
-		[Project checkProject:[self currentProject] ForDups:[self moc]];
+		Project *p = [Project checkProject:[self currentProject] ForDups:[self moc]];
 		//[self didChangeValueForKey:@"projects"];
 		[self save];
+		
+		APIOperation *op = [APIOperation operationWithType:APIOperationIssuesInProject andObjectID:[p objectID]];
+		[[NSOperationQueue currentQueue] addOperation:op];
 		
         [_currentProject release];
         self.currentProject = nil;

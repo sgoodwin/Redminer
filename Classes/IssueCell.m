@@ -13,24 +13,20 @@
 @implementation IssueCell
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView{
-	NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor grayColor] endingColor:[NSColor darkGrayColor]];
-	[gradient drawInRect:cellFrame angle:90.0f];
+	//NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor grayColor] endingColor:[NSColor darkGrayColor]];
+//	[gradient drawInRect:cellFrame angle:90.0f];
+//	
+//	[[NSColor whiteColor] set];
 	
-	[[NSColor whiteColor] set];
-	
-	NSArray *objects = [NSArray arrayWithObjects:[NSFont fontWithName:@"Ohlfs" size:12], [NSColor whiteColor],nil];
+	NSArray *objects = [NSArray arrayWithObjects:[NSFont fontWithName:@"Arial Black" size:10.0f], [NSColor blackColor],nil];
 	NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
     NSDictionary * dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 	
-	NSRect subjectRect = NSInsetRect(cellFrame, 20.0f, 20.0f);
-	[[self.objectValue valueForKey:kSubjectKey] drawInRect:subjectRect withAttributes:dict];
-	
-	NSPoint donePoint = cellFrame.origin;
-	donePoint.x += 10.0f;
-	donePoint.y += cellFrame.size.height-20.0f;
-	NSString *doneString = [NSString stringWithFormat:@"%@/100", [self.objectValue valueForKey:kdDoneRatioKey]];
-	[doneString drawAtPoint:donePoint withAttributes:dict];
-	[gradient release];
+	NSRect subjectRect = NSIntegralRect(NSInsetRect(cellFrame, 5.0f, 5.0f));
+	NSRect countRect = NSIntegralRect(NSMakeRect(cellFrame.origin.x+cellFrame.size.width-50.0f, cellFrame.origin.y+5.0f, subjectRect.size.width, subjectRect.size.height));
+	[[[self objectValue] valueForKey:kSubjectKey] drawInRect:subjectRect withAttributes:dict];	
+	NSString *doneRatio = [NSString stringWithFormat:@"%@/100", [[[self objectValue] valueForKey:kdDoneRatioKey] stringValue]];
+	[doneRatio drawInRect:countRect withAttributes:dict];
 	return;
 }
 
