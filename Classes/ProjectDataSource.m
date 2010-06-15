@@ -164,7 +164,6 @@
 	
 	if([[sender name] isEqualToString:kAPIOperationIssues]){
 		// Reload only the index with the project we got new data for.
-		NSLog(@"Sender object: %@", [sender object]);
 		if([sender object]){
 			NSInteger index = [[self projects] indexOfObjectPassingTest:[self projectTestingForName:[sender object]]];
 			[self.outlineView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:index] columnIndexes:[NSIndexSet indexSetWithIndex:0]];

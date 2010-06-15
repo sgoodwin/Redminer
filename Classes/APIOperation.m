@@ -125,7 +125,7 @@
 	//NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	//NSLog(@"datastring: %@", dataString);
 	
-	NSLog(@"parsing data: %@", project);
+	//NSLog(@"parsing data: %@", project);
 	[self arrayFromData:data];	
 }
 
@@ -154,7 +154,7 @@
 }
 
 - (void)finish{
-	NSLog(@"finishing up %@", self);
+	//NSLog(@"finishing up %@", self);
 	if(!!_data){
 		[_data release];
 		_data = nil;
@@ -177,8 +177,8 @@
 }
 
 - (void)arrayFromData:(NSData *)data{
-	NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	NSLog(@"DataString: %@", dataString);
+	//NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	//NSLog(@"DataString: %@", dataString);
 	
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
 	[parser setDelegate:self];
@@ -211,7 +211,7 @@
 #pragma mark XML Delegate methods
 
 - (void)parserDidStartDocument:(NSXMLParser *)parser{
-	NSLog(@"Here we go!");
+	return;
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{	
@@ -372,7 +372,6 @@
 }
 
 -(void)parserDidEndDocument:(NSXMLParser *)parser{
-	NSLog(@"Finished parsing");
 	[GOLogger log:@"Ready"];
 	[self finish];	
 }

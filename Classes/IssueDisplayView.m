@@ -9,6 +9,11 @@
 #import "IssueDisplayView.h"
 #import "Issue.h"
 #import "CoreDataVendor.h"
+#import "PreferencesController.h"
+
+@interface IssueDisplayView (PrivateMethods)
+- (void)applyTheme;
+@end
 
 @implementation IssueDisplayView
 @synthesize currentIssueID = _currentIssueID;
@@ -28,6 +33,7 @@
 	}
 	Issue *issue = [Issue issueWithID:[self currentIssueID] inManagedObjectContext:[self moc]];
 	[[self mainFrame] loadHTMLString:[issue htmlString] baseURL:nil];
+	[self applyTheme];
 }
 
 - (void)setCurrentIssueID:(NSNumber*)idnumber{	
@@ -43,6 +49,18 @@
 	
 	Issue *issue = [Issue issueWithID:idnumber inManagedObjectContext:[self moc]];
 	[[self mainFrame] loadHTMLString:[issue htmlString] baseURL:nil];
+	[self applyTheme];
+}
+
+- (void)applyTheme{	
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"css"];
+	if([[NSFileManager defaultManager] fileExistsAtPath:path]){
+		[self setDrawsBackground:YES];
+		WebPreferences *prefs = [WebPreferences standardPreferences];
+		[prefs setUserStyleSheetEnabled:YES];
+		[prefs setUserStyleSheetLocation:[NSURL fileURLWithPath:path]];
+		[self setPreferences:prefs];
+	}
 }
 
 @end

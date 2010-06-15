@@ -24,9 +24,9 @@
     NSDictionary * dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 	
 	NSRect subjectRect = NSIntegralRect(NSInsetRect(cellFrame, 5.0f, 5.0f));
-	NSRect countRect = NSIntegralRect(NSMakeRect(cellFrame.origin.x+cellFrame.size.width-50.0f, cellFrame.origin.y+5.0f, subjectRect.size.width, subjectRect.size.height));
+	NSRect countRect = NSIntegralRect(NSMakeRect(cellFrame.origin.x+cellFrame.size.width-40.0f, cellFrame.origin.y+5.0f, subjectRect.size.width, subjectRect.size.height));
 	[[[self objectValue] valueForKey:kNameKey] drawInRect:subjectRect withAttributes:dict];	
-	//[[[[self objectValue] valueForKey:kUpdatedCountKey] stringValue] drawInRect:countRect withAttributes:dict];
+	[[[[self objectValue] valueForKey:kItemCountKey] stringValue] drawInRect:countRect withAttributes:dict];
 	return;
 }
 

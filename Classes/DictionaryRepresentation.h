@@ -14,6 +14,7 @@
 #define kIDKey @"id"
 #define kSubjectKey @"subject"
 #define kdDoneRatioKey @"done_ratio"
+#define kItemCountKey @"item_count"
 
 @protocol DictionaryRepresentation
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_;

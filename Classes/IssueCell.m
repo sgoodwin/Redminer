@@ -23,9 +23,9 @@
     NSDictionary * dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 	
 	NSRect subjectRect = NSIntegralRect(NSInsetRect(cellFrame, 5.0f, 5.0f));
-	NSRect countRect = NSIntegralRect(NSMakeRect(cellFrame.origin.x+cellFrame.size.width-50.0f, cellFrame.origin.y+5.0f, subjectRect.size.width, subjectRect.size.height));
+	NSRect countRect = NSIntegralRect(NSMakeRect(cellFrame.origin.x+cellFrame.size.width-40.0f, cellFrame.origin.y+5.0f, subjectRect.size.width, subjectRect.size.height));
 	[[[self objectValue] valueForKey:kSubjectKey] drawInRect:subjectRect withAttributes:dict];	
-	NSString *doneRatio = [NSString stringWithFormat:@"%@/100", [[[self objectValue] valueForKey:kdDoneRatioKey] stringValue]];
+	NSString *doneRatio = [NSString stringWithFormat:@"%@%%", [[[self objectValue] valueForKey:kdDoneRatioKey] stringValue]];
 	[doneRatio drawInRect:countRect withAttributes:dict];
 	return;
 }

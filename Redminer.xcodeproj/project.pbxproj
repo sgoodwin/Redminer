@@ -17,6 +17,7 @@
 		9B46DCD211ABA087009E522E /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B46DCD111ABA087009E522E /* PreferencesController.m */; };
 		9B46DCF811ABA2CD009E522E /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B46DCF711ABA2CD009E522E /* Preferences.xib */; };
 		9B46DD7B11ABA7F2009E522E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */; };
+		9B5FF22B11C7611E004B5ADD /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 9B5FF22A11C7611E004B5ADD /* default.css */; };
 		9B62DA68119F5A2E0056F427 /* Issue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA58119F5A2E0056F427 /* Issue.m */; };
 		9B62DA6B119F5A2E0056F427 /* NSArrayAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA5E119F5A2E0056F427 /* NSArrayAdditions.m */; };
 		9B62DA6C119F5A2E0056F427 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B62DA60119F5A2E0056F427 /* Project.m */; };
@@ -72,6 +73,7 @@
 		9B46DCD111ABA087009E522E /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		9B46DCF711ABA2CD009E522E /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9B5FF22A11C7611E004B5ADD /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
 		9B62DA57119F5A2E0056F427 /* Issue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Issue.h; sourceTree = "<group>"; };
 		9B62DA58119F5A2E0056F427 /* Issue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Issue.m; sourceTree = "<group>"; };
 		9B62DA5D119F5A2E0056F427 /* NSArrayAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayAdditions.h; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				9BA93BAF11A7A37B00C7B761 /* Redminer.xcdatamodel */,
 				9B46DCF711ABA2CD009E522E /* Preferences.xib */,
+				9B5FF22A11C7611E004B5ADD /* default.css */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				9B46DCF811ABA2CD009E522E /* Preferences.xib in Resources */,
+				9B5FF22B11C7611E004B5ADD /* default.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

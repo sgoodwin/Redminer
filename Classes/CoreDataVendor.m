@@ -15,7 +15,7 @@ static NSManagedObjectModel *managedObjectModel = nil;
 
 + (NSPersistentStoreCoordinator*)getPersistentStoreCoordinator{
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"Redminer.sqlite"]];
-	NSLog(@"Store URL: %@", storeUrl);
+	//NSLog(@"Store URL: %@", storeUrl);
 	
 	NSError *error = nil;
 	NSPersistentStoreCoordinator*  persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

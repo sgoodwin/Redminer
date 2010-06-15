@@ -11,12 +11,18 @@
 
 @implementation PreferencesController
 static PreferencesController *sharedPrefs = nil;
+@synthesize css_box = _css_box;
 
 + (PreferencesController*)sharedPrefsWindowController{
 	if(!sharedPrefs){
-		sharedPrefs = [[PreferencesController alloc] initWithWindowNibName:@"Preferences" owner:self];
+		sharedPrefs = [[PreferencesController alloc] initWithWindowNibName:@"Preferences"];
 	}
 	return sharedPrefs;
+}
+
+- (void)windowDidLoad{
+	NSLog(@"Prefs loaded!");
+	[[self css_box] setString:[self css_file]];
 }
 
 - (NSString *)access_key{
@@ -40,4 +46,30 @@ static PreferencesController *sharedPrefs = nil;
 	}
 	return loc;
 }
+
+- (NSString *)css_file{
+	if(NO && [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]){
+		NSLog(@"Returning stored css file");
+		return [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"];
+	}else{
+		NSLog(@"Returning default css file");
+		NSString *path = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"css"];
+		NSError *err = nil;
+		NSString *css = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+		if(nil == css){
+			NSLog(@"failed to load default css file: %@", [err localizedDescription]);
+		}
+		[[NSUserDefaults standardUserDefaults] setObject:css forKey:@"css_file"];
+		return css;
+	}
+}
+
+#pragma mark -
+#pragma mark NSTextViewDelegat methods
+
+- (BOOL)textView:(NSTextView *)aTextView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString{
+	NSLog(@"Changing characters!");
+	return YES;
+}
+
 @end

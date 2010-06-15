@@ -113,8 +113,8 @@
 }
 
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_{
-	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self updatedIssues:moc_].count], nil];
-	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kUpdatedCountKey, nil];
+	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self updatedIssues:moc_].count], [NSNumber numberWithUnsignedInteger:[self sortedIssues].count], nil];
+	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kUpdatedCountKey, kItemCountKey, nil];
 	return [[NSDictionary alloc] initWithObjects:values forKeys:keys];
 }
 @end
