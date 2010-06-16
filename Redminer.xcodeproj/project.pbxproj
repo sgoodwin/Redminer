@@ -14,6 +14,7 @@
 		9B154EAE11C539F7009EA276 /* IssueDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B154EAD11C539F7009EA276 /* IssueDisplayView.m */; };
 		9B154EB211C53A40009EA276 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B154EB111C53A40009EA276 /* WebKit.framework */; };
 		9B33646111C5F4B800447412 /* APIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B33646011C5F4B800447412 /* APIOperation.m */; };
+		9B42026211C8BBFC00C36EEA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 9B42026111C8BBFC00C36EEA /* dsa_pub.pem */; };
 		9B46DCD211ABA087009E522E /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B46DCD111ABA087009E522E /* PreferencesController.m */; };
 		9B46DCF811ABA2CD009E522E /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B46DCF711ABA2CD009E522E /* Preferences.xib */; };
 		9B46DD7B11ABA7F2009E522E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B46DD7A11ABA7F2009E522E /* SystemConfiguration.framework */; };
@@ -63,12 +64,14 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Redminer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Redminer-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Redminer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redminer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B017C1811C9225300093C79 /* tag.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = tag.sh; sourceTree = "<group>"; };
 		9B0E0BBB11AB34A5000432DC /* DictionaryRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryRepresentation.h; sourceTree = "<group>"; };
 		9B154EAC11C539F7009EA276 /* IssueDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IssueDisplayView.h; sourceTree = "<group>"; };
 		9B154EAD11C539F7009EA276 /* IssueDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IssueDisplayView.m; sourceTree = "<group>"; };
 		9B154EB111C53A40009EA276 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9B33645F11C5F4B800447412 /* APIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIOperation.h; sourceTree = "<group>"; };
 		9B33646011C5F4B800447412 /* APIOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIOperation.m; sourceTree = "<group>"; };
+		9B42026111C8BBFC00C36EEA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		9B46DCD011ABA087009E522E /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		9B46DCD111ABA087009E522E /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		9B46DCF711ABA2CD009E522E /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
@@ -170,6 +173,7 @@
 			children = (
 				256AC3F00F4B6AF500CF3369 /* Redminer_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				9B017C1811C9225300093C79 /* tag.sh */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -177,6 +181,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9B42026111C8BBFC00C36EEA /* dsa_pub.pem */,
 				8D1107310486CEB800E47090 /* Redminer-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
@@ -281,7 +286,6 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				9B42010D11C8A22700C36EEA /* Git-based verisioning */,
 			);
 			buildRules = (
 			);
@@ -322,27 +326,11 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				9B46DCF811ABA2CD009E522E /* Preferences.xib in Resources */,
 				9B5FF22B11C7611E004B5ADD /* default.css in Resources */,
+				9B42026211C8BBFC00C36EEA /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		9B42010D11C8A22700C36EEA /* Git-based verisioning */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Git-based verisioning";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /usr/bin/ruby;
-			shellScript = "# Xcode auto-versioning script for git\n#\n# Based on original Perl script by Marcus S. Zarra and Matt Long at\n#   (http://www.cimgf.com/2008/04/13/git-and-xcode-a-git-build-number-script/)\n\n# Fail if not run from Xcode\nraise \"Must be run from Xcode\" unless ENV['XCODE_VERSION_ACTUAL']\n\ninfo_plist = \"#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['INFOPLIST_PATH']}\"\n\n# Get the current git revision hash\nrevision = `/opt/local/bin/git rev-parse --short HEAD`.chomp!\n\n# Open Info.plist and set the CFBundleVersion value to the revision hash\nlines = IO.readlines(info_plist).join\nlines.gsub! /(<key>CFBundleVersion<\\/key>\\n\\t<string>).*?(<\\/string>)/, \"\\\\1#{revision}\\\\2\"\n\n# Overwrite the original Info.plist file with our updated version\nFile.open(info_plist, 'w') {|f| f.puts lines}\n\n# Report to the user\nputs \"CFBundleVersion in #{info_plist} set to '#{revision}'\"";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
