@@ -29,4 +29,18 @@
 - (void)setTitle:(NSString*)title{
 	[[self window] setTitle:title];
 }
+
+// Handle a file dropped on the dock icon
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)path
+{
+	NSLog(@"file was dropped in! %@", path);
+	NSString *dest = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[path lastPathComponent]];
+	NSError *err = nil;
+	BOOL success = [[NSFileManager defaultManager] copyItemAtPath:path toPath:dest error:&err];
+	if(!success){
+		NSLog(@"Failed to copy %@ to %@, %@", path, dest, [err localizedDescription]);
+	}
+	
+	return YES;
+}
 @end

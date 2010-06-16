@@ -74,6 +74,7 @@ static PreferencesController *sharedPrefs = nil;
 
 - (NSString *)css_file{	
 	NSString *fileName = @"default";
+	NSLog(@"stored filename = %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]);
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]){
 		fileName = [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"];
 	}
@@ -83,8 +84,9 @@ static PreferencesController *sharedPrefs = nil;
 }
 
 - (void)update:(NSMenuItem*)sender{
-	NSLog(@"new css file: %@", sender);
+	NSLog(@"new css file: %@", [sender title]);
 	[[NSUserDefaults standardUserDefaults] setObject:[sender title] forKey:@"css_file"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 	[[self issueDisplay] reloadIssue];
 }
 @end
