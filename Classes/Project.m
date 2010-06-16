@@ -81,22 +81,6 @@
 	return p;
 }
 
-- (NSArray*)updatedIssues:(NSManagedObjectContext*)moc_{
-	NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
-	[fetch setEntity:[NSEntityDescription entityForName:@"Issue" inManagedObjectContext:moc_]];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"updated == TRUE and project.id = %@", self.id];
-	[fetch setPredicate:predicate];
-	
-	NSError *err = nil;
-	NSArray *results = [moc_ executeFetchRequest:fetch error:&err];
-	[fetch release];
-	if(!results){
-		NSLog(@"Error fetching updated issues! %@", [err localizedDescription]);
-		return nil;
-	}
-	return results;
-}
-
 - (NSArray*)sortedIssues{
 	NSArray *array = [[self issues] allObjects];
 	return [array sortedArrayUsingComparator: ^(id obj1, id obj2) {
@@ -113,8 +97,8 @@
 }
 
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_{
-	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self updatedIssues:moc_].count], [NSNumber numberWithUnsignedInteger:[self sortedIssues].count], nil];
-	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kUpdatedCountKey, kItemCountKey, nil];
+	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self sortedIssues].count], nil];
+	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kItemCountKey, nil];
 	return [[NSDictionary alloc] initWithObjects:values forKeys:keys];
 }
 @end

@@ -15,12 +15,14 @@
 @synthesize window = _window;
 @synthesize outline = _outline;
 @synthesize textField = _textField;
+@synthesize issueDisplay = _issueDisplay;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[[self window] setTitle:@"Some stuff"];
 }
 
 - (IBAction)openPreferencesWindow:(id)sender {
+	[[PreferencesController sharedPrefsWindowController] setIssueDisplay:[self issueDisplay]];
 	[[PreferencesController sharedPrefsWindowController] showWindow:nil];
 }
 

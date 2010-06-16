@@ -26,9 +26,6 @@
 		Issue *issue = [n issue];
 		// This is a duplicate object and should be deleted. The original should be marked as new as well.
 		Note *old = [results objectAtIndex:0];
-		if(![old isEqualTo:n]){
-			[old setUpdatedValue:YES];
-		}
 		[moc_ deleteObject:n];
 		[old setIssue:issue];
 	}

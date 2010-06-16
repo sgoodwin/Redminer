@@ -64,16 +64,6 @@
 
 
 
-@property (nonatomic, retain) NSNumber *updated;
-
-@property BOOL updatedValue;
-- (BOOL)updatedValue;
-- (void)setUpdatedValue:(BOOL)value_;
-
-//- (BOOL)validateUpdated:(id*)value_ error:(NSError**)error_;
-
-
-
 @property (nonatomic, retain) NSNumber *done_ratio;
 
 @property short done_ratioValue;
@@ -90,6 +80,16 @@
 
 
 
+@property (nonatomic, retain) NSNumber *read;
+
+@property BOOL readValue;
+- (BOOL)readValue;
+- (void)setReadValue:(BOOL)value_;
+
+//- (BOOL)validateRead:(id*)value_ error:(NSError**)error_;
+
+
+
 
 @property (nonatomic, retain) NSSet* notes;
 - (NSMutableSet*)notesSet;
@@ -99,16 +99,6 @@
 @property (nonatomic, retain) Project* project;
 //- (BOOL)validateProject:(id*)value_ error:(NSError**)error_;
 
-
-
-
-+ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ ;
-+ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
-
-
-
-+ (NSArray*)fetchAllIssues:(NSManagedObjectContext*)moc_ ;
-+ (NSArray*)fetchAllIssues:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
 
 
 @end

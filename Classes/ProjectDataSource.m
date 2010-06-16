@@ -98,9 +98,7 @@
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item{
-	//if(item && [item valueForKey:kNameKey])
-		return 30.0f;
-	//return 60.0f;
+	return 30.0f;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item{

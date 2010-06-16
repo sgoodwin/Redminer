@@ -89,24 +89,6 @@
 
 
 
-@dynamic updated;
-
-
-
-- (BOOL)updatedValue {
-	NSNumber *result = [self updated];
-	return result ? [result boolValue] : 0;
-}
-
-- (void)setUpdatedValue:(BOOL)value_ {
-	[self setUpdated:[NSNumber numberWithBool:value_]];
-}
-
-
-
-
-
-
 @dynamic done_ratio;
 
 
@@ -132,6 +114,24 @@
 
 
 
+@dynamic read;
+
+
+
+- (BOOL)readValue {
+	NSNumber *result = [self read];
+	return result ? [result boolValue] : 0;
+}
+
+- (void)setReadValue:(BOOL)value_ {
+	[self setRead:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+
 @dynamic notes;
 
 	
@@ -147,66 +147,6 @@
 
 	
 
-
-
-
-+ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ {
-	NSError *error = nil;
-	NSArray *result = [self fetchUpdatedIssues:moc_ error:&error];
-	if (error) {
-#if TARGET_OS_IPHONE
-		NSLog(@"error: %@", error);
-#else
-		[NSApp presentError:error];
-#endif
-	}
-	return result;
-}
-+ (NSArray*)fetchUpdatedIssues:(NSManagedObjectContext*)moc_ error:(NSError**)error_ {
-	NSError *error = nil;
-	
-	NSManagedObjectModel *model = [[moc_ persistentStoreCoordinator] managedObjectModel];
-	NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName:@"updatedIssues"
-													 substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-														
-														nil]
-													 ];
-	NSAssert(fetchRequest, @"Can't find fetch request named \"updatedIssues\".");
-	
-	NSArray *result = [moc_ executeFetchRequest:fetchRequest error:&error];
-	if (error_) *error_ = error;
-	return result;
-}
-
-
-
-+ (NSArray*)fetchAllIssues:(NSManagedObjectContext*)moc_ {
-	NSError *error = nil;
-	NSArray *result = [self fetchAllIssues:moc_ error:&error];
-	if (error) {
-#if TARGET_OS_IPHONE
-		NSLog(@"error: %@", error);
-#else
-		[NSApp presentError:error];
-#endif
-	}
-	return result;
-}
-+ (NSArray*)fetchAllIssues:(NSManagedObjectContext*)moc_ error:(NSError**)error_ {
-	NSError *error = nil;
-	
-	NSManagedObjectModel *model = [[moc_ persistentStoreCoordinator] managedObjectModel];
-	NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName:@"allIssues"
-													 substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-														
-														nil]
-													 ];
-	NSAssert(fetchRequest, @"Can't find fetch request named \"allIssues\".");
-	
-	NSArray *result = [moc_ executeFetchRequest:fetchRequest error:&error];
-	if (error_) *error_ = error;
-	return result;
-}
 
 
 @end

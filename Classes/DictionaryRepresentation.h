@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 #define kNameKey @"name"
-#define kUpdatedCountKey @"updatedCount"
 #define kDescKey @"desc"
 #define kIDKey @"id"
 #define kSubjectKey @"subject"

@@ -17,12 +17,6 @@
 
 
 
-@property (nonatomic, retain) NSString *name;
-
-//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
-
-
-
 @property (nonatomic, retain) NSNumber *id;
 
 @property short idValue;
@@ -33,13 +27,9 @@
 
 
 
-@property (nonatomic, retain) NSNumber *updated;
+@property (nonatomic, retain) NSString *name;
 
-@property BOOL updatedValue;
-- (BOOL)updatedValue;
-- (void)setUpdatedValue:(BOOL)value_;
-
-//- (BOOL)validateUpdated:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
 
 
 

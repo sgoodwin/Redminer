@@ -8,14 +8,17 @@
 
 #import <Cocoa/Cocoa.h>
 
-
+@class IssueDisplayView;
 @interface PreferencesController : NSWindowController<NSTextViewDelegate>{
-	NSTextView *_css_box;
+	NSPopUpButton *_css_file_picker;
+	IssueDisplayView *_issueDisplay;
 }
-@property(nonatomic, retain) IBOutlet NSTextView *css_box;
+@property(nonatomic, retain) IBOutlet NSPopUpButton *css_file_picker;
+@property(nonatomic, assign) IssueDisplayView *issueDisplay;
 
 + (PreferencesController*)sharedPrefsWindowController;
 - (NSString *)access_key;
 - (NSString *)server_location;
 - (NSString *)css_file;
+- (NSArray *)css_files;
 @end

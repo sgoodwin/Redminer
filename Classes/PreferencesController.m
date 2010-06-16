@@ -7,11 +7,12 @@
 //
 
 #import "PreferencesController.h"
-
+#import "IssueDisplayView.h"
 
 @implementation PreferencesController
 static PreferencesController *sharedPrefs = nil;
-@synthesize css_box = _css_box;
+@synthesize css_file_picker = _css_file_picker;
+@synthesize issueDisplay = _issueDisplay;
 
 + (PreferencesController*)sharedPrefsWindowController{
 	if(!sharedPrefs){
@@ -22,7 +23,31 @@ static PreferencesController *sharedPrefs = nil;
 
 - (void)windowDidLoad{
 	NSLog(@"Prefs loaded!");
-	[[self css_box] setString:[self css_file]];
+	[[self css_file_picker] removeAllItems];
+	NSArray *themes = [[NSBundle mainBundle] pathsForResourcesOfType:@"css" inDirectory:nil];
+    for (NSString *theme in themes) {
+        // Get theme name without file-extension
+        NSString *themeName = [theme lastPathComponent];
+        NSRange dotRange = [themeName rangeOfString:@"."];
+        if (dotRange.location != NSNotFound) {
+            themeName = [themeName substringToIndex:dotRange.location];
+        }
+        
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:themeName 
+                                                          action:@selector(update:) 
+                                                   keyEquivalent:@""];
+        [menuItem setTarget:self];
+        [menuItem setRepresentedObject:[theme lastPathComponent]];
+		NSString *css_file_name = [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"];
+        if ([themeName isEqualToString:css_file_name]) {
+            [menuItem setState:NSOnState];
+        }
+        [[self.css_file_picker menu] addItem:menuItem];
+		if ([themeName isEqualToString:css_file_name]) {
+            [self.css_file_picker selectItem:menuItem];
+        }
+		[menuItem release];
+    }
 }
 
 - (NSString *)access_key{
@@ -47,29 +72,19 @@ static PreferencesController *sharedPrefs = nil;
 	return loc;
 }
 
-- (NSString *)css_file{
-	if(NO && [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]){
-		NSLog(@"Returning stored css file");
-		return [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"];
-	}else{
-		NSLog(@"Returning default css file");
-		NSString *path = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"css"];
-		NSError *err = nil;
-		NSString *css = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
-		if(nil == css){
-			NSLog(@"failed to load default css file: %@", [err localizedDescription]);
-		}
-		[[NSUserDefaults standardUserDefaults] setObject:css forKey:@"css_file"];
-		return css;
+- (NSString *)css_file{	
+	NSString *fileName = @"default";
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]){
+		fileName = [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"];
 	}
+	NSLog(@"filename: %@", fileName);
+	NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:@"css"];
+	return path;
 }
 
-#pragma mark -
-#pragma mark NSTextViewDelegat methods
-
-- (BOOL)textView:(NSTextView *)aTextView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString{
-	NSLog(@"Changing characters!");
-	return YES;
+- (void)update:(NSMenuItem*)sender{
+	NSLog(@"new css file: %@", sender);
+	[[NSUserDefaults standardUserDefaults] setObject:[sender title] forKey:@"css_file"];
+	[[self issueDisplay] reloadIssue];
 }
-
 @end

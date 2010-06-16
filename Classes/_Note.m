@@ -29,13 +29,6 @@
 
 
 
-@dynamic name;
-
-
-
-
-
-
 @dynamic id;
 
 
@@ -54,18 +47,7 @@
 
 
 
-@dynamic updated;
-
-
-
-- (BOOL)updatedValue {
-	NSNumber *result = [self updated];
-	return result ? [result boolValue] : 0;
-}
-
-- (void)setUpdatedValue:(BOOL)value_ {
-	[self setUpdated:[NSNumber numberWithBool:value_]];
-}
+@dynamic name;
 
 
 

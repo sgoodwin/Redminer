@@ -27,8 +27,7 @@
 	NSArray *results = [moc_ executeFetchRequest:request error:&err];
 	[request release];
 	if(results && [results count] > 1){
-		Issue *i = (Issue*)[moc_ objectWithID:issueID];
-		[i setUpdatedValue:YES];
+		//Issue *i = (Issue*)[moc_ objectWithID:issueID];
 		for(Issue *issue in results){
 			if([[issue objectID] isNotEqualTo:issueID]){
 				[moc_ deleteObject:issue];
@@ -52,61 +51,6 @@
 	return i;
 }
 
-+ (Issue*)checkIssue:(Issue*)i ForDups:(NSManagedObjectContext*)moc_{
-	NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
-	[fetch setEntity:[self entityInManagedObjectContext:moc_]];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"id == %@", i.id];
-	[fetch setPredicate:predicate];
-	
-	NSError *err = nil;
-	NSArray *results = [moc_ executeFetchRequest:fetch error:&err];
-	NSLog(@"got results: %@", results);
-	[fetch release];
-	if([results count] > 1){
-		NSSet *notes = [i notes];
-		Project *p = [i project];
-		NSString *assigned_to = [i assigned_to];
-		NSString *category = [i category];
-		NSString *desc = [i desc];
-		NSNumber *done_ratio = [i done_ratio];
-		NSNumber *an_id = [i id];
-		NSString *priority = [i priority];
-		NSString *status = [i status];
-		NSString *subject = [i subject];
-		NSString *tracker = [i tracker];
-		
-		[moc_ deleteObject:i];
-		for(Issue *issue in results){
-			//if([[issue objectID] isEqual:[i objectID]]){
-				[moc_ deleteObject:issue];
-			//}
-		}
-		
-		Issue *new = [Issue insertInManagedObjectContext:moc_];
-		new.notes = notes;
-		new.project = p;
-		new.assigned_to = assigned_to;
-		new.category = category;
-		new.desc = desc;
-		new.done_ratio = done_ratio;
-		new.id = an_id;
-		new.priority = priority;
-		new.status = status;
-		new.subject = subject;
-		new.tracker = tracker;
-		new.updatedValue = YES;
-		
-		NSError *err = nil;
-		if(![moc_ save:&err]){
-			NSLog(@"Failed to save dup-check for Issue: %@, %@", new, [err localizedDescription]);
-			return nil;
-		}
-		
-		return new;
-	}
-	return i;
-}
-
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key{
 	if(!_undefined_keys){
 		_undefined_keys = [[NSSet setWithObject:key] retain];
@@ -116,7 +60,7 @@
 }
 
 - (NSString*)description{
-	return [NSString stringWithFormat:@"<Item id:%@ subject:%@ assigned_to:%@ done:%@ status:%@ notes:%d updated:%@>", self.id, self.subject, self.assigned_to, self.done_ratio, self.status, [[self notes] count], [self updated]];
+	return [NSString stringWithFormat:@"<Item id:%@ subject:%@ assigned_to:%@ done:%@ status:%@ notes:%d read:%@>", self.id, self.subject, self.assigned_to, self.done_ratio, self.status, [[self notes] count], [self read]];
 }
 
 - (NSString*)categoryOrBlank{

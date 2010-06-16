@@ -31,6 +31,7 @@
 		[self performSelectorOnMainThread:@selector(reloadIssue) withObject:nil waitUntilDone:NO];
 		return;
 	}
+	NSLog(@"Reloading issue");
 	Issue *issue = [Issue issueWithID:[self currentIssueID] inManagedObjectContext:[self moc]];
 	[[self mainFrame] loadHTMLString:[issue htmlString] baseURL:nil];
 	[self applyTheme];
@@ -53,7 +54,8 @@
 }
 
 - (void)applyTheme{	
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"css"];
+    NSString *path = [[PreferencesController sharedPrefsWindowController] css_file];
+	NSLog(@"Using css file: %@", path);
 	if([[NSFileManager defaultManager] fileExistsAtPath:path]){
 		[self setDrawsBackground:YES];
 		WebPreferences *prefs = [WebPreferences standardPreferences];
