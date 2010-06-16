@@ -33,4 +33,7 @@
 
 - (IBAction)refresh:(id)sender;
 - (void)reload:(NSNotification*)sender;
+
+- (void)save;
+-  (IBAction)markAllAsRead:(id)sender;
 @end

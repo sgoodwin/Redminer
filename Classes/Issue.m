@@ -129,10 +129,24 @@
 	NSError *err = nil;
 	NSArray *results = [moc_ executeFetchRequest:request error:&err];
 	[request release];
-	if(!!results && [results count] > 0){
+	if(results && [results count] > 0){
 		return [results objectAtIndex:0];
 	}
 	return nil;
+}
+
++ (NSArray *)allIssues:(NSManagedObjectContext*)moc_{
+	NSFetchRequest *request = [[NSFetchRequest alloc]  init];
+	[request setEntity:[NSEntityDescription entityForName:NSStringFromClass(self) inManagedObjectContext:moc_]];
+	
+	NSError *err = nil;
+	NSArray *results = [moc_ executeFetchRequest:request error:&err];
+	[request release];
+	if(results && [results count] > 0){
+		return results;
+	}
+	return nil;
+	
 }
 
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_{

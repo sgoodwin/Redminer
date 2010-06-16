@@ -40,6 +40,41 @@
 	return self;
 }
 
+#pragma mark -
+#pragma mark IBActions
+
+- (void)save{
+	NSError *err = nil;
+	BOOL success = [[self moc] save:&err];
+	if(!success){
+		NSLog(@"Failed to mark all as read! %@", [err localizedDescription]);
+	}
+}
+
+-  (IBAction)markAsUnRead:(id)sender{
+	NSInteger index = [[self outlineView] selectedRow];
+	if(index == -1){
+		return;
+	}
+	NSDictionary *item = [[self outlineView] itemAtRow:index];
+	if(nil == [item valueForKey:kDescKey]){
+		return;
+	}
+	Issue *i = [Issue issueWithID:[item valueForKey:kIDKey] inManagedObjectContext:[self moc]];
+	[i setReadValue:NO];
+	[self save];
+}
+
+-  (IBAction)markAllAsRead:(id)sender{
+	NSArray *issues = [Issue allIssues:[self moc]];
+	[issues enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL* stop){
+		[(Issue*)obj setReadValue:YES];
+	}];
+	[self save];
+	
+	[[self outlineView] reloadData];
+}
+
 - (IBAction)refresh:(id)sender{
 	APIOperation *op = [APIOperation operationWithType:APIOperationProjects andObjectID:nil];
 	[[self internetQueue] addOperation:op];
@@ -61,7 +96,9 @@
 		if(!succ){
 			NSLog(@"Failed to save read status: %@", [err localizedDescription]);
 		}
-		[[self outlineView] reloadItem:[[self outlineView] parentForItem:item]];
+		NSDictionary *parent = [[self outlineView] parentForItem:item];
+		[[self outlineView] reloadItem:parent];
+		[[self outlineView] expandItem:parent];
 		
 		//APIOperation *op = [APIOperation operationWithType:APIOperationIssueDetail andObjectID:i.objectID];
 		//[[NSOperationQueue mainQueue] addOperation:op];

@@ -18,4 +18,5 @@
 - (NSString*)htmlString;
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_;
 + (Issue*)issueWithID:(NSNumber *)an_id inManagedObjectContext:(NSManagedObjectContext*)moc_;
++ (NSArray *)allIssues:(NSManagedObjectContext*)moc_;
 @end
