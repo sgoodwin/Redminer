@@ -74,13 +74,14 @@ static PreferencesController *sharedPrefs = nil;
 
 - (NSString *)css_file{	
 	NSString *fileName = @"default";
-	NSLog(@"stored filename = %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]);
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"]){
 		fileName = [[NSUserDefaults standardUserDefaults] objectForKey:@"css_file"];
 	}
-	NSLog(@"filename: %@", fileName);
 	NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:@"css"];
-	return path;
+	if([[NSFileManager defaultManager] fileExistsAtPath:path]){
+		return path;
+	}
+	return [[NSBundle mainBundle] pathForResource:@"default" ofType:@"css"];
 }
 
 - (void)update:(NSMenuItem*)sender{

@@ -55,8 +55,16 @@
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item{	
 	if([item valueForKey:kDescKey]){
 		Issue *i = [Issue issueWithID:[item valueForKey:kIDKey] inManagedObjectContext:[self moc]];
-		APIOperation *op = [APIOperation operationWithType:APIOperationIssueDetail andObjectID:i.objectID];
-		[[NSOperationQueue mainQueue] addOperation:op];
+		[i setReadValue:YES];
+		NSError *err = nil;
+		BOOL succ = [[self moc] save:&err];
+		if(!succ){
+			NSLog(@"Failed to save read status: %@", [err localizedDescription]);
+		}
+		[[self outlineView] reloadItem:[[self outlineView] parentForItem:item]];
+		
+		//APIOperation *op = [APIOperation operationWithType:APIOperationIssueDetail andObjectID:i.objectID];
+		//[[NSOperationQueue mainQueue] addOperation:op];
 		
 		[[self issueDisplay] setCurrentIssueID:i.id];
 		RedminerAppDelegate *del = (RedminerAppDelegate*)[[NSApplication sharedApplication] delegate];
