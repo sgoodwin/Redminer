@@ -81,6 +81,17 @@
 	return p;
 }
 
+- (NSArray*)unreadIssues{
+	NSArray *issues = [[self issues] allObjects];
+	NSMutableArray *unread = [NSMutableArray array];
+	[issues enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL* stop){
+		if(![(Issue*)obj readValue]){
+			[unread addObject:obj];
+		}
+	}];
+	return unread;
+}
+
 - (NSArray*)sortedIssues{
 	NSArray *array = [[self issues] allObjects];
 	return [array sortedArrayUsingComparator: ^(id obj1, id obj2) {
@@ -97,8 +108,8 @@
 }
 
 - (NSDictionary*)dictVersion:(NSManagedObjectContext*)moc_{
-	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self sortedIssues].count], nil];
-	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kItemCountKey, nil];
+	NSArray *values = [NSArray arrayWithObjects:self.name, self.id, [NSNumber numberWithUnsignedInteger:[self sortedIssues].count], [NSNumber numberWithUnsignedInteger:[[self unreadIssues] count]], nil];
+	NSArray *keys = [NSArray arrayWithObjects:kNameKey, kIDKey, kItemCountKey, kUnreadCountKey, nil];
 	return [[NSDictionary alloc] initWithObjects:values forKeys:keys];
 }
 @end

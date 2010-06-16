@@ -20,5 +20,4 @@
 - (NSString *)access_key;
 - (NSString *)server_location;
 - (NSString *)css_file;
-- (NSArray *)css_files;
 @end
